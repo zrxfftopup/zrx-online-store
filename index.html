@@ -33,11 +33,11 @@ footer{text-align:center;padding:25px;color:#65736a}
 <p>Quality Electric Products at Your Doorstep</p>
 </header>
 <nav>
-<button onclick="show('home')">হোম</button>
-<button onclick="show('cart')">কার্ট 🛒</button>
-<button onclick="show('orders')">আমার অর্ডার</button>
-<button onclick="show('account')">অ্যাকাউন্ট</button>
-<button onclick="show('admin')">অ্যাডমিন</button>
+  <button onclick="show('home')">হোম 🏠</button>
+  <button id="cartMenu" onclick="show('cart')" style="display:none">কার্ট 🛒</button>
+  <button id="ordersMenu" onclick="show('orders')" style="display:none">আমার অর্ডার 📦</button>
+  <button id="accountMenu" onclick="show('account')">লগইন / অ্যাকাউন্ট 👤</button>
+  <button id="adminMenu" onclick="show('admin')" style="display:none">অ্যাডমিন 👑</button>
 </nav>
 <main>
 <section id="home">
