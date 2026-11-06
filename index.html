@@ -1,1 +1,288 @@
-<!-- ZRX Online Store -->
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZRX Online Store</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7f5;color:#17231d;font-family:Arial,sans-serif}
+header{background:#092d20;color:white;padding:18px;text-align:center}
+header h1{margin:0;color:#53e39a}
+header p{margin:7px 0 0}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;background:#12432f;padding:12px}
+button{border:0;border-radius:8px;padding:11px 15px;background:#13a765;color:white;font-weight:bold;cursor:pointer}
+nav button{background:#fff;color:#12432f}
+main{max-width:1050px;margin:auto;padding:16px}
+input,select,textarea{width:100%;padding:12px;margin:6px 0 12px;border:1px solid #cbd5ce;border-radius:8px;font-size:15px}
+h2{color:#125c3d}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px}
+.card{background:white;padding:12px;border-radius:12px;box-shadow:0 2px 9px #0001}
+.card img{width:100%;height:145px;object-fit:contain;background:#f4f6f5;border-radius:8px}
+.price{font-weight:bold;color:#087a45}
+.panel{background:white;padding:16px;border-radius:12px;margin:15px 0}
+.hidden{display:none}
+.small{font-size:13px;color:#65736a}
+footer{text-align:center;padding:25px;color:#65736a}
+</style>
+</head>
+<body>
+<header>
+<h1>ZRX ONLINE STORE</h1>
+<p>Quality Electric Products at Your Doorstep</p>
+</header>
+<nav>
+<button onclick="show('home')">হোম</button>
+<button onclick="show('cart')">কার্ট 🛒</button>
+<button onclick="show('orders')">আমার অর্ডার</button>
+<button onclick="show('account')">অ্যাকাউন্ট</button>
+<button onclick="show('admin')">অ্যাডমিন</button>
+</nav>
+<main>
+<section id="home">
+<h2>আমাদের পণ্য</h2>
+<input id="search" placeholder="পণ্যের নাম দিয়ে খুঁজুন..." oninput="renderProducts()">
+<select id="category" onchange="renderProducts()">
+<option value="">সব ক্যাটাগরি</option>
+<option>Electrical</option><option>Lighting</option>
+<option>Accessories</option><option>Other</option>
+</select>
+<div id="products" class="products">পণ্য লোড হচ্ছে...</div>
+</section>
+
+<section id="cart" class="hidden">
+<h2>তোমার শপিং কার্ট</h2>
+<div id="cartItems"></div>
+<h3 id="cartTotal">মোট: ৳0</h3>
+<div class="panel">
+<h3>ডেলিভারির তথ্য</h3>
+<input id="custName" placeholder="তোমার নাম">
+<input id="phone" placeholder="মোবাইল নম্বর">
+<input id="district" placeholder="জেলা">
+<input id="upazila" placeholder="উপজেলা / থানা">
+<input id="area" placeholder="এলাকা">
+<textarea id="address" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+<select id="delivery">
+<option value="Home Delivery">Home Delivery</option>
+<option value="Courier">Courier</option>
+</select>
+<select id="payment">
+<option value="Cash on Delivery">Cash on Delivery</option>
+<option value="bKash">bKash</option>
+<option value="Nagad">Nagad</option>
+<option value="Rocket">Rocket</option>
+</select>
+<button onclick="placeOrder()">অর্ডার নিশ্চিত করো</button>
+<p class="small">অনলাইন পেমেন্টের ক্ষেত্রে পেমেন্ট নির্দেশনা অ্যাডমিনের কাছ থেকে নিশ্চিত করে নেবে।</p>
+</div>
+</section>
+
+<section id="orders" class="hidden">
+<h2>আমার অর্ডার</h2>
+<div id="myOrders">অর্ডার দেখতে লগইন করো।</div>
+</section>
+
+<section id="account" class="hidden">
+<h2>কাস্টমার অ্যাকাউন্ট</h2>
+<div class="panel">
+<input id="email" type="email" placeholder="ইমেইল">
+<input id="password" type="password" placeholder="পাসওয়ার্ড">
+<button onclick="signUp()">নতুন অ্যাকাউন্ট খোলো</button>
+<button onclick="signIn()">লগইন</button>
+<button onclick="signOut()">লগআউট</button>
+<p id="authStatus"></p>
+</div>
+</section>
+
+<section id="admin" class="hidden">
+<h2>অ্যাডমিন প্যানেল</h2>
+<div class="panel">
+<p>প্রথমে অ্যাডমিন অ্যাকাউন্ট দিয়ে লগইন করো।</p>
+<button onclick="checkAdmin()">অ্যাডমিন যাচাই</button>
+<p id="adminStatus"></p>
+</div>
+<div id="adminTools" class="panel hidden">
+<h3>নতুন পণ্য যোগ করো</h3>
+<input id="pname" placeholder="পণ্যের নাম">
+<textarea id="pdesc" placeholder="পণ্যের বিবরণ"></textarea>
+<input id="pprice" type="number" placeholder="দাম (টাকা)">
+<select id="pcat">
+<option>Electrical</option><option>Lighting</option>
+<option>Accessories</option><option>Other</option>
+</select>
+<input id="pstock" type="number" placeholder="স্টক সংখ্যা">
+<label>পণ্যের ছবি নির্বাচন করো</label>
+<input id="pimage" type="file" accept="image/*">
+<button onclick="addProduct()">পণ্য যোগ করো</button>
+<h3>পণ্যের তালিকা</h3>
+<div id="adminProducts"></div>
+</div>
+</section>
+</main>
+<footer>ZRX Online Store © 2026</footer>
+
+<script>
+const SUPABASE_URL = "https://rtvbbksgppcjcrcxtkbe.supabase.co";
+const SUPABASE_KEY = "sb_publishable_S80UCHIYfpC4rwe94bH_Lg_VCsQhc7o";
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let products=[];
+let cart=[];
+let currentUser=null;
+let isAdmin=false;
+
+function show(id){
+document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+document.getElementById(id).classList.remove("hidden");
+if(id==="cart")renderCart();
+if(id==="orders")loadOrders();
+if(id==="admin"&&isAdmin)loadAdminProducts();
+}
+async function getUser(){
+const {data}=await db.auth.getUser();
+currentUser=data.user;
+return currentUser;
+}
+async function loadProducts(){
+const {data,error}=await db.from("products").select("*").eq("is_active",true).order("created_at",{ascending:false});
+if(error){document.getElementById("products").innerText="পণ্য লোড হয়নি: "+error.message;return}
+products=data||[];
+renderProducts();
+}
+function renderProducts(){
+let q=document.getElementById("search").value.toLowerCase();
+let c=document.getElementById("category").value;
+let list=products.filter(p=>(p.name||"").toLowerCase().includes(q)&&(!c||p.category===c));
+document.getElementById("products").innerHTML=list.length?list.map(p=>`
+<div class="card">
+<img src="${p.image_url||""}" alt="${p.name}" onerror="this.style.display='none'">
+<h3>${escapeHtml(p.name)}</h3>
+<p>${escapeHtml(p.description||"")}</p>
+<p class="price">৳${Number(p.price).toLocaleString("en-BD")}</p>
+<p class="small">স্টক: ${p.stock??0}</p>
+<button onclick="addToCart('${p.id}')">কার্টে যোগ করো</button>
+</div>`).join(""):"কোনো পণ্য পাওয়া যায়নি।";
+}
+function escapeHtml(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function addToCart(id){
+let p=products.find(x=>x.id===id);
+if(!p)return;
+let old=cart.find(x=>x.id===id);
+if(old)old.qty++;
+else cart.push({id:p.id,name:p.name,price:Number(p.price),qty:1,stock:Number(p.stock||0)});
+alert("কার্টে যোগ হয়েছে");
+}
+function renderCart(){
+let box=document.getElementById("cartItems");
+if(!cart.length){box.innerHTML="কার্ট খালি";document.getElementById("cartTotal").innerText="মোট: ৳0";return}
+box.innerHTML=cart.map((p,i)=>`
+<div class="panel"><b>${escapeHtml(p.name)}</b><br>
+৳${p.price} × ${p.qty}
+<button onclick="changeQty(${i},-1)">−</button>
+<button onclick="changeQty(${i},1)">+</button>
+<button onclick="removeItem(${i})">বাদ দাও</button></div>`).join("");
+document.getElementById("cartTotal").innerText="মোট: ৳"+cart.reduce((s,p)=>s+p.price*p.qty,0);
+}
+function changeQty(i,n){
+cart[i].qty+=n;
+if(cart[i].qty<1)cart.splice(i,1);
+renderCart();
+}
+function removeItem(i){cart.splice(i,1);renderCart()}
+async function signUp(){
+let email=document.getElementById("email").value;
+let password=document.getElementById("password").value;
+let {error}=await db.auth.signUp({email,password});
+document.getElementById("authStatus").innerText=error?error.message:"অ্যাকাউন্ট তৈরি হয়েছে। ইমেইল যাচাই করতে হতে পারে।";
+}
+async function signIn(){
+let email=document.getElementById("email").value;
+let password=document.getElementById("password").value;
+let {data,error}=await db.auth.signInWithPassword({email,password});
+if(error){document.getElementById("authStatus").innerText=error.message;return}
+currentUser=data.user;
+document.getElementById("authStatus").innerText="লগইন সফল: "+currentUser.email;
+}
+async function signOut(){
+await db.auth.signOut();currentUser=null;isAdmin=false;
+document.getElementById("authStatus").innerText="লগআউট হয়েছে";
+}
+async function placeOrder(){
+let user=await getUser();
+if(!user){alert("অর্ডার করতে আগে অ্যাকাউন্টে লগইন করো");show("account");return}
+if(!cart.length){alert("কার্ট খালি");return}
+let name=document.getElementById("custName").value.trim();
+let phone=document.getElementById("phone").value.trim();
+let district=document.getElementById("district").value.trim();
+let upazila=document.getElementById("upazila").value.trim();
+let area=document.getElementById("area").value.trim();
+let address=document.getElementById("address").value.trim();
+if(!name||!phone||!district||!upazila||!address){alert("সব ঠিকানা পূরণ করো");return}
+let total=cart.reduce((s,p)=>s+p.price*p.qty,0);
+let order={customer_id:user.id,customer_name:name,phone,district,upazila,area,full_address:address,delivery_method:document.getElementById("delivery").value,payment_method:document.getElementById("payment").value,total_amount:total,status:"Pending"};
+let {data,error}=await db.from("orders").insert(order).select().single();
+if(error){alert("অর্ডার হয়নি: "+error.message);return}
+let items=cart.map(p=>({order_id:data.id,product_id:p.id,product_name:p.name,quantity:p.qty,unit_price:p.price}));
+let result=await db.from("order_items").insert(items);
+if(result.error){alert("অর্ডার তৈরি হয়েছে, কিন্তু পণ্যের তালিকা সংরক্ষণে সমস্যা: "+result.error.message);return}
+cart=[];renderCart();alert("অর্ডার সফলভাবে জমা হয়েছে!");show("orders");
+}
+async function loadOrders(){
+let user=await getUser();
+if(!user){document.getElementById("myOrders").innerText="অর্ডার দেখতে লগইন করো।";return}
+let {data,error}=await db.from("orders").select("*").eq("customer_id",user.id).order("created_at",{ascending:false});
+document.getElementById("myOrders").innerHTML=error?error.message:(data||[]).map(o=>`
+<div class="panel"><b>অর্ডার: ${o.id}</b><p>মোট: ৳${o.total_amount}</p>
+<p>পেমেন্ট: ${escapeHtml(o.payment_method)}</p>
+<p>স্ট্যাটাস: ${escapeHtml(o.status)}</p></div>`).join("")||"এখনো কোনো অর্ডার নেই।";
+}
+async function checkAdmin(){
+let user=await getUser();
+if(!user){document.getElementById("adminStatus").innerText="আগে লগইন করো।";return}
+let {data,error}=await db.from("admin_users").select("user_id").eq("user_id",user.id).maybeSingle();
+isAdmin=!!data&&!error;
+document.getElementById("adminStatus").innerText=isAdmin?"অ্যাডমিন যাচাই সফল!":"এই অ্যাকাউন্ট অ্যাডমিন নয়।";
+document.getElementById("adminTools").classList.toggle("hidden",!isAdmin);
+if(isAdmin)loadAdminProducts();
+}
+async function addProduct(){
+if(!isAdmin){alert("অ্যাডমিন অনুমতি নেই");return}
+let name=document.getElementById("pname").value.trim();
+let price=Number(document.getElementById("pprice").value);
+let stock=Number(document.getElementById("pstock").value);
+let file=document.getElementById("pimage").files[0];
+if(!name||!price||!file){alert("নাম, দাম ও ছবি দিতে হবে");return}
+let ext=file.name.split(".").pop();
+let path=Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
+let upload=await db.storage.from("product-images").upload(path,file);
+if(upload.error){alert("ছবি আপলোড হয়নি: "+upload.error.message);return}
+let {data:urlData}=db.storage.from("product-images").getPublicUrl(path);
+let product={name,description:document.getElementById("pdesc").value,price,category:document.getElementById("pcat").value,stock,image_url:urlData.publicUrl,is_active:true};
+let {error}=await db.from("products").insert(product);
+if(error){alert("পণ্য যোগ হয়নি: "+error.message);return}
+alert("পণ্য যোগ হয়েছে!");
+document.getElementById("pname").value="";
+document.getElementById("pdesc").value="";
+document.getElementById("pprice").value="";
+document.getElementById("pstock").value="";
+document.getElementById("pimage").value="";
+await loadProducts();loadAdminProducts();
+}
+async function loadAdminProducts(){
+let {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
+document.getElementById("adminProducts").innerHTML=error?error.message:(data||[]).map(p=>`
+<div class="panel">${escapeHtml(p.name)} — ৳${p.price} — স্টক ${p.stock}
+<button onclick="toggleProduct('${p.id}',${p.is_active})">${p.is_active?"লুকাও":"দেখাও"}</button>
+</div>`).join("");
+}
+async function toggleProduct(id,active){
+let {error}=await db.from("products").update({is_active:!active}).eq("id",id);
+if(error)alert(error.message);else{loadProducts();loadAdminProducts()}
+}
+db.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null});
+loadProducts();
+</script>
+</body>
+</html>
