@@ -98,6 +98,14 @@ a{color:#087b4c;overflow-wrap:anywhere}
 <label>পাসওয়ার্ড</label><input id="registerPassword" type="password" placeholder="কমপক্ষে ৬ অক্ষর">
 <button onclick="registerUser()">অ্যাকাউন্ট তৈরি করুন</button>
 </div>
+  <div id="otpForm" class="hidden">
+<h2>ইমেইল যাচাই</h2>
+<p>আপনার ইমেইলে পাঠানো ৬ সংখ্যার কোডটি লিখুন।</p>
+<label>৬ সংখ্যার OTP কোড</label>
+<input id="registerOtp" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="৬ সংখ্যার কোড">
+<button onclick="verifyEmailOtp()">কোড যাচাই করুন</button>
+<button class="secondary" onclick="switchAuth('register')">ফিরে যান</button>
+  </div>
 <p id="accountMessage"></p>
 </div>
 </section>
@@ -235,6 +243,7 @@ const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-worker";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
+let pendingOtpEmail = "";
 let currentProfile = null;
 let isAdmin = false;
 let cart = JSON.parse(localStorage.getItem("zrxCart") || "[]");
@@ -296,6 +305,7 @@ function showPage(page) {
 function switchAuth(mode) {
   $("loginForm")?.classList.toggle("hidden", mode !== "login");
   $("registerForm")?.classList.toggle("hidden", mode !== "register");
+  $("otpForm")?.classList.add("hidden");
 }
 
 function showProfileTab(tab) {
@@ -328,23 +338,65 @@ async function registerUser(event) {
     }
 
     const result = await worker(data);
-    const session = result.session || result.data?.session;
 
-    if (session) {
-      await db.auth.setSession(session);
-      await refreshUser();
-      notice("রেজিস্ট্রেশন সফল হয়েছে!");
-      showPage("homePage");
-    } else {
-      notice(result.message || "রেজিস্ট্রেশন হয়েছে। ইমেইল যাচাই করে লগইন করুন।");
-      switchAuth("login");
-    }
+if (result.otp_sent) {
+  pendingOtpEmail = data.email;
+  $("registerForm")?.classList.add("hidden");
+  $("loginForm")?.classList.add("hidden");
+  $("otpForm")?.classList.remove("hidden");
+  $("registerOtp").value = "";
+  notice(result.message || "আপনার ইমেইলে ৬ সংখ্যার কোড পাঠানো হয়েছে।");
+  return;
+}
+
+const session = result.session || result.data?.session;
+if (session) {
+  await db.auth.setSession(session);
+  await refreshUser();
+  notice("রেজিস্ট্রেশন সফল হয়েছে!");
+  showPage("homePage");
+} else {
+  notice(result.message || "রেজিস্ট্রেশন সম্পন্ন হয়নি।");
+}
   } catch (error) {
     notice(error.message);
   }
 }
 
-async function loginUser(event) {
+async function verifyEmailOtp() {
+  try {
+    const token = val("registerOtp");
+
+    if (!pendingOtpEmail) {
+      throw new Error("রেজিস্ট্রেশনের ইমেইল পাওয়া যায়নি। আবার রেজিস্ট্রেশন করুন।");
+    }
+
+    if (!/^\d{6}$/.test(token)) {
+      throw new Error("৬ সংখ্যার OTP কোড লিখুন।");
+    }
+
+    const result = await worker({
+      action: "verify_email_otp",
+      email: pendingOtpEmail,
+      token: token
+    });
+
+    const session = result.session || result.data?.session;
+    if (!session) {
+      throw new Error("যাচাই সফল হলেও লগইন সেশন পাওয়া যায়নি।");
+    }
+
+    await db.auth.setSession(session);
+    pendingOtpEmail = "";
+    await refreshUser();
+    notice(result.message || "ইমেইল যাচাই সফল হয়েছে।");
+    showPage("homePage");
+
+  } catch (error) {
+    notice(error.message || "OTP যাচাই করা যায়নি। আবার চেষ্টা করুন।");
+  }
+}
+  async function loginUser(event) {
   event?.preventDefault();
 
   try {
