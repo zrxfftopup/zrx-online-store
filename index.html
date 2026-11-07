@@ -1111,5 +1111,356 @@ async function initializeStore() {
 
 initializeStore();
 </script>
+  <style>
+/* ZRX Support design */
+#supportFloat {
+  position:fixed!important; right:18px; bottom:22px;
+  z-index:99999; width:55px; height:55px;
+  border-radius:50%; touch-action:none; cursor:grab;
+}
+#supportBox {
+  position:fixed!important; right:15px; bottom:88px;
+  z-index:99998; width:min(330px,90vw);
+  max-height:75vh; overflow:auto;
+  padding:14px; color:white;
+  background:linear-gradient(145deg,#101c36,#173e43,#087b4c);
+  border:1px solid #20d58c; border-radius:16px;
+  box-shadow:0 8px 28px #0007;
+}
+#supportBox .support-head {
+  display:flex; justify-content:space-between;
+  align-items:center; padding:8px;
+  cursor:grab; touch-action:none;
+}
+#supportBox .support-head b {color:#fff}
+#supportBox .support-brand {
+  text-align:center; font-size:24px; font-weight:900;
+  letter-spacing:3px; color:#ffffff25;
+  padding:5px;
+}
+#supportMessages {
+  max-height:30vh; overflow:auto;
+  background:#ffffff15; border-radius:9px; padding:8px;
+}
+.card {background:white;border-radius:12px;padding:15px;margin:12px 0}
+.admin-brand {
+  display:flex;align-items:center;gap:12px;
+  background:linear-gradient(120deg,#101c36,#087b4c);
+  color:white;border-radius:14px;padding:15px;margin:12px 0;
+}
+.admin-brand h3,.admin-brand p {color:white;margin:4px}
+</style>
+
+<script>
+/* PAGE NAVIGATION FIX */
+window.showPage = function(page) {
+  const pages = {
+    home:"home", homePage:"home",
+    cart:"cartPage", cartPage:"cartPage",
+    profile:"profile", profilePage:"profile",
+    account:"account", accountPage:"account",
+    forgot:"forgot", reset:"reset",
+    admin:"adminPage", adminPage:"adminPage"
+  };
+  page = pages[page] || page;
+
+  if ((page==="profile" || page==="cartPage") && !currentUser) {
+    notice("আগে লগইন করুন।");
+    page="account";
+  }
+  if (page==="adminPage" && !isAdmin) {
+    notice("আপনার Admin অনুমতি নেই।");
+    return;
+  }
+
+  document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+  document.getElementById(page)?.classList.remove("hidden");
+  window.scrollTo(0,0);
+
+  if(page==="cartPage") renderCart();
+  if(page==="profile") loadProfile();
+  if(page==="adminPage") loadAdmin();
+  if(page==="home") loadProducts();
+};
+
+/* PROFILE TABS FIX */
+window.profileTab = function(tab,button) {
+  document.querySelectorAll(".profile-panel")
+    .forEach(p=>p.classList.add("hidden"));
+
+  document.getElementById("tab-"+tab)?.classList.remove("hidden");
+
+  document.querySelectorAll(".profile-tabs button")
+    .forEach(b=>b.classList.remove("active"));
+
+  if(button) button.classList.add("active");
+  if(tab==="orders") loadMyOrders();
+};
+
+/* PROFILE DATA FIX */
+window.loadProfile = async function() {
+  if(!currentUser) return;
+
+  const {data,error}=await db.from("profiles")
+    .select("*").eq("id",currentUser.id).maybeSingle();
+
+  if(error) return notice(error.message);
+  currentProfile=data||{};
+
+  const p=currentProfile;
+  const setText=(id,value)=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=value||"";
+  };
+  const setValue=(id,value)=>{
+    const el=document.getElementById(id);
+    if(el) el.value=value||"";
+  };
+
+  setText("profileDisplayName",p.full_name||"প্রোফাইল");
+  setText("profileEmail",currentUser.email);
+  setText("viewProfileName",p.full_name);
+  setText("viewProfilePhone",p.phone);
+  setText("viewProfileUsername",p.username);
+  setText("viewProfileEmail",currentUser.email);
+
+  const avatar=document.getElementById("profileAvatar");
+  if(avatar) avatar.src=p.avatar_url||"https://placehold.co/120x120?text=ZRX";
+
+  setValue("profileName",p.full_name);
+  setValue("profilePhone",p.phone);
+  setValue("profileUsername",p.username);
+
+  await loadSavedAddress();
+  await loadMyOrders();
+};
+
+/* PROFILE SETTINGS SAVE */
+window.saveProfile = async function() {
+  if(!currentUser) return;
+
+  const updates={
+    full_name:val("profileName"),
+    phone:val("profilePhone"),
+    username:val("profileUsername").toLowerCase()
+  };
+
+  const {error}=await db.from("profiles")
+    .update(updates).eq("id",currentUser.id);
+
+  if(error) return notice(error.message);
+  await loadProfile();
+  notice("প্রোফাইল আপডেট হয়েছে।");
+};
+
+/* PROFILE PHOTO FIX */
+window.uploadProfileImage = function() {
+  const input=document.getElementById("profileImageFile");
+  if(input?.files?.[0]) uploadProfilePhoto({target:input});
+};
+
+/* ADDRESS FIX */
+window.saveAddress = async function() {
+  if(!currentUser) return;
+
+  const address={
+    district:val("profileDistrict"),
+    upazila:val("profileUpazila"),
+    area:val("profileArea"),
+    full_address:val("profileFullAddress")
+  };
+
+  const {error}=await db.from("profiles")
+    .update(address).eq("id",currentUser.id);
+
+  if(error) return notice(error.message);
+
+  currentProfile={...currentProfile,...address};
+  notice("ঠিকানা সংরক্ষণ হয়েছে।");
+};
+
+/* SAVED ADDRESS + CHECKOUT */
+window.loadSavedAddress = async function() {
+  if(!currentUser) return;
+
+  const {data,error}=await db.from("profiles")
+    .select("district,upazila,area,full_address,phone")
+    .eq("id",currentUser.id).maybeSingle();
+
+  if(error || !data) return;
+
+  const fields={
+    profileDistrict:data.district,
+    profileUpazila:data.upazila,
+    profileArea:data.area,
+    profileFullAddress:data.full_address,
+    checkoutDistrict:data.district,
+    checkoutUpazila:data.upazila,
+    checkoutArea:data.area,
+    checkoutAddress:data.full_address,
+    checkoutPhone:data.phone
+  };
+
+  Object.entries(fields).forEach(([id,value])=>{
+    const el=document.getElementById(id);
+    if(el) el.value=value||"";
+  });
+};
+
+/* PRODUCTS GRID FIX */
+window.loadProducts = async function() {
+  const {data,error}=await db.from("products")
+    .select("*").order("created_at",{ascending:false});
+
+  const container=document.getElementById("productList");
+  if(!container) return;
+
+  if(error) {
+    container.textContent=error.message;
+    return;
+  }
+
+  products=data||[];
+
+  container.innerHTML=products.map(p=>`
+    <div class="product-card">
+      <img src="${safe(p.image_url||"https://placehold.co/300x200?text=ZRX")}"
+        alt="${safe(p.name)}">
+      <h3>${safe(p.name)}</h3>
+      <p>${safe(p.description||"")}</p>
+      <b>৳${Number(p.price||0).toFixed(2)}</b>
+      <p>স্টক: ${Number(p.stock||0)}</p>
+      <button onclick="addToCart('${safe(p.id)}')">কার্টে যোগ করুন</button>
+    </div>
+  `).join("");
+};
+
+/* EMAIL PASSWORD RESET FIX */
+window.resetPassword = async function() {
+  const email=val("resetEmail");
+  if(!email) return notice("আপনার ইমেইল লিখুন।");
+
+  const {error}=await db.auth.resetPasswordForEmail(email,{
+    redirectTo:location.origin+location.pathname
+  });
+
+  if(error) return notice(error.message);
+  notice("রিসেট লিংক ইমেইলে পাঠানো হয়েছে।");
+};
+
+window.saveNewPassword = async function() {
+  const password=val("newPassword");
+  if(password.length<6)
+    return notice("কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।");
+
+  const {error}=await db.auth.updateUser({password});
+  if(error) return notice(error.message);
+
+  notice("পাসওয়ার্ড পরিবর্তন হয়েছে।");
+  showPage("account");
+};
+
+/* SUPPORT BRANDING */
+const supportBox=document.getElementById("supportBox");
+const supportFloat=document.getElementById("supportFloat");
+
+if(supportBox) {
+  const head=supportBox.querySelector(".support-head");
+  if(head) {
+    head.id="supportDragHandle";
+    const title=head.querySelector("b");
+    if(title) title.textContent="ZRX Nazmul • Support";
+  }
+
+  if(!supportBox.querySelector(".support-brand")) {
+    const brand=document.createElement("div");
+    brand.className="support-brand";
+    brand.textContent="ZRX NAZMUL";
+    head?.after(brand);
+  }
+}
+
+/* DRAG BOTH SUPPORT BUTTON AND CHAT WINDOW */
+function zrxMakeDraggable(element,handle) {
+  if(!element||!handle) return;
+
+  let sx=0,sy=0,left=0,top=0,moved=false;
+
+  handle.addEventListener("pointerdown",e=>{
+    if(e.target.closest("button,input,textarea")) return;
+
+    const r=element.getBoundingClientRect();
+    sx=e.clientX; sy=e.clientY;
+    left=r.left; top=r.top; moved=false;
+
+    element.style.left=left+"px";
+    element.style.top=top+"px";
+    element.style.right="auto";
+    element.style.bottom="auto";
+
+    element.dataset.dragging="yes";
+    handle.setPointerCapture(e.pointerId);
+  });
+
+  handle.addEventListener("pointermove",e=>{
+    if(element.dataset.dragging!=="yes") return;
+
+    const dx=e.clientX-sx;
+    const dy=e.clientY-sy;
+
+    if(Math.abs(dx)+Math.abs(dy)>4) moved=true;
+
+    element.style.left=Math.max(0,Math.min(
+      window.innerWidth-element.offsetWidth,left+dx
+    ))+"px";
+
+    element.style.top=Math.max(0,Math.min(
+      window.innerHeight-element.offsetHeight,top+dy
+    ))+"px";
+  });
+
+  function stop() {
+    element.dataset.dragging="no";
+    if(moved) {
+      element.dataset.justDragged="yes";
+      setTimeout(()=>element.dataset.justDragged="no",300);
+    }
+  }
+
+  handle.addEventListener("pointerup",stop);
+  handle.addEventListener("pointercancel",stop);
+}
+
+if(supportFloat) {
+  zrxMakeDraggable(supportFloat,supportFloat);
+  supportFloat.addEventListener("click",e=>{
+    if(supportFloat.dataset.justDragged==="yes") {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    }
+  },true);
+}
+
+if(supportBox) {
+  zrxMakeDraggable(
+    supportBox,
+    document.getElementById("supportDragHandle")
+  );
+}
+
+/* ADMIN BRANDING */
+const admin=document.getElementById("adminPage");
+if(admin && !admin.querySelector(".admin-brand")) {
+  const brand=document.createElement("div");
+  brand.className="admin-brand";
+  brand.innerHTML="<div class='brand-mark'>ZRX</div><div><h3>ZRX Nazmul</h3><p>Zero Reign Xtreme • Admin Dashboard</p></div>";
+  admin.prepend(brand);
+}
+
+/* START ON HOME */
+document.addEventListener("DOMContentLoaded",()=>{
+  showPage("home");
+});
+  </script>
 </body>
 </html>
