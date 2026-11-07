@@ -1,4 +1,3 @@
-HTML
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -6,6 +5,7 @@ HTML
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ZRX Online Store</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root{--navy:#101c36;--green:#16a36a;--light:#f3f6fa;--white:#fff;--red:#d93636}
 *{box-sizing:border-box}
@@ -23,6 +23,7 @@ main{max-width:1100px;margin:20px auto;padding:0 13px}
 .hidden{display:none!important}
 .panel,.product-card,.order-card{background:white;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 2px 9px #0000000c}
 input,textarea,select{width:100%;padding:11px;margin:7px 0 12px;border:1px solid #ccd3df;border-radius:8px;font:inherit;background:white}
+input[readonly]{background:#f0f2f5;color:#53627a}
 textarea{min-height:85px;resize:vertical}
 label{font-weight:bold;font-size:14px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px}
@@ -35,7 +36,7 @@ label{font-weight:bold;font-size:14px}
 .profile-tabs button{background:#52617a}
 .profile-tabs button.active{background:var(--green)}
 .avatar{width:85px;height:85px;object-fit:cover;border-radius:50%;background:#e5e9ef;border:3px solid var(--green)}
-.chat-box{height:260px;overflow:auto;background:linear-gradient(145deg,#101c36,#173e43 65%,#087b4c);border:1px solid #16a36a;border-radius:12px;padding:10px;margin:10px 0}
+.chat-box{height:230px;overflow:auto;background:linear-gradient(145deg,#101c36,#173e43 65%,#087b4c);border:1px solid #16a36a;border-radius:12px;padding:10px;margin:10px 0}
 .chat-message{background:#fff;border-radius:9px;padding:9px;margin:7px 0;overflow-wrap:anywhere;color:#172033}
 .chat-message.mine{background:#dff6e9;margin-left:18px}
 .chat-message img{max-width:180px;display:block;border-radius:8px;margin-top:6px}
@@ -53,12 +54,15 @@ a{color:#087b4c;overflow-wrap:anywhere}
 .admin-brand h3,.admin-brand p{margin:4px 0;color:#fff}
 .admin-brand .brand-mark{width:58px;height:58px;flex-basis:58px;font-size:23px}
 #floatingSupport{position:fixed;right:18px;bottom:22px;z-index:9998;width:58px;height:58px;border-radius:50%;padding:0;background:linear-gradient(145deg,#20d58c,#087b4c);border:2px solid #fff;box-shadow:0 5px 18px #0005;display:flex;align-items:center;justify-content:center;font-size:25px;touch-action:none;user-select:none}
-#floatingSupportPanel{position:fixed;right:16px;bottom:92px;z-index:9997;width:min(330px,calc(100vw - 28px));background:linear-gradient(145deg,#101c36,#173e43 65%,#087b4c);border:1px solid #20d58c;border-radius:15px;padding:15px;color:#fff;box-shadow:0 8px 28px #0005}
+#floatingSupportPanel{position:fixed;right:16px;bottom:92px;z-index:9997;width:min(350px,calc(100vw - 28px));max-height:75vh;overflow:auto;background:linear-gradient(145deg,#101c36,#173e43 65%,#087b4c);border:1px solid #20d58c;border-radius:15px;padding:15px;color:#fff;box-shadow:0 8px 28px #0005}
 #floatingSupportPanel h3{margin:0 0 8px;color:#fff}
 #floatingSupportPanel p{color:#e5fff3;font-size:13px;line-height:1.5}
 #floatingSupportPanel button{margin:4px 0}
+#floatingSupportPanel textarea{color:#172033}
 .floating-support-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .floating-support-head button{background:#ffffff22;padding:6px 10px}
+.admin-customer{background:#f3f6fa;border-radius:9px;padding:12px;margin:8px 0}
+.readonly-value{padding:11px;background:#f0f2f5;border-radius:8px;margin:7px 0 12px;overflow-wrap:anywhere}
 @media(max-width:600px){
 header{align-items:flex-start}
 nav{width:100%}
@@ -69,6 +73,7 @@ main{margin:12px auto}
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -103,6 +108,7 @@ main{margin:12px auto}
     <button type="button" onclick="loginUser()">লগইন করুন</button>
     <button type="button" class="secondary" onclick="showPage('forgot')">পাসওয়ার্ড ভুলে গেছেন?</button>
   </div>
+
   <div class="panel">
     <h2>নতুন অ্যাকাউন্ট তৈরি</h2>
     <label>আপনার নাম</label>
@@ -136,7 +142,9 @@ main{margin:12px auto}
   </div>
 </section>
 
+<!-- CUSTOMER PROFILE -->
 <section id="profile" class="page hidden">
+
   <div class="profile-hero">
     <div class="row">
       <img id="profileAvatar" class="avatar" alt="প্রোফাইল ছবি">
@@ -153,43 +161,52 @@ main{margin:12px auto}
     <button type="button" onclick="profileTab('address',this)">ঠিকানা</button>
     <button type="button" onclick="profileTab('orders',this)">আমার অর্ডার</button>
     <button type="button" onclick="profileTab('settings',this)">সেটিংস</button>
-    <button type="button" onclick="profileTab('support',this)">কাস্টমার সাপোর্ট 💬</button>
   </div>
 
+  <!-- READ ONLY PROFILE -->
   <div id="tab-details" class="profile-panel">
     <div class="panel">
-      <h3>প্রোফাইল এডিট করুন</h3>
+      <h3>প্রোফাইল</h3>
       <label>নাম</label>
-      <input id="profileName" placeholder="আপনার নাম">
+      <div id="viewProfileName" class="readonly-value">লোড হচ্ছে...</div>
+
       <label>ফোন নম্বর</label>
-      <input id="profilePhone" placeholder="ফোন নম্বর">
+      <div id="viewProfilePhone" class="readonly-value">লোড হচ্ছে...</div>
+
       <label>ইউজারনেম</label>
-      <input id="profileUsername" placeholder="ইউজারনেম">
-      <button type="button" onclick="saveProfile()">প্রোফাইল সংরক্ষণ করুন</button>
-      <hr>
-      <label>প্রোফাইল ছবি (সর্বোচ্চ ৫ MB)</label>
-      <input id="profileImageFile" type="file" accept="image/*">
-      <button type="button" onclick="uploadProfileImage()">ছবি আপলোড করুন</button>
+      <div id="viewProfileUsername" class="readonly-value">লোড হচ্ছে...</div>
+
+      <label>ইমেইল</label>
+      <div id="viewProfileEmail" class="readonly-value">লোড হচ্ছে...</div>
+
+      <p class="muted">প্রোফাইলের তথ্য পরিবর্তন করতে সেটিংস অপশনে যান।</p>
     </div>
   </div>
 
+  <!-- ADDRESS -->
   <div id="tab-address" class="profile-panel hidden">
     <div class="panel">
       <h3>আমার ঠিকানা 📍</h3>
-      <p class="muted">একবার ঠিকানা সংরক্ষণ করলে পরের অর্ডারে স্বয়ংক্রিয়ভাবে ব্যবহার হবে। প্রয়োজন হলে পরে পরিবর্তন করতে পারবেন।</p>
+      <p class="muted">একবার ঠিকানা সংরক্ষণ করলে পরের অর্ডারে স্বয়ংক্রিয়ভাবে ব্যবহার হবে।</p>
+
       <label>জেলা</label>
       <input id="profileDistrict" placeholder="জেলা">
+
       <label>থানা / উপজেলা</label>
       <input id="profileUpazila" placeholder="থানা / উপজেলা">
+
       <label>এলাকা</label>
       <input id="profileArea" placeholder="এলাকা">
+
       <label>সম্পূর্ণ ঠিকানা</label>
       <textarea id="profileFullAddress" placeholder="বাড়ি, রোড, ব্লক, পরিচিত স্থান ইত্যাদি"></textarea>
+
       <button type="button" onclick="saveAddress()">ঠিকানা সংরক্ষণ করুন</button>
       <p id="addressStatus"></p>
     </div>
   </div>
 
+  <!-- ORDERS -->
   <div id="tab-orders" class="profile-panel hidden">
     <div class="panel">
       <h3>আমার অর্ডার</h3>
@@ -197,7 +214,29 @@ main{margin:12px auto}
     </div>
   </div>
 
+  <!-- SETTINGS: PROFILE EDITING IS HERE -->
   <div id="tab-settings" class="profile-panel hidden">
+    <div class="panel">
+      <h3>প্রোফাইল এডিট করুন</h3>
+
+      <label>নাম</label>
+      <input id="profileName" placeholder="আপনার নাম">
+
+      <label>ফোন নম্বর</label>
+      <input id="profilePhone" placeholder="ফোন নম্বর">
+
+      <label>ইউজারনেম</label>
+      <input id="profileUsername" placeholder="ইউজারনেম">
+
+      <button type="button" onclick="saveProfile()">প্রোফাইল সংরক্ষণ করুন</button>
+
+      <hr>
+
+      <label>প্রোফাইল ছবি (সর্বোচ্চ ৫ MB)</label>
+      <input id="profileImageFile" type="file" accept="image/*">
+      <button type="button" onclick="uploadProfileImage()">ছবি আপলোড করুন</button>
+    </div>
+
     <div class="panel">
       <h3>অ্যাকাউন্ট সেটিংস</h3>
       <label>নতুন পাসওয়ার্ড</label>
@@ -208,17 +247,9 @@ main{margin:12px auto}
     </div>
   </div>
 
-  <div id="tab-support" class="profile-panel hidden">
-    <div class="panel">
-      <h3>কাস্টমার সাপোর্ট 💬</h3>
-      <div id="profileSupportMessages" class="chat-box"></div>
-      <textarea id="profileSupportText" placeholder="আপনার মেসেজ লিখুন..."></textarea>
-      <input id="profileSupportImage" type="file" accept="image/*">
-      <button type="button" onclick="sendProfileSupport()">মেসেজ পাঠান</button>
-    </div>
-  </div>
 </section>
 
+<!-- CART -->
 <section id="cart" class="page hidden">
   <div class="panel">
     <h2>আমার কার্ট 🛒</h2>
@@ -228,32 +259,42 @@ main{margin:12px auto}
 
   <div class="panel">
     <h2>ডেলিভারির তথ্য</h2>
-    <p class="muted">আপনার প্রোফাইলে সংরক্ষিত ঠিকানা থাকলে এখানে স্বয়ংক্রিয়ভাবে বসবে। অর্ডারের আগে তথ্য যাচাই করুন।</p>
+    <p class="muted">আপনার প্রোফাইলে সংরক্ষিত ঠিকানা থাকলে এখানে স্বয়ংক্রিয়ভাবে বসবে।</p>
+
     <label>গ্রাহকের নাম</label>
     <input id="orderName" placeholder="আপনার নাম">
+
     <label>ফোন নম্বর</label>
     <input id="orderPhone" placeholder="ফোন নম্বর">
+
     <label>জেলা</label>
     <input id="orderDistrict" placeholder="জেলা">
+
     <label>থানা / উপজেলা</label>
     <input id="orderUpazila" placeholder="থানা / উপজেলা">
+
     <label>এলাকা</label>
     <input id="orderArea" placeholder="এলাকা">
+
     <label>সম্পূর্ণ ঠিকানা</label>
     <textarea id="orderAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+
     <div class="status">
       <strong>ডেলিভারি নিয়ম:</strong>
       <p>বায়েজিদ থানার ঠিকানায় নিজস্ব হোম ডেলিভারি। বায়েজিদ থানার বাইরে কুরিয়ার ডেলিভারি।</p>
     </div>
+
     <button type="button" onclick="placeOrder()">অর্ডার কনফার্ম করুন</button>
     <p id="checkoutMessage"></p>
   </div>
 </section>
 
+<!-- ADMIN DASHBOARD -->
 <section id="admin" class="page hidden">
+
   <div class="panel">
     <h2>অ্যাডমিন ড্যাশবোর্ড ⚙️</h2>
-    <p>পণ্য, অর্ডার ও কাস্টমার সাপোর্ট পরিচালনা করুন।</p>
+    <p>কাস্টমার, পণ্য, অর্ডার ও সাপোর্ট পরিচালনা করুন।</p>
   </div>
 
   <div class="admin-brand">
@@ -265,36 +306,55 @@ main{margin:12px auto}
     </div>
   </div>
 
+  <!-- CUSTOMER MANAGEMENT -->
+  <div class="panel">
+    <h3>সকল কাস্টমার 👥</h3>
+    <p class="muted">রেজিস্টার করা কাস্টমারদের তথ্য এখানে দেখা যাবে।</p>
+    <div id="adminCustomers">কাস্টমার লোড হচ্ছে...</div>
+  </div>
+
+  <!-- ADD PRODUCT -->
   <div class="panel">
     <h3>নতুন পণ্য যোগ করুন</h3>
+
     <label>পণ্যের নাম</label>
     <input id="productName" placeholder="পণ্যের নাম">
+
     <label>বিবরণ</label>
     <textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>
+
     <label>দাম</label>
     <input id="productPrice" type="number" min="0" placeholder="দাম">
+
     <label>স্টক</label>
     <input id="productStock" type="number" min="0" placeholder="স্টক">
+
     <label>ক্যাটাগরি</label>
     <input id="productCategory" placeholder="ক্যাটাগরি">
+
     <label>পণ্যের ছবি</label>
     <input id="productImage" type="file" accept="image/*">
+
     <button type="button" onclick="addProduct()">পণ্য যোগ করুন</button>
   </div>
 
+  <!-- PRODUCT MANAGEMENT -->
   <div class="panel">
-    <h3>পণ্য পরিচালনা</h3>
+    <h3>পণ্য পরিচালনা ও দাম পরিবর্তন</h3>
     <div id="adminProducts">পণ্য লোড হচ্ছে...</div>
   </div>
 
+  <!-- ORDER MANAGEMENT -->
   <div class="panel">
     <h3>সব অর্ডার 📦</h3>
     <div id="adminOrders">অর্ডার লোড হচ্ছে...</div>
   </div>
 
+  <!-- ADMIN SUPPORT -->
   <div class="panel">
     <h3>কাস্টমার সাপোর্ট 💬</h3>
     <div id="adminSupportCustomers">কাস্টমার লোড হচ্ছে...</div>
+
     <div id="adminSupportChat" class="hidden">
       <h4 id="adminSupportName">কাস্টমার</h4>
       <div id="adminSupportMessages" class="chat-box"></div>
@@ -302,12 +362,14 @@ main{margin:12px auto}
       <button type="button" onclick="sendAdminSupport()">উত্তর পাঠান</button>
     </div>
   </div>
-</section>
 
+</section>
 </main>
 
+<!-- ONLY ONE FLOATING SUPPORT BUTTON -->
 <button id="floatingSupport" type="button" aria-label="কাস্টমার সাপোর্ট">💬</button>
 
+<!-- FLOATING SUPPORT PANEL -->
 <div id="floatingSupportPanel" class="hidden">
   <div class="floating-support-head">
     <div class="row" style="align-items:center;gap:8px">
@@ -316,7 +378,16 @@ main{margin:12px auto}
     </div>
     <button type="button" onclick="closeFloatingSupport()">✕</button>
   </div>
-  <p>কোনো সাহায্য প্রয়োজন? আমাদের কাস্টমার সাপোর্টে যোগাযোগ করুন।</p>
+
+  <p id="floatingSupportInfo">কোনো সাহায্য প্রয়োজন? আমাদের কাস্টমার সাপোর্টে যোগাযোগ করুন।</p>
+
+  <div id="floatingSupportChat" class="hidden">
+    <div id="floatingSupportMessages" class="chat-box"></div>
+    <textarea id="floatingSupportText" placeholder="আপনার মেসেজ লিখুন..."></textarea>
+    <input id="floatingSupportImage" type="file" accept="image/*">
+    <button type="button" onclick="sendFloatingSupport()">মেসেজ পাঠান</button>
+  </div>
+
   <button id="floatingSupportAction" type="button" onclick="openSupportFromFloating()">সাপোর্টে যোগাযোগ করুন</button>
 </div>
 
@@ -329,11 +400,14 @@ main{margin:12px auto}
 const SUPABASE_URL = "https://rtvbbksgppcjcrcxtkbe.supabase.co";
 const SUPABASE_KEY = "sb_publishable_S80UCHIYfpC4rwe94bH_Lg_VCsQhc7o";
 const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-worker";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let currentUser = null;
 let isAdmin = false;
 let cart = [];
+let selectedSupportUser = null;
+let productsCache = [];
+let authReady = false;
 
 try {
   const savedCart = JSON.parse(localStorage.getItem("zrx_cart") || "[]");
@@ -342,15 +416,11 @@ try {
   cart = [];
 }
 
-let selectedSupportUser = null;
-let productsCache = [];
-let authReady = false;
-
 const $ = id => document.getElementById(id);
 const money = n => "৳" + Number(n || 0).toLocaleString("en-US");
 
 function safe(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
+  return String(value ?? "").replace(/[&<>"']/g,c => ({
     "&":"&amp;",
     "<":"&lt;",
     ">":"&gt;",
@@ -359,24 +429,20 @@ function safe(value) {
   })[c]);
 }
 
-function message(id, text, good=false) {
+function message(id,text,good=false) {
   const node = $(id);
   if (!node) return;
   node.textContent = text;
   node.style.color = good ? "#087b4c" : "#c62828";
 }
 
-function showError(prefix, error) {
-  console.error(prefix, error);
-  alert(prefix + (error?.message || "অজানা সমস্যা হয়েছে।"));
-}
-
 async function worker(data) {
-  const response = await fetch(FUNCTION_URL, {
+  const response = await fetch(FUNCTION_URL,{
     method:"POST",
     headers:{
       "Content-Type":"application/json",
-      "apikey":SUPABASE_KEY
+      "apikey":SUPABASE_KEY,
+      "Authorization":"Bearer " + SUPABASE_KEY
     },
     body:JSON.stringify(data)
   });
@@ -391,10 +457,11 @@ async function worker(data) {
   if (!response.ok || result.error) {
     throw new Error(result.error || result.message || "অনুরোধ ব্যর্থ হয়েছে।");
   }
+
   return result;
 }
 
-/* PAGE NAVIGATION */
+/* NAVIGATION */
 function showPage(id) {
   if (["profile","cart"].includes(id) && !currentUser) {
     showPage("account");
@@ -406,7 +473,7 @@ function showPage(id) {
     return;
   }
 
-  document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
 
   const target = $(id);
   if (target) target.classList.remove("hidden");
@@ -424,18 +491,19 @@ function showPage(id) {
   }
 
   if (id === "admin") {
+    loadAdminCustomers();
     loadAdminProducts();
     loadAdminOrders();
     loadAdminSupportCustomers();
-    if ($("adminProfileEmail")) {
-      $("adminProfileEmail").textContent = currentUser?.email || "";
-    }
+
+    $("adminProfileEmail").textContent = currentUser?.email || "";
   }
 
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function profileTab(tab, button) {
+/* PROFILE TABS */
+function profileTab(tab,button) {
   document.querySelectorAll(".profile-panel").forEach(p => p.classList.add("hidden"));
 
   const panel = $("tab-" + tab);
@@ -444,9 +512,11 @@ function profileTab(tab, button) {
   document.querySelectorAll(".profile-tabs button").forEach(b => b.classList.remove("active"));
   if (button) button.classList.add("active");
 
-  if (tab === "address" || tab === "details") loadProfile();
+  if (tab === "details" || tab === "settings" || tab === "address") {
+    loadProfile();
+  }
+
   if (tab === "orders") loadMyOrders();
-  if (tab === "support") loadProfileSupport();
 }
 
 /* AUTH STATE */
@@ -479,16 +549,11 @@ function updateNavigation() {
   $("accountNav").classList.toggle("hidden",!!currentUser);
   $("adminNav").classList.toggle("hidden",!isAdmin);
 
-  if ($("adminProfileEmail")) {
-    $("adminProfileEmail").textContent = isAdmin ? (currentUser?.email || "") : "";
-  }
+  $("adminProfileEmail").textContent = isAdmin ? (currentUser?.email || "") : "";
 
-  const action = $("floatingSupportAction");
-  if (action) {
-    action.textContent = currentUser
-      ? "সাপোর্ট চ্যাট খুলুন"
-      : "লগইন / অ্যাকাউন্ট তৈরি করুন";
-  }
+  $("floatingSupportAction").textContent = currentUser
+    ? (isAdmin ? "অ্যাডমিন সাপোর্ট খুলুন" : "সাপোর্ট চ্যাট খুলুন")
+    : "লগইন / অ্যাকাউন্ট তৈরি করুন";
 }
 
 /* REGISTER */
@@ -509,33 +574,27 @@ async function registerUser() {
   }
 
   const button = document.querySelector('button[onclick="registerUser()"]');
-  if (button) button.disabled = true;
+  button.disabled = true;
 
   try {
-    const result = await worker({
-      action:"register",
-      full_name,
-      phone,
-      email,
-      password
-    });
-
+    const result = await worker({action:"register",full_name,phone,email,password});
     const session = result.session || result.data?.session || null;
+
     if (session) {
-      const {error:setError} = await db.auth.setSession(session);
-      if (setError) throw setError;
+      const {error} = await db.auth.setSession(session);
+      if (error) throw error;
     }
 
     await refreshUser();
 
     if (currentUser) {
-      const {error:profileError} = await db.from("profiles").upsert({
+      const {error} = await db.from("profiles").upsert({
         id:currentUser.id,
         full_name,
         phone
       },{onConflict:"id"});
 
-      if (profileError) throw profileError;
+      if (error) throw error;
 
       showPage("profile");
       alert("অ্যাকাউন্ট তৈরি হয়েছে।");
@@ -545,7 +604,7 @@ async function registerUser() {
   } catch(e) {
     message("accountMessage","রেজিস্ট্রেশন হয়নি: " + e.message);
   } finally {
-    if (button) button.disabled = false;
+    button.disabled = false;
   }
 }
 
@@ -560,7 +619,7 @@ async function loginUser() {
   }
 
   const button = document.querySelector('button[onclick="loginUser()"]');
-  if (button) button.disabled = true;
+  button.disabled = true;
 
   try {
     const result = await worker({action:"login",email,password});
@@ -577,7 +636,7 @@ async function loginUser() {
   } catch(e) {
     alert("লগইন হয়নি: " + e.message);
   } finally {
-    if (button) button.disabled = false;
+    button.disabled = false;
   }
 }
 
@@ -624,6 +683,7 @@ async function saveNewPassword() {
 
 async function changePassword() {
   const value = $("changePasswordInput").value;
+
   if (!value || value.length < 6) {
     alert("কমপক্ষে ৬ অক্ষরের নতুন পাসওয়ার্ড দিন।");
     return;
@@ -634,8 +694,10 @@ async function changePassword() {
   $("changePasswordInput").value = "";
 }
 
+/* LOGOUT */
 async function logoutUser() {
   const {error} = await db.auth.signOut();
+
   if (error) {
     alert("লগআউট হয়নি: " + error.message);
     return;
@@ -651,7 +713,7 @@ async function logoutUser() {
   alert("লগআউট সফল হয়েছে।");
 }
 
-/* PROFILE */
+/* LOAD PROFILE */
 async function loadProfile() {
   if (!currentUser) return;
 
@@ -666,25 +728,30 @@ async function loadProfile() {
   }
 
   const p = data || {};
-  const fields = {
-    profileName:p.full_name,
-    profilePhone:p.phone,
-    profileUsername:p.username,
-    profileDistrict:p.district,
-    profileUpazila:p.upazila,
-    profileArea:p.area,
-    profileFullAddress:p.full_address
-  };
 
-  Object.entries(fields).forEach(([id,value]) => {
-    if ($(id) && value != null) $(id).value = value;
-  });
+  /* READ ONLY PROFILE DISPLAY */
+  $("viewProfileName").textContent = p.full_name || "নাম দেওয়া হয়নি";
+  $("viewProfilePhone").textContent = p.phone || "ফোন নম্বর দেওয়া হয়নি";
+  $("viewProfileUsername").textContent = p.username || "ইউজারনেম দেওয়া হয়নি";
+  $("viewProfileEmail").textContent = currentUser.email || "";
 
   $("profileDisplayName").textContent = p.full_name || "আমার প্রোফাইল";
   $("profileEmail").textContent = currentUser.email || "";
   $("profileAvatar").src = p.avatar_url || "";
+
+  /* EDITABLE FIELDS ONLY IN SETTINGS */
+  $("profileName").value = p.full_name || "";
+  $("profilePhone").value = p.phone || "";
+  $("profileUsername").value = p.username || "";
+
+  /* ADDRESS FIELDS */
+  $("profileDistrict").value = p.district || "";
+  $("profileUpazila").value = p.upazila || "";
+  $("profileArea").value = p.area || "";
+  $("profileFullAddress").value = p.full_address || "";
 }
 
+/* SAVE PROFILE - SETTINGS ONLY */
 async function saveProfile() {
   if (!currentUser) {
     alert("আগে লগইন করুন।");
@@ -706,7 +773,7 @@ async function saveProfile() {
   }
 }
 
-/* PROFILE IMAGE UPLOAD - MAX 5 MB */
+/* PROFILE IMAGE UPLOAD */
 async function uploadProfileImage() {
   if (!currentUser) {
     alert("আগে লগইন করুন।");
@@ -714,6 +781,7 @@ async function uploadProfileImage() {
   }
 
   const file = $("profileImageFile").files[0];
+
   if (!file) {
     alert("একটি ছবি নির্বাচন করুন।");
     return;
@@ -736,7 +804,7 @@ async function uploadProfileImage() {
   try {
     const {error:uploadError} = await db.storage
       .from("profile-images")
-      .upload(path,file,{upsert:true});
+      .upload(path,file);
 
     if (uploadError) throw uploadError;
 
@@ -749,15 +817,15 @@ async function uploadProfileImage() {
 
     if (error) throw error;
 
-    $("profileAvatar").src = data.publicUrl;
     $("profileImageFile").value = "";
+    await loadProfile();
     alert("প্রোফাইল ছবি আপডেট হয়েছে।");
   } catch(e) {
     alert("ছবি আপলোড হয়নি: " + e.message);
   }
 }
 
-/* SAVED ADDRESS */
+/* SAVE ADDRESS */
 async function saveAddress() {
   if (!currentUser) {
     alert("আগে লগইন করুন।");
@@ -785,11 +853,12 @@ async function saveAddress() {
   if (error) {
     message("addressStatus","ঠিকানা সংরক্ষণ হয়নি: " + error.message);
   } else {
-    message("addressStatus","ঠিকানা সংরক্ষণ হয়েছে। পরের অর্ডারে অটো-ফিল হবে।",true);
+    message("addressStatus","ঠিকানা সংরক্ষণ হয়েছে।",true);
     loadCheckoutAddress();
   }
 }
 
+/* AUTO FILL CHECKOUT ADDRESS */
 async function loadCheckoutAddress() {
   if (!currentUser) return;
 
@@ -814,7 +883,7 @@ async function loadCheckoutAddress() {
   });
 }
 
-/* PRODUCTS */
+/* LOAD PRODUCTS */
 async function loadProducts() {
   const box = $("productList");
   if (!box) return;
@@ -835,6 +904,7 @@ async function loadProducts() {
   renderProducts();
 }
 
+/* SHOW PRODUCTS */
 function renderProducts() {
   const box = $("productList");
   if (!box) return;
@@ -851,7 +921,8 @@ function renderProducts() {
       <p>${safe(p.description || "")}</p>
       <div class="price">${money(p.price)}</div>
       <p>স্টক: ${Number(p.stock || 0)}</p>
-      <button type="button" ${Number(p.stock)<1?"disabled":""} onclick="addToCart('${safe(p.id)}')">কার্টে যোগ করুন</button>
+      <button type="button" ${Number(p.stock)<1?"disabled":""}
+        onclick="addToCart('${safe(p.id)}')">কার্টে যোগ করুন</button>
     </div>
   `).join("");
 }
@@ -946,12 +1017,13 @@ function renderCart() {
   $("cartTotal").textContent = money(total);
 }
 
-/* CHECKOUT */
+/* DELIVERY AREA CHECK */
 function isBayezidAddress(district,upazila,area,address) {
   const text = [district,upazila,area,address].join(" ").toLowerCase();
   return /bayezid|বায়েজিদ|বায়েজিদ/.test(text);
 }
 
+/* PLACE ORDER */
 async function placeOrder() {
   if (!currentUser) {
     alert("অর্ডারের আগে লগইন করুন।");
@@ -976,29 +1048,15 @@ async function placeOrder() {
   }
 
   const inBayezid = isBayezidAddress(district,upazila,area,full_address);
-  let deliveryMethod;
-  let deliveryZone;
-
-  if (inBayezid) {
-    deliveryMethod = "Home Delivery";
-    deliveryZone = "Bayezid";
-  } else {
-    const confirmZone = confirm(
-      "আপনার ঠিকানা কি বায়েজিদ থানার ভেতরে?\n\n" +
-      "ভেতরে হলে OK চাপুন।\n" +
-      "বাইরে হলে Cancel চাপুন।"
-    );
-
-    deliveryMethod = confirmZone ? "Home Delivery" : "Courier";
-    deliveryZone = confirmZone ? "Bayezid" : "Outside Bayezid";
-  }
+  const deliveryMethod = inBayezid ? "Home Delivery" : "Courier";
+  const deliveryZone = inBayezid ? "Bayezid" : "Outside Bayezid";
 
   const button = document.querySelector('button[onclick="placeOrder()"]');
-  if (button) button.disabled = true;
+  button.disabled = true;
 
   try {
-    /* সর্বশেষ পণ্যের স্টক যাচাই */
     const productIds = cart.map(item => item.id);
+
     const {data:latestProducts,error:stockError} = await db
       .from("products")
       .select("id,name,price,stock,is_active")
@@ -1062,10 +1120,11 @@ async function placeOrder() {
 
     showPage("profile");
     loadMyOrders();
+
   } catch(e) {
     message("checkoutMessage","অর্ডার হয়নি: " + e.message);
   } finally {
-    if (button) button.disabled = false;
+    button.disabled = false;
   }
 }
 
@@ -1113,7 +1172,76 @@ async function loadMyOrders() {
   `).join("");
 }
 
-/* ADMIN PRODUCTS */
+/* ADMIN: ALL CUSTOMERS */
+async function loadAdminCustomers() {
+  if (!isAdmin) return;
+
+  const box = $("adminCustomers");
+  box.textContent = "কাস্টমার লোড হচ্ছে...";
+
+  const {data,error} = await db.from("profiles")
+    .select("id,full_name,phone,username,avatar_url,district,upazila,area,full_address")
+    .order("full_name",{ascending:true});
+
+  if (error) {
+    box.textContent = "কাস্টমার লোড হয়নি: " + error.message;
+    return;
+  }
+
+  if (!data?.length) {
+    box.innerHTML = "<p>এখনো কোনো কাস্টমার পাওয়া যায়নি।</p>";
+    return;
+  }
+
+  box.innerHTML = data.map(c => `
+    <div class="admin-customer">
+      <div class="row">
+        ${c.avatar_url ? `<img src="${safe(c.avatar_url)}" class="avatar" alt="ছবি">` : ""}
+        <div>
+          <strong>${safe(c.full_name || "নাম নেই")}</strong>
+          <p class="muted">${safe(c.phone || "ফোন নেই")}</p>
+        </div>
+      </div>
+      <p>ইউজারনেম: ${safe(c.username || "নেই")}</p>
+      <p>ঠিকানা: ${safe([c.district,c.upazila,c.area,c.full_address].filter(Boolean).join(", ") || "ঠিকানা দেওয়া হয়নি")}</p>
+      <button type="button" onclick="viewCustomerOrders('${safe(c.id)}','${safe(c.full_name || "কাস্টমার")}')">কাস্টমারের অর্ডার দেখুন</button>
+    </div>
+  `).join("");
+}
+
+/* ADMIN: CUSTOMER ORDERS */
+async function viewCustomerOrders(userId,name) {
+  if (!isAdmin) return;
+
+  const {data,error} = await db.from("orders")
+    .select("*")
+    .eq("customer_id",userId)
+    .order("created_at",{ascending:false});
+
+  if (error) {
+    alert("অর্ডার লোড হয়নি: " + error.message);
+    return;
+  }
+
+  let output = "কাস্টমার: " + name + "\n\n";
+
+  if (!data?.length) {
+    output += "এই কাস্টমারের কোনো অর্ডার নেই।";
+  } else {
+    output += data.map(o =>
+      "অর্ডার: " + o.id +
+      "\nতারিখ: " + new Date(o.created_at).toLocaleString("bn-BD") +
+      "\nমোট: " + money(o.total_amount) +
+      "\nস্ট্যাটাস: " + (o.status || "Pending") +
+      "\nডেলিভারি: " + (o.delivery_method || "") +
+      "\n--------------------"
+    ).join("\n");
+  }
+
+  alert(output);
+}
+
+/* ADMIN: ADD PRODUCT */
 async function addProduct() {
   if (!isAdmin) {
     alert("অ্যাডমিন অনুমতি প্রয়োজন।");
@@ -1132,7 +1260,7 @@ async function addProduct() {
   }
 
   const button = document.querySelector('button[onclick="addProduct()"]');
-  if (button) button.disabled = true;
+  button.disabled = true;
 
   try {
     let image_url = "";
@@ -1144,8 +1272,8 @@ async function addProduct() {
       }
 
       const path = "products/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9._-]/g,"");
-      const {error:upError} = await db.storage.from("product-images").upload(path,file);
 
+      const {error:upError} = await db.storage.from("product-images").upload(path,file);
       if (upError) throw upError;
 
       image_url = db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
@@ -1172,17 +1300,20 @@ async function addProduct() {
 
     await loadAdminProducts();
     await loadProducts();
+
   } catch(e) {
     alert("পণ্য যোগ হয়নি: " + e.message);
   } finally {
-    if (button) button.disabled = false;
+    button.disabled = false;
   }
 }
 
+/* ADMIN: PRODUCT LIST WITH PRICE EDIT */
 async function loadAdminProducts() {
   if (!isAdmin) return;
 
   const box = $("adminProducts");
+
   const {data,error} = await db.from("products")
     .select("*")
     .order("created_at",{ascending:false});
@@ -1199,12 +1330,59 @@ async function loadAdminProducts() {
 
   box.innerHTML = data.map(p => `
     <div class="panel">
+      ${p.image_url ? `<img src="${safe(p.image_url)}" style="width:100%;max-width:140px;height:100px;object-fit:contain" alt="">` : ""}
       <strong>${safe(p.name)}</strong>
-      <p>${money(p.price)} | স্টক: ${Number(p.stock || 0)} | ${p.is_active ? "চালু" : "বন্ধ"}</p>
-      <button type="button" onclick="toggleProduct('${safe(p.id)}',${!p.is_active})">${p.is_active ? "বন্ধ করুন" : "চালু করুন"}</button>
-      <button type="button" class="danger" onclick="deleteProduct('${safe(p.id)}')">মুছুন</button>
+      <p>${safe(p.description || "")}</p>
+
+      <label>পণ্যের দাম পরিবর্তন</label>
+      <input type="number" min="0" id="editPrice-${safe(p.id)}" value="${Number(p.price)}">
+
+      <label>স্টক পরিবর্তন</label>
+      <input type="number" min="0" id="editStock-${safe(p.id)}" value="${Number(p.stock || 0)}">
+
+      <label>পণ্যের নাম</label>
+      <input id="editName-${safe(p.id)}" value="${safe(p.name)}">
+
+      <button type="button" onclick="saveProduct('${safe(p.id)}')">পরিবর্তন সংরক্ষণ করুন</button>
+
+      <p>বর্তমান অবস্থা: ${p.is_active ? "চালু" : "বন্ধ"}</p>
+
+      <button type="button" onclick="toggleProduct('${safe(p.id)}',${!p.is_active})">
+        ${p.is_active ? "পণ্য বন্ধ করুন" : "পণ্য চালু করুন"}
+      </button>
+
+      <button type="button" class="danger" onclick="deleteProduct('${safe(p.id)}')">পণ্য মুছুন</button>
     </div>
   `).join("");
+}
+
+/* ADMIN: SAVE PRICE, STOCK AND NAME */
+async function saveProduct(id) {
+  if (!isAdmin) return;
+
+  const price = Number($("editPrice-" + id).value);
+  const stock = Number($("editStock-" + id).value);
+  const name = $("editName-" + id).value.trim();
+
+  if (!name || !Number.isFinite(price) || price < 0 || !Number.isInteger(stock) || stock < 0) {
+    alert("সঠিক নাম, দাম ও স্টক লিখুন।");
+    return;
+  }
+
+  const {error} = await db.from("products").update({
+    name,
+    price,
+    stock
+  }).eq("id",id);
+
+  if (error) {
+    alert("পণ্য আপডেট হয়নি: " + error.message);
+    return;
+  }
+
+  alert("পণ্যের তথ্য ও দাম পরিবর্তন হয়েছে।");
+  await loadAdminProducts();
+  await loadProducts();
 }
 
 async function toggleProduct(id,active) {
@@ -1243,6 +1421,7 @@ async function loadAdminOrders() {
   if (!isAdmin) return;
 
   const box = $("adminOrders");
+
   const {data,error} = await db.from("orders")
     .select("*")
     .order("created_at",{ascending:false});
@@ -1312,7 +1491,7 @@ async function updateOrder(id) {
   await loadAdminOrders();
 }
 
-/* SUPPORT IMAGE */
+/* SUPPORT IMAGE UPLOAD */
 async function uploadChatImage(file,userId) {
   if (!file) return null;
 
@@ -1325,34 +1504,37 @@ async function uploadChatImage(file,userId) {
   }
 
   const path = userId + "/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9._-]/g,"");
-  const {error} = await db.storage.from("chat-images").upload(path,file);
 
+  const {error} = await db.storage.from("chat-images").upload(path,file);
   if (error) throw error;
 
   return db.storage.from("chat-images").getPublicUrl(path).data.publicUrl;
 }
 
-/* CUSTOMER SUPPORT MESSAGE */
-async function sendProfileSupport() {
-  if (!currentUser) {
-    alert("আগে লগইন করুন।");
+/* CUSTOMER SUPPORT FROM FLOATING PANEL */
+async function sendFloatingSupport() {
+  if (!currentUser || isAdmin) {
+    alert("কাস্টমার অ্যাকাউন্ট দিয়ে লগইন করুন।");
     return;
   }
 
-  const text = $("profileSupportText").value.trim();
-  const file = $("profileSupportImage").files[0];
+  const text = $("floatingSupportText").value.trim();
+  const file = $("floatingSupportImage").files[0];
 
   if (!text && !file) {
     alert("মেসেজ লিখুন অথবা ছবি নির্বাচন করুন।");
     return;
   }
 
-  const button = document.querySelector('#tab-support button[onclick="sendProfileSupport()"]');
-  if (button) button.disabled = true;
+  const button = document.querySelector('#floatingSupportChat button[onclick="sendFloatingSupport()"]');
+  button.disabled = true;
 
   try {
     let image_url = null;
-    if (file) image_url = await uploadChatImage(file,currentUser.id);
+
+    if (file) {
+      image_url = await uploadChatImage(file,currentUser.id);
+    }
 
     const {error} = await db.from("chat_messages").insert({
       user_id:currentUser.id,
@@ -1363,27 +1545,31 @@ async function sendProfileSupport() {
 
     if (error) throw error;
 
-    $("profileSupportText").value = "";
-    $("profileSupportImage").value = "";
-    await loadProfileSupport();
+    $("floatingSupportText").value = "";
+    $("floatingSupportImage").value = "";
+
+    await loadFloatingSupportMessages();
+
   } catch(e) {
     alert("মেসেজ পাঠানো যায়নি: " + e.message);
   } finally {
-    if (button) button.disabled = false;
+    button.disabled = false;
   }
 }
 
-async function loadProfileSupport() {
-  if (!currentUser) return;
+/* LOAD CUSTOMER SUPPORT CHAT */
+async function loadFloatingSupportMessages() {
+  if (!currentUser || isAdmin) return;
 
-  const box = $("profileSupportMessages");
+  const box = $("floatingSupportMessages");
+
   const {data,error} = await db.from("chat_messages")
     .select("*")
     .eq("user_id",currentUser.id)
     .order("created_at",{ascending:true});
 
   if (error) {
-    box.textContent = error.message;
+    box.textContent = "সাপোর্ট মেসেজ লোড হয়নি: " + error.message;
     return;
   }
 
@@ -1404,6 +1590,7 @@ async function loadAdminSupportCustomers() {
   if (!isAdmin) return;
 
   const box = $("adminSupportCustomers");
+
   const {data:messages,error} = await db.from("chat_messages")
     .select("user_id,created_at")
     .order("created_at",{ascending:false});
@@ -1426,22 +1613,16 @@ async function loadAdminSupportCustomers() {
 
   if (profileError) console.error(profileError);
 
-  const {data:visitors,error:visitorError} = await db.from("support_visitors")
-    .select("user_id,full_name,phone")
-    .in("user_id",ids);
-
-  if (visitorError) console.error(visitorError);
-
   box.innerHTML = ids.map(id => {
     const p = (profiles || []).find(x => x.id === id);
-    const v = (visitors || []).find(x => x.user_id === id);
-    const name = p?.full_name || v?.full_name || "কাস্টমার";
-    const phone = p?.phone || v?.phone || "";
+    const name = p?.full_name || "কাস্টমার";
+    const phone = p?.phone || "";
 
     return `<button type="button" class="support-customer" onclick="openAdminSupport('${safe(id)}')">${safe(name)} ${safe(phone)}</button>`;
   }).join("");
 }
 
+/* OPEN ADMIN CHAT */
 async function openAdminSupport(userId) {
   if (!isAdmin) return;
 
@@ -1461,10 +1642,12 @@ async function openAdminSupport(userId) {
   await loadAdminSupportMessages();
 }
 
+/* LOAD ADMIN CHAT MESSAGES */
 async function loadAdminSupportMessages() {
   if (!isAdmin || !selectedSupportUser) return;
 
   const box = $("adminSupportMessages");
+
   const {data,error} = await db.from("chat_messages")
     .select("*")
     .eq("user_id",selectedSupportUser)
@@ -1487,6 +1670,7 @@ async function loadAdminSupportMessages() {
   box.scrollTop = box.scrollHeight;
 }
 
+/* ADMIN SEND SUPPORT MESSAGE */
 async function sendAdminSupport() {
   if (!isAdmin || !selectedSupportUser) {
     alert("আগে কাস্টমার নির্বাচন করুন।");
@@ -1494,6 +1678,7 @@ async function sendAdminSupport() {
   }
 
   const text = $("adminSupportText").value.trim();
+
   if (!text) {
     alert("উত্তর লিখুন।");
     return;
@@ -1517,17 +1702,23 @@ async function sendAdminSupport() {
 
 /* FLOATING SUPPORT PANEL */
 function openSupportFromFloating() {
-  closeFloatingSupport();
-
   if (!currentUser) {
+    closeFloatingSupport();
     showPage("account");
     return;
   }
 
-  showPage("profile");
+  if (isAdmin) {
+    closeFloatingSupport();
+    showPage("admin");
+    return;
+  }
 
-  const supportButton = document.querySelector('.profile-tabs button[onclick*="support"]');
-  profileTab("support",supportButton);
+  $("floatingSupportInfo").textContent = "আপনার প্রশ্ন বা সমস্যা লিখে আমাদের পাঠান।";
+  $("floatingSupportChat").classList.remove("hidden");
+  $("floatingSupportAction").classList.add("hidden");
+
+  loadFloatingSupportMessages();
 }
 
 function closeFloatingSupport() {
@@ -1536,9 +1727,22 @@ function closeFloatingSupport() {
 
 function toggleFloatingSupport() {
   $("floatingSupportPanel").classList.toggle("hidden");
+
+  if (!$("floatingSupportPanel").classList.contains("hidden")) {
+    $("floatingSupportChat").classList.add("hidden");
+    $("floatingSupportAction").classList.remove("hidden");
+
+    if (!currentUser) {
+      $("floatingSupportInfo").textContent = "সাপোর্টে যোগাযোগ করতে আগে লগইন করুন।";
+    } else if (isAdmin) {
+      $("floatingSupportInfo").textContent = "কাস্টমারদের সাপোর্ট মেসেজ অ্যাডমিন ড্যাশবোর্ড থেকে পরিচালনা করুন।";
+    } else {
+      $("floatingSupportInfo").textContent = "কোনো সাহায্য প্রয়োজন? আমাদের কাস্টমার সাপোর্টে যোগাযোগ করুন।";
+    }
+  }
 }
 
-/* FLOATING BUTTON DRAG - KEEP INSIDE SCREEN */
+/* FLOATING BUTTON DRAG */
 function setupFloatingSupport() {
   const button = $("floatingSupport");
   const panel = $("floatingSupportPanel");
@@ -1565,6 +1769,7 @@ function setupFloatingSupport() {
     moved = false;
 
     const rect = button.getBoundingClientRect();
+
     startX = e.clientX;
     startY = e.clientY;
     initialLeft = rect.left;
@@ -1587,13 +1792,16 @@ function setupFloatingSupport() {
     if (Math.abs(dx) > 5 || Math.abs(dy) > 5) moved = true;
 
     const position = clampPosition(initialLeft + dx,initialTop + dy);
+
     button.style.left = position.left + "px";
     button.style.top = position.top + "px";
   });
 
   button.addEventListener("pointerup",function() {
     if (!dragging) return;
+
     dragging = false;
+
     if (!moved) toggleFloatingSupport();
   });
 
@@ -1611,7 +1819,6 @@ function setupFloatingSupport() {
     button.style.bottom = "auto";
 
     panel.style.maxHeight = Math.max(180,window.innerHeight - 130) + "px";
-    panel.style.overflowY = "auto";
   });
 }
 
@@ -1632,7 +1839,7 @@ db.auth.onAuthStateChange((event,session) => {
   },0);
 });
 
-/* START */
+/* INITIALIZE */
 async function initializeStore() {
   try {
     await refreshUser();
@@ -1656,10 +1863,10 @@ async function initializeStore() {
 setInterval(() => {
   if (!authReady) return;
 
-  if (currentUser && $("profile") && !$("profile").classList.contains("hidden")) {
-    if (!$("tab-support").classList.contains("hidden")) {
-      loadProfileSupport();
-    }
+  if (currentUser && !isAdmin &&
+      !$("floatingSupportPanel").classList.contains("hidden") &&
+      !$("floatingSupportChat").classList.contains("hidden")) {
+    loadFloatingSupportMessages();
   }
 
   if (isAdmin && selectedSupportUser &&
@@ -1670,5 +1877,6 @@ setInterval(() => {
 
 document.addEventListener("DOMContentLoaded",initializeStore);
 </script>
+
 </body>
   </html>
