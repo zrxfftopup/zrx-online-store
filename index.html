@@ -529,9 +529,9 @@ async function refreshUser() {
 
   if (currentUser) {
     const {data:adminData,error:adminError} = await db
-      .from("admin_users")
-      .select("id")
-      .eq("id",currentUser.id)
+.from("admin_users")
+.select("user_id")
+.eq("user_id",currentUser.id)
       .maybeSingle();
 
     if (adminError) {
