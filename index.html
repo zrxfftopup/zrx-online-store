@@ -1,93 +1,59 @@
-<!DOCTYPE html>  <html lang="bn">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1">  
-<title>ZRX Online Store</title>  
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
-<style>  
-:root{--navy:#101c36;--green:#16a36a;--light:#f3f6fa;--white:#fff;--red:#d93636}  
-*{box-sizing:border-box}  
-body{margin:0;font-family:Arial,sans-serif;background:var(--light);color:#172033}  
-header{background:var(--navy);color:white;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}  
-header h2{margin:0;color:#fff}  
-nav{display:flex;gap:7px;flex-wrap:wrap}  
-button{border:0;border-radius:8px;padding:10px 14px;background:var(--green);color:white;font-weight:bold;cursor:pointer}  
-button:disabled{opacity:.5;cursor:not-allowed}  
-nav button{background:#263958}  
-button.secondary{background:#53627a}  
-button.danger{background:var(--red)}  
-main{max-width:1100px;margin:20px auto;padding:0 13px}  
-.page{display:block}  
-.hidden{display:none!important}  
-.panel,.product-card,.order-card{background:white;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 2px 9px #0000000c}  
-input,textarea,select{width:100%;padding:11px;margin:7px 0 12px;border:1px solid #ccd3df;border-radius:8px;font:inherit;background:white}  
-textarea{min-height:85px;resize:vertical}  
-label{font-weight:bold;font-size:14px}  
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px}  
-.product-card img{width:100%;height:165px;object-fit:contain;background:#f5f6f8;border-radius:8px}  
-.product-card h3{margin:9px 0 5px}  
-.price{font-size:19px;font-weight:bold;color:#087b4c}  
-.muted{color:#687386;font-size:13px}  
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}  
-.row>*{flex:1}  
-.profile-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}  
-.profile-tabs button{background:#52617a}  
-.profile-tabs button.active{background:var(--green)}  
-.avatar{width:85px;height:85px;object-fit:cover;border-radius:50%;background:#e5e9ef;border:3px solid var(--green)}  
-.chat-box{height:260px;overflow:auto;background:linear-gradient(145deg,#101c36,#173e43 65%,#087b4c);border:1px solid #16a36a;border-radius:12px;padding:10px;margin:10px 0}  
-.chat-message{background:#fff;border-radius:9px;padding:9px;margin:7px 0;overflow-wrap:anywhere;color:#172033}  
-.chat-message.mine{background:#dff6e9;margin-left:18px}  
-.chat-message img{max-width:180px;display:block;border-radius:8px;margin-top:6px}  
-.support-customer{display:block;width:100%;text-align:left;margin:6px 0;background:#edf2f7;color:#18243a}  
-footer{text-align:center;padding:25px;color:#758096}  
-a{color:#087b4c}  
-.status{padding:8px;border-radius:7px;background:#edf7f1;margin:8px 0}  /* ZRX PROFILE DESIGN */
-.profile-hero{
-position:relative;overflow:hidden;
-background:linear-gradient(125deg,#101c36 0%,#142e43 52%,#087b4c 100%);
-color:#fff;border:1px solid #16a36a;border-radius:18px;
-padding:20px;box-shadow:0 7px 22px #101c3628;
-}
-.profile-hero:after{
-content:"ZRX";position:absolute;right:12px;bottom:-25px;
-font-size:100px;font-weight:900;color:#ffffff0d;
-pointer-events:none;letter-spacing:5px;
-}
+HTML
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZRX Online Store</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#101c36;--green:#16a36a;--light:#f3f6fa;--white:#fff;--red:#d93636}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--light);color:#172033}
+header{background:var(--navy);color:white;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+header h2{margin:0;color:#fff}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+button{border:0;border-radius:8px;padding:10px 14px;background:var(--green);color:white;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+nav button{background:#263958}
+button.secondary{background:#53627a}
+button.danger{background:var(--red)}
+main{max-width:1100px;margin:20px auto;padding:0 13px}
+.page{display:block}
+.hidden{display:none!important}
+.panel,.product-card,.order-card{background:white;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 2px 9px #0000000c}
+input,textarea,select{width:100%;padding:11px;margin:7px 0 12px;border:1px solid #ccd3df;border-radius:8px;font:inherit;background:white}
+textarea{min-height:85px;resize:vertical}
+label{font-weight:bold;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px}
+.product-card img{width:100%;height:165px;object-fit:contain;background:#f5f6f8;border-radius:8px}
+.product-card h3{margin:9px 0 5px}
+.price{font-size:19px;font-weight:bold;color:#087b4c}
+.muted{color:#687386;font-size:13px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.profile-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.profile-tabs button{background:#52617a}
+.profile-tabs button.active{background:var(--green)}
+.avatar{width:85px;height:85px;object-fit:cover;border-radius:50%;background:#e5e9ef;border:3px solid var(--green)}
+.chat-box{height:260px;overflow:auto;background:linear-gradient(145deg,#101c36,#173e43 65%,#087b4c);border:1px solid #16a36a;border-radius:12px;padding:10px;margin:10px 0}
+.chat-message{background:#fff;border-radius:9px;padding:9px;margin:7px 0;overflow-wrap:anywhere;color:#172033}
+.chat-message.mine{background:#dff6e9;margin-left:18px}
+.chat-message img{max-width:180px;display:block;border-radius:8px;margin-top:6px}
+.support-customer{display:block;width:100%;text-align:left;margin:6px 0;background:#edf2f7;color:#18243a}
+footer{text-align:center;padding:25px;color:#758096}
+a{color:#087b4c;overflow-wrap:anywhere}
+.status{padding:8px;border-radius:7px;background:#edf7f1;margin:8px 0}
+.profile-hero{position:relative;overflow:hidden;background:linear-gradient(125deg,#101c36 0%,#142e43 52%,#087b4c 100%);color:#fff;border:1px solid #16a36a;border-radius:18px;padding:20px;box-shadow:0 7px 22px #101c3628}
+.profile-hero:after{content:"ZRX";position:absolute;right:12px;bottom:-25px;font-size:100px;font-weight:900;color:#ffffff0d;pointer-events:none;letter-spacing:5px}
 .profile-hero .row{position:relative;z-index:1}
 .profile-hero h2,.profile-hero p{color:#fff}
 .profile-hero .avatar{border-color:#35d99a}
-.brand-mark{
-width:48px;height:48px;flex:0 0 48px;border-radius:14px;
-display:flex;align-items:center;justify-content:center;
-background:linear-gradient(145deg,#20d58c,#087b4c);
-color:#fff;font-weight:900;font-size:20px;
-border:2px solid #b7ffe0;box-shadow:0 4px 13px #0004;
-}
-.admin-brand{
-display:flex;align-items:center;gap:13px;
-background:linear-gradient(120deg,#101c36,#173e43 65%,#087b4c);
-border:1px solid #16a36a;color:#fff;border-radius:15px;
-padding:16px;margin:12px 0;
-}
+.brand-mark{width:48px;height:48px;flex:0 0 48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#20d58c,#087b4c);color:#fff;font-weight:900;font-size:20px;border:2px solid #b7ffe0;box-shadow:0 4px 13px #0004}
+.admin-brand{display:flex;align-items:center;gap:13px;background:linear-gradient(120deg,#101c36,#173e43 65%,#087b4c);border:1px solid #16a36a;color:#fff;border-radius:15px;padding:16px;margin:12px 0}
 .admin-brand h3,.admin-brand p{margin:4px 0;color:#fff}
 .admin-brand .brand-mark{width:58px;height:58px;flex-basis:58px;font-size:23px}
-
-/* FLOATING SUPPORT */
-#floatingSupport{
-position:fixed;right:18px;bottom:22px;z-index:9998;
-width:58px;height:58px;border-radius:50%;
-padding:0;background:linear-gradient(145deg,#20d58c,#087b4c);
-border:2px solid #fff;box-shadow:0 5px 18px #0005;
-display:flex;align-items:center;justify-content:center;
-font-size:25px;touch-action:none;user-select:none;
-}
-#floatingSupportPanel{
-position:fixed;right:16px;bottom:92px;z-index:9997;
-width:min(330px,calc(100vw - 28px));
-background:linear-gradient(145deg,#101c36,#173e43 65%,#087b4c);
-border:1px solid #20d58c;border-radius:15px;
-padding:15px;color:#fff;box-shadow:0 8px 28px #0005;
-}
+#floatingSupport{position:fixed;right:18px;bottom:22px;z-index:9998;width:58px;height:58px;border-radius:50%;padding:0;background:linear-gradient(145deg,#20d58c,#087b4c);border:2px solid #fff;box-shadow:0 5px 18px #0005;display:flex;align-items:center;justify-content:center;font-size:25px;touch-action:none;user-select:none}
+#floatingSupportPanel{position:fixed;right:16px;bottom:92px;z-index:9997;width:min(330px,calc(100vw - 28px));background:linear-gradient(145deg,#101c36,#173e43 65%,#087b4c);border:1px solid #20d58c;border-radius:15px;padding:15px;color:#fff;box-shadow:0 8px 28px #0005}
 #floatingSupportPanel h3{margin:0 0 8px;color:#fff}
 #floatingSupportPanel p{color:#e5fff3;font-size:13px;line-height:1.5}
 #floatingSupportPanel button{margin:4px 0}
@@ -102,213 +68,264 @@ main{margin:12px auto}
 .profile-hero .row{display:flex}
 }
 </style>
+</head>
+<body>
 
-</head>  
-<body>  <header>  
-  <h2>ZRX Online Store</h2>  
-  <nav id="mainNav">  
-    <button onclick="showPage('home')">হোম</button>  
-    <button id="cartNav" onclick="showPage('cart')">কার্ট (<span id="cartCount">0</span>)</button>  
-    <button id="profileNav" class="hidden" onclick="showPage('profile')">প্রোফাইল</button>  
-    <button id="accountNav" onclick="showPage('account')">লগইন</button>  
-    <button id="adminNav" class="hidden" onclick="showPage('admin')">অ্যাডমিন</button>  
-  </nav>  
-</header>  <main>  <!-- HOME -->  <section id="home" class="page">  
-  <div class="panel">  
-    <h2>স্বাগতম ZRX Online Store-এ 🛍️</h2>  
-    <p>আপনার প্রয়োজনীয় পণ্য অর্ডার করুন সহজেই।</p>  
-  </div>  
-  <h2>আমাদের পণ্য</h2>  
-  <div id="productList" class="grid">পণ্য লোড হচ্ছে...</div>  
-</section>  <!-- ACCOUNT -->  <section id="account" class="page hidden">  
-  <div class="panel">  
-    <h2>লগইন</h2>  
-    <label>ইমেইল</label>  
-    <input id="loginEmail" type="email" placeholder="আপনার ইমেইল">  
-    <label>পাসওয়ার্ড</label>  
-    <input id="loginPassword" type="password" placeholder="পাসওয়ার্ড">  
-    <button onclick="loginUser()">লগইন করুন</button>  
-    <button class="secondary" onclick="showPage('forgot')">পাসওয়ার্ড ভুলে গেছেন?</button>  
-  </div>  
-  <div class="panel">  
-    <h2>নতুন অ্যাকাউন্ট তৈরি</h2>  
-    <label>আপনার নাম</label>  
-    <input id="registerName" placeholder="সম্পূর্ণ নাম">  
-    <label>ফোন নম্বর</label>  
-    <input id="registerPhone" type="tel" placeholder="ফোন নম্বর">  
-    <label>ইমেইল</label>  
-    <input id="registerEmail" type="email" placeholder="ইমেইল">  
-    <label>পাসওয়ার্ড</label>  
-    <input id="registerPassword" type="password" placeholder="কমপক্ষে ৬ অক্ষর">  
-    <button onclick="registerUser()">অ্যাকাউন্ট তৈরি করুন</button>  
-    <p id="accountMessage" class="muted"></p>  
-  </div>  
-</section>  <!-- FORGOT PASSWORD -->  <section id="forgot" class="page hidden">  
-  <div class="panel">  
-    <h2>পাসওয়ার্ড রিসেট</h2>  
-    <p>আপনার অ্যাকাউন্টের ইমেইল দিন। রিসেট লিংক ইমেইলে পাঠানো হবে।</p>  
-    <input id="resetEmail" type="email" placeholder="আপনার ইমেইল">  
-    <button onclick="resetPassword()">রিসেট লিংক পাঠান</button>  
-  </div>  
-</section>  <!-- PASSWORD RESET -->  <section id="reset" class="page hidden">  
-  <div class="panel">  
-    <h2>নতুন পাসওয়ার্ড দিন</h2>  
-    <input id="newPassword" type="password" placeholder="নতুন পাসওয়ার্ড">  
-    <button onclick="saveNewPassword()">পাসওয়ার্ড পরিবর্তন করুন</button>  
-  </div>  
-</section>  <!-- PROFILE -->  <section id="profile" class="page hidden">  
-  <div class="profile-hero">  
-    <div class="row">  
-      <img id="profileAvatar" class="avatar" alt="প্রোফাইল ছবি">  
-      <div>  
-        <h2 id="profileDisplayName">আমার প্রোফাইল</h2>  
-        <p id="profileEmail" class="muted"></p>  
-        <p>Welcome to ZRX Online Store</p>  
-      </div>  
-    </div>  
-  </div>    <div class="profile-tabs">  
-    <button class="active" onclick="profileTab('details',this)">প্রোফাইল</button>  
-    <button onclick="profileTab('address',this)">ঠিকানা</button>  
-    <button onclick="profileTab('orders',this)">আমার অর্ডার</button>  
-    <button onclick="profileTab('settings',this)">সেটিংস</button>  
-    <button onclick="profileTab('support',this)">কাস্টমার সাপোর্ট 💬</button>  
-  </div>    <div id="tab-details" class="profile-panel">  
-    <div class="panel">  
-      <h3>প্রোফাইল এডিট করুন</h3>  
-      <label>নাম</label>  
-      <input id="profileName" placeholder="আপনার নাম">  
-      <label>ফোন নম্বর</label>  
-      <input id="profilePhone" placeholder="ফোন নম্বর">  
-      <label>ইউজারনেম</label>  
-      <input id="profileUsername" placeholder="ইউজারনেম">  
-      <button onclick="saveProfile()">প্রোফাইল সংরক্ষণ করুন</button>  
-      <hr>  
-      <label>প্রোফাইল ছবি (সর্বোচ্চ ৫ MB)</label>  
-      <input id="profileImageFile" type="file" accept="image/*">  
-      <button onclick="uploadProfileImage()">ছবি আপলোড করুন</button>  
-    </div>  
-  </div>    <div id="tab-address" class="profile-panel hidden">  
-    <div class="panel">  
-      <h3>আমার ঠিকানা 📍</h3>  
-      <p class="muted">একবার ঠিকানা সংরক্ষণ করলে পরের অর্ডারে স্বয়ংক্রিয়ভাবে ব্যবহার হবে। প্রয়োজন হলে পরে পরিবর্তন করতে পারবেন।</p>  
-      <label>জেলা</label>  
-      <input id="profileDistrict" placeholder="জেলা">  
-      <label>থানা / উপজেলা</label>  
-      <input id="profileUpazila" placeholder="থানা / উপজেলা">  
-      <label>এলাকা</label>  
-      <input id="profileArea" placeholder="এলাকা">  
-      <label>সম্পূর্ণ ঠিকানা</label>  
-      <textarea id="profileFullAddress" placeholder="বাড়ি, রোড, ব্লক, পরিচিত স্থান ইত্যাদি"></textarea>  
-      <button onclick="saveAddress()">ঠিকানা সংরক্ষণ করুন</button>  
-      <p id="addressStatus"></p>  
-    </div>  
-  </div>    <div id="tab-orders" class="profile-panel hidden">  
-    <div class="panel">  
-      <h3>আমার অর্ডার</h3>  
-      <div id="myOrders">অর্ডার লোড হচ্ছে...</div>  
-    </div>  
-  </div>    <div id="tab-settings" class="profile-panel hidden">  
-    <div class="panel">  
-      <h3>অ্যাকাউন্ট সেটিংস</h3>  
-      <label>নতুন পাসওয়ার্ড</label>  
-      <input id="changePasswordInput" type="password" placeholder="নতুন পাসওয়ার্ড">  
-      <button onclick="changePassword()">পাসওয়ার্ড পরিবর্তন</button>  
-      <hr>  
-      <button class="danger" onclick="logoutUser()">লগআউট</button>  
-    </div>  
-  </div>    <div id="tab-support" class="profile-panel hidden">  
-    <div class="panel">  
-      <h3>কাস্টমার সাপোর্ট 💬</h3>  
-      <div id="profileSupportMessages" class="chat-box"></div>  
-      <textarea id="profileSupportText" placeholder="আপনার মেসেজ লিখুন..."></textarea>  
-      <input id="profileSupportImage" type="file" accept="image/*">  
-      <button onclick="sendProfileSupport()">মেসেজ পাঠান</button>  
-    </div>  
-  </div>  
-</section>  <!-- CART / CHECKOUT -->  <section id="cart" class="page hidden">  
-  <div class="panel">  
-    <h2>আমার কার্ট 🛒</h2>  
-    <div id="cartItems">কার্ট লোড হচ্ছে...</div>  
-    <h3>সর্বমোট: <span id="cartTotal">৳0</span></h3>  
-  </div>    <div class="panel">  
-    <h2>ডেলিভারির তথ্য</h2>  
-    <p class="muted">আপনার প্রোফাইলে সংরক্ষিত ঠিকানা থাকলে এখানে স্বয়ংক্রিয়ভাবে বসবে। অর্ডারের আগে তথ্য যাচাই করুন।</p>  
-    <label>গ্রাহকের নাম</label>  
-    <input id="orderName" placeholder="আপনার নাম">  
-    <label>ফোন নম্বর</label>  
-    <input id="orderPhone" placeholder="ফোন নম্বর">  
-    <label>জেলা</label>  
-    <input id="orderDistrict" placeholder="জেলা">  
-    <label>থানা / উপজেলা</label>  
-    <input id="orderUpazila" placeholder="থানা / উপজেলা">  
-    <label>এলাকা</label>  
-    <input id="orderArea" placeholder="এলাকা">  
-    <label>সম্পূর্ণ ঠিকানা</label>  
-    <textarea id="orderAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>  
-    <div class="status">  
-      <strong>ডেলিভারি নিয়ম:</strong>  
-      <p>বায়েজিদ থানার ঠিকানায় নিজস্ব হোম ডেলিভারি। বায়েজিদ থানার বাইরে কুরিয়ার ডেলিভারি।</p>  
-    </div>  
-    <button onclick="placeOrder()">অর্ডার কনফার্ম করুন</button>  
-    <p id="checkoutMessage"></p>  
-  </div>  
-</section>  <!-- ADMIN -->  <section id="admin" class="page hidden">  
-  <div class="panel">  
-    <h2>অ্যাডমিন ড্যাশবোর্ড ⚙️</h2>  
-    <p>পণ্য, অর্ডার ও কাস্টমার সাপোর্ট পরিচালনা করুন।</p>  
-  </div>    <div class="admin-brand">  
-    <div class="brand-mark">ZRX</div>  
-    <div>  
-      <h3>ZRX Online Store</h3>  
-      <p>Admin Account</p>  
-      <p id="adminProfileEmail"></p>  
-    </div>  
-  </div>    <div class="panel">  
-    <h3>নতুন পণ্য যোগ করুন</h3>  
-    <label>পণ্যের নাম</label>  
-    <input id="productName" placeholder="পণ্যের নাম">  
-    <label>বিবরণ</label>  
-    <textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>  
-    <label>দাম</label>  
-    <input id="productPrice" type="number" min="0" placeholder="দাম">  
-    <label>স্টক</label>  
-    <input id="productStock" type="number" min="0" placeholder="স্টক">  
-    <label>ক্যাটাগরি</label>  
-    <input id="productCategory" placeholder="ক্যাটাগরি">  
-    <label>পণ্যের ছবি</label>  
-    <input id="productImage" type="file" accept="image/*">  
-    <button onclick="addProduct()">পণ্য যোগ করুন</button>  
-  </div>    <div class="panel">  
-    <h3>পণ্য পরিচালনা</h3>  
-    <div id="adminProducts">পণ্য লোড হচ্ছে...</div>  
-  </div>    <div class="panel">  
-    <h3>সব অর্ডার 📦</h3>  
-    <div id="adminOrders">অর্ডার লোড হচ্ছে...</div>  
-  </div>    <div class="panel">  
-    <h3>কাস্টমার সাপোর্ট 💬</h3>  
-    <div id="adminSupportCustomers">কাস্টমার লোড হচ্ছে...</div>  
-    <div id="adminSupportChat" class="hidden">  
-      <h4 id="adminSupportName">কাস্টমার</h4>  
-      <div id="adminSupportMessages" class="chat-box"></div>  
-      <textarea id="adminSupportText" placeholder="উত্তর লিখুন..."></textarea>  
-      <button onclick="sendAdminSupport()">উত্তর পাঠান</button>  
-    </div>  
-  </div>  
-</section>  </main>  <!-- FLOATING SUPPORT BUTTON AND PANEL -->  <button id="floatingSupport" type="button" aria-label="কাস্টমার সাপোর্ট">💬</button>
+<header>
+  <h2>ZRX Online Store</h2>
+  <nav id="mainNav">
+    <button type="button" onclick="showPage('home')">হোম</button>
+    <button type="button" id="cartNav" onclick="showPage('cart')">কার্ট (<span id="cartCount">0</span>)</button>
+    <button type="button" id="profileNav" class="hidden" onclick="showPage('profile')">প্রোফাইল</button>
+    <button type="button" id="accountNav" onclick="showPage('account')">লগইন</button>
+    <button type="button" id="adminNav" class="hidden" onclick="showPage('admin')">অ্যাডমিন</button>
+  </nav>
+</header>
 
-<div id="floatingSupportPanel" class="hidden">  
-  <div class="floating-support-head">  
-    <div class="row" style="align-items:center;gap:8px">  
-      <div class="brand-mark">ZRX</div>  
-      <h3>ZRX Support</h3>  
-    </div>  
-    <button type="button" onclick="closeFloatingSupport()">✕</button>  
-  </div>  
-  <p>কোনো সাহায্য প্রয়োজন? আমাদের কাস্টমার সাপোর্টে যোগাযোগ করুন।</p>  
-  <button id="floatingSupportAction" type="button" onclick="openSupportFromFloating()">সাপোর্টে যোগাযোগ করুন</button>  
-</div>  <footer>ZRX Online Store © 2026</footer>  
-<script>  
-"use strict";  /* SUPABASE CONFIG */
+<main>
+
+<section id="home" class="page">
+  <div class="panel">
+    <h2>স্বাগতম ZRX Online Store-এ 🛍️</h2>
+    <p>আপনার প্রয়োজনীয় পণ্য অর্ডার করুন সহজেই।</p>
+  </div>
+  <h2>আমাদের পণ্য</h2>
+  <div id="productList" class="grid">পণ্য লোড হচ্ছে...</div>
+</section>
+
+<section id="account" class="page hidden">
+  <div class="panel">
+    <h2>লগইন</h2>
+    <label>ইমেইল</label>
+    <input id="loginEmail" type="email" placeholder="আপনার ইমেইল" autocomplete="email">
+    <label>পাসওয়ার্ড</label>
+    <input id="loginPassword" type="password" placeholder="পাসওয়ার্ড" autocomplete="current-password">
+    <button type="button" onclick="loginUser()">লগইন করুন</button>
+    <button type="button" class="secondary" onclick="showPage('forgot')">পাসওয়ার্ড ভুলে গেছেন?</button>
+  </div>
+  <div class="panel">
+    <h2>নতুন অ্যাকাউন্ট তৈরি</h2>
+    <label>আপনার নাম</label>
+    <input id="registerName" placeholder="সম্পূর্ণ নাম" autocomplete="name">
+    <label>ফোন নম্বর</label>
+    <input id="registerPhone" type="tel" placeholder="ফোন নম্বর" autocomplete="tel">
+    <label>ইমেইল</label>
+    <input id="registerEmail" type="email" placeholder="ইমেইল" autocomplete="email">
+    <label>পাসওয়ার্ড</label>
+    <input id="registerPassword" type="password" placeholder="কমপক্ষে ৬ অক্ষর" autocomplete="new-password">
+    <button type="button" onclick="registerUser()">অ্যাকাউন্ট তৈরি করুন</button>
+    <p id="accountMessage" class="muted"></p>
+  </div>
+</section>
+
+<section id="forgot" class="page hidden">
+  <div class="panel">
+    <h2>পাসওয়ার্ড রিসেট</h2>
+    <p>আপনার অ্যাকাউন্টের ইমেইল দিন। রিসেট লিংক ইমেইলে পাঠানো হবে।</p>
+    <input id="resetEmail" type="email" placeholder="আপনার ইমেইল">
+    <button type="button" onclick="resetPassword()">রিসেট লিংক পাঠান</button>
+    <button type="button" class="secondary" onclick="showPage('account')">লগইনে ফিরে যান</button>
+  </div>
+</section>
+
+<section id="reset" class="page hidden">
+  <div class="panel">
+    <h2>নতুন পাসওয়ার্ড দিন</h2>
+    <input id="newPassword" type="password" placeholder="নতুন পাসওয়ার্ড" autocomplete="new-password">
+    <button type="button" onclick="saveNewPassword()">পাসওয়ার্ড পরিবর্তন করুন</button>
+  </div>
+</section>
+
+<section id="profile" class="page hidden">
+  <div class="profile-hero">
+    <div class="row">
+      <img id="profileAvatar" class="avatar" alt="প্রোফাইল ছবি">
+      <div>
+        <h2 id="profileDisplayName">আমার প্রোফাইল</h2>
+        <p id="profileEmail" class="muted"></p>
+        <p>Welcome to ZRX Online Store</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-tabs">
+    <button type="button" class="active" onclick="profileTab('details',this)">প্রোফাইল</button>
+    <button type="button" onclick="profileTab('address',this)">ঠিকানা</button>
+    <button type="button" onclick="profileTab('orders',this)">আমার অর্ডার</button>
+    <button type="button" onclick="profileTab('settings',this)">সেটিংস</button>
+    <button type="button" onclick="profileTab('support',this)">কাস্টমার সাপোর্ট 💬</button>
+  </div>
+
+  <div id="tab-details" class="profile-panel">
+    <div class="panel">
+      <h3>প্রোফাইল এডিট করুন</h3>
+      <label>নাম</label>
+      <input id="profileName" placeholder="আপনার নাম">
+      <label>ফোন নম্বর</label>
+      <input id="profilePhone" placeholder="ফোন নম্বর">
+      <label>ইউজারনেম</label>
+      <input id="profileUsername" placeholder="ইউজারনেম">
+      <button type="button" onclick="saveProfile()">প্রোফাইল সংরক্ষণ করুন</button>
+      <hr>
+      <label>প্রোফাইল ছবি (সর্বোচ্চ ৫ MB)</label>
+      <input id="profileImageFile" type="file" accept="image/*">
+      <button type="button" onclick="uploadProfileImage()">ছবি আপলোড করুন</button>
+    </div>
+  </div>
+
+  <div id="tab-address" class="profile-panel hidden">
+    <div class="panel">
+      <h3>আমার ঠিকানা 📍</h3>
+      <p class="muted">একবার ঠিকানা সংরক্ষণ করলে পরের অর্ডারে স্বয়ংক্রিয়ভাবে ব্যবহার হবে। প্রয়োজন হলে পরে পরিবর্তন করতে পারবেন।</p>
+      <label>জেলা</label>
+      <input id="profileDistrict" placeholder="জেলা">
+      <label>থানা / উপজেলা</label>
+      <input id="profileUpazila" placeholder="থানা / উপজেলা">
+      <label>এলাকা</label>
+      <input id="profileArea" placeholder="এলাকা">
+      <label>সম্পূর্ণ ঠিকানা</label>
+      <textarea id="profileFullAddress" placeholder="বাড়ি, রোড, ব্লক, পরিচিত স্থান ইত্যাদি"></textarea>
+      <button type="button" onclick="saveAddress()">ঠিকানা সংরক্ষণ করুন</button>
+      <p id="addressStatus"></p>
+    </div>
+  </div>
+
+  <div id="tab-orders" class="profile-panel hidden">
+    <div class="panel">
+      <h3>আমার অর্ডার</h3>
+      <div id="myOrders">অর্ডার লোড হচ্ছে...</div>
+    </div>
+  </div>
+
+  <div id="tab-settings" class="profile-panel hidden">
+    <div class="panel">
+      <h3>অ্যাকাউন্ট সেটিংস</h3>
+      <label>নতুন পাসওয়ার্ড</label>
+      <input id="changePasswordInput" type="password" placeholder="নতুন পাসওয়ার্ড" autocomplete="new-password">
+      <button type="button" onclick="changePassword()">পাসওয়ার্ড পরিবর্তন</button>
+      <hr>
+      <button type="button" class="danger" onclick="logoutUser()">লগআউট</button>
+    </div>
+  </div>
+
+  <div id="tab-support" class="profile-panel hidden">
+    <div class="panel">
+      <h3>কাস্টমার সাপোর্ট 💬</h3>
+      <div id="profileSupportMessages" class="chat-box"></div>
+      <textarea id="profileSupportText" placeholder="আপনার মেসেজ লিখুন..."></textarea>
+      <input id="profileSupportImage" type="file" accept="image/*">
+      <button type="button" onclick="sendProfileSupport()">মেসেজ পাঠান</button>
+    </div>
+  </div>
+</section>
+
+<section id="cart" class="page hidden">
+  <div class="panel">
+    <h2>আমার কার্ট 🛒</h2>
+    <div id="cartItems">কার্ট লোড হচ্ছে...</div>
+    <h3>সর্বমোট: <span id="cartTotal">৳0</span></h3>
+  </div>
+
+  <div class="panel">
+    <h2>ডেলিভারির তথ্য</h2>
+    <p class="muted">আপনার প্রোফাইলে সংরক্ষিত ঠিকানা থাকলে এখানে স্বয়ংক্রিয়ভাবে বসবে। অর্ডারের আগে তথ্য যাচাই করুন।</p>
+    <label>গ্রাহকের নাম</label>
+    <input id="orderName" placeholder="আপনার নাম">
+    <label>ফোন নম্বর</label>
+    <input id="orderPhone" placeholder="ফোন নম্বর">
+    <label>জেলা</label>
+    <input id="orderDistrict" placeholder="জেলা">
+    <label>থানা / উপজেলা</label>
+    <input id="orderUpazila" placeholder="থানা / উপজেলা">
+    <label>এলাকা</label>
+    <input id="orderArea" placeholder="এলাকা">
+    <label>সম্পূর্ণ ঠিকানা</label>
+    <textarea id="orderAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+    <div class="status">
+      <strong>ডেলিভারি নিয়ম:</strong>
+      <p>বায়েজিদ থানার ঠিকানায় নিজস্ব হোম ডেলিভারি। বায়েজিদ থানার বাইরে কুরিয়ার ডেলিভারি।</p>
+    </div>
+    <button type="button" onclick="placeOrder()">অর্ডার কনফার্ম করুন</button>
+    <p id="checkoutMessage"></p>
+  </div>
+</section>
+
+<section id="admin" class="page hidden">
+  <div class="panel">
+    <h2>অ্যাডমিন ড্যাশবোর্ড ⚙️</h2>
+    <p>পণ্য, অর্ডার ও কাস্টমার সাপোর্ট পরিচালনা করুন।</p>
+  </div>
+
+  <div class="admin-brand">
+    <div class="brand-mark">ZRX</div>
+    <div>
+      <h3>ZRX Online Store</h3>
+      <p>Admin Account</p>
+      <p id="adminProfileEmail"></p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>নতুন পণ্য যোগ করুন</h3>
+    <label>পণ্যের নাম</label>
+    <input id="productName" placeholder="পণ্যের নাম">
+    <label>বিবরণ</label>
+    <textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>
+    <label>দাম</label>
+    <input id="productPrice" type="number" min="0" placeholder="দাম">
+    <label>স্টক</label>
+    <input id="productStock" type="number" min="0" placeholder="স্টক">
+    <label>ক্যাটাগরি</label>
+    <input id="productCategory" placeholder="ক্যাটাগরি">
+    <label>পণ্যের ছবি</label>
+    <input id="productImage" type="file" accept="image/*">
+    <button type="button" onclick="addProduct()">পণ্য যোগ করুন</button>
+  </div>
+
+  <div class="panel">
+    <h3>পণ্য পরিচালনা</h3>
+    <div id="adminProducts">পণ্য লোড হচ্ছে...</div>
+  </div>
+
+  <div class="panel">
+    <h3>সব অর্ডার 📦</h3>
+    <div id="adminOrders">অর্ডার লোড হচ্ছে...</div>
+  </div>
+
+  <div class="panel">
+    <h3>কাস্টমার সাপোর্ট 💬</h3>
+    <div id="adminSupportCustomers">কাস্টমার লোড হচ্ছে...</div>
+    <div id="adminSupportChat" class="hidden">
+      <h4 id="adminSupportName">কাস্টমার</h4>
+      <div id="adminSupportMessages" class="chat-box"></div>
+      <textarea id="adminSupportText" placeholder="উত্তর লিখুন..."></textarea>
+      <button type="button" onclick="sendAdminSupport()">উত্তর পাঠান</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<button id="floatingSupport" type="button" aria-label="কাস্টমার সাপোর্ট">💬</button>
+
+<div id="floatingSupportPanel" class="hidden">
+  <div class="floating-support-head">
+    <div class="row" style="align-items:center;gap:8px">
+      <div class="brand-mark">ZRX</div>
+      <h3>ZRX Support</h3>
+    </div>
+    <button type="button" onclick="closeFloatingSupport()">✕</button>
+  </div>
+  <p>কোনো সাহায্য প্রয়োজন? আমাদের কাস্টমার সাপোর্টে যোগাযোগ করুন।</p>
+  <button id="floatingSupportAction" type="button" onclick="openSupportFromFloating()">সাপোর্টে যোগাযোগ করুন</button>
+</div>
+
+<footer>ZRX Online Store © 2026</footer>
+
+<script>
+"use strict";
+
+/* SUPABASE CONFIG */
 const SUPABASE_URL = "https://rtvbbksgppcjcrcxtkbe.supabase.co";
 const SUPABASE_KEY = "sb_publishable_S80UCHIYfpC4rwe94bH_Lg_VCsQhc7o";
 const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-worker";
@@ -316,1046 +333,1342 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 let isAdmin = false;
-let cart = JSON.parse(localStorage.getItem("zrx_cart") || "[]");
+let cart = [];
+
+try {
+  const savedCart = JSON.parse(localStorage.getItem("zrx_cart") || "[]");
+  cart = Array.isArray(savedCart) ? savedCart : [];
+} catch {
+  cart = [];
+}
+
 let selectedSupportUser = null;
 let productsCache = [];
+let authReady = false;
 
 const $ = id => document.getElementById(id);
 const money = n => "৳" + Number(n || 0).toLocaleString("en-US");
 
 function safe(value) {
-return String(value ?? "").replace(/[&<>"']/g, c => ({
-"&":"&","<":"<",">":">",'"':""","'":"'"
-})[c]);
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[c]);
 }
 
 function message(id, text, good=false) {
-const node = $(id);
-if (node) {
-node.textContent = text;
-node.style.color = good ? "#087b4c" : "#c62828";
+  const node = $(id);
+  if (!node) return;
+  node.textContent = text;
+  node.style.color = good ? "#087b4c" : "#c62828";
 }
+
+function showError(prefix, error) {
+  console.error(prefix, error);
+  alert(prefix + (error?.message || "অজানা সমস্যা হয়েছে।"));
 }
 
 async function worker(data) {
-const response = await fetch(FUNCTION_URL, {
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"apikey":SUPABASE_KEY
-},
-body:JSON.stringify(data)
-});
-const result = await response.json();
-if (!response.ok || result.error) {
-throw new Error(result.error || result.message || "অনুরোধ ব্যর্থ হয়েছে");
-}
-return result;
+  const response = await fetch(FUNCTION_URL, {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_KEY
+    },
+    body:JSON.stringify(data)
+  });
+
+  let result = {};
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error("সার্ভার থেকে সঠিক উত্তর পাওয়া যায়নি।");
+  }
+
+  if (!response.ok || result.error) {
+    throw new Error(result.error || result.message || "অনুরোধ ব্যর্থ হয়েছে।");
+  }
+  return result;
 }
 
 /* PAGE NAVIGATION */
 function showPage(id) {
-if (["profile","cart"].includes(id) && !currentUser) {
-showPage("account");
-return;
-}
-if (id === "admin" && !isAdmin) {
-alert("এই পেজটি শুধু অ্যাডমিনের জন্য।");
-return;
-}
+  if (["profile","cart"].includes(id) && !currentUser) {
+    showPage("account");
+    return;
+  }
 
-document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
-if ($(id)) $(id).classList.remove("hidden");
+  if (id === "admin" && !isAdmin) {
+    alert("এই পেজটি শুধু অ্যাডমিনের জন্য।");
+    return;
+  }
 
-if (id === "home") loadProducts();
+  document.querySelectorAll(".page").forEach(page => page.classList.add("hidden"));
 
-if (id === "profile") {
-loadProfile();
-loadMyOrders();
-}
+  const target = $(id);
+  if (target) target.classList.remove("hidden");
 
-if (id === "cart") {
-renderCart();
-loadCheckoutAddress();
-}
+  if (id === "home") loadProducts();
 
-if (id === "admin") {
-loadAdminProducts();
-loadAdminOrders();
-loadAdminSupportCustomers();
-if ($("adminProfileEmail")) {
-$("adminProfileEmail").textContent = currentUser?.email || "";
-}
-}
+  if (id === "profile") {
+    loadProfile();
+    loadMyOrders();
+  }
 
-window.scrollTo(0,0);
+  if (id === "cart") {
+    renderCart();
+    loadCheckoutAddress();
+  }
+
+  if (id === "admin") {
+    loadAdminProducts();
+    loadAdminOrders();
+    loadAdminSupportCustomers();
+    if ($("adminProfileEmail")) {
+      $("adminProfileEmail").textContent = currentUser?.email || "";
+    }
+  }
+
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function profileTab(tab, button) {
-document.querySelectorAll(".profile-panel").forEach(p => p.classList.add("hidden"));
-$("tab-" + tab)?.classList.remove("hidden");
+  document.querySelectorAll(".profile-panel").forEach(p => p.classList.add("hidden"));
 
-document.querySelectorAll(".profile-tabs button").forEach(b => b.classList.remove("active"));
-button?.classList.add("active");
+  const panel = $("tab-" + tab);
+  if (panel) panel.classList.remove("hidden");
 
-if (tab === "address") loadProfile();
-if (tab === "orders") loadMyOrders();
-if (tab === "support") loadProfileSupport();
+  document.querySelectorAll(".profile-tabs button").forEach(b => b.classList.remove("active"));
+  if (button) button.classList.add("active");
+
+  if (tab === "address" || tab === "details") loadProfile();
+  if (tab === "orders") loadMyOrders();
+  if (tab === "support") loadProfileSupport();
 }
 
 /* AUTH STATE */
 async function refreshUser() {
-const {data:{session}} = await db.auth.getSession();
-currentUser = session?.user || null;
-isAdmin = false;
+  const {data,error} = await db.auth.getSession();
+  if (error) throw error;
 
-if (currentUser) {
-const {data} = await db.from("admin_users")
-.select("id").eq("id",currentUser.id).maybeSingle();
-isAdmin = !!data;
-}
+  currentUser = data?.session?.user || null;
+  isAdmin = false;
 
-updateNavigation();
+  if (currentUser) {
+    const {data:adminData,error:adminError} = await db
+      .from("admin_users")
+      .select("id")
+      .eq("id",currentUser.id)
+      .maybeSingle();
+
+    if (adminError) {
+      console.error("Admin যাচাই সমস্যা:",adminError);
+    } else {
+      isAdmin = !!adminData;
+    }
+  }
+
+  updateNavigation();
 }
 
 function updateNavigation() {
-$("profileNav").classList.toggle("hidden",!currentUser);
-$("accountNav").classList.toggle("hidden",!!currentUser);
-$("adminNav").classList.toggle("hidden",!isAdmin);
+  $("profileNav").classList.toggle("hidden",!currentUser);
+  $("accountNav").classList.toggle("hidden",!!currentUser);
+  $("adminNav").classList.toggle("hidden",!isAdmin);
 
-const adminEmail = $("adminProfileEmail");
-if (adminEmail) {
-adminEmail.textContent = isAdmin ? (currentUser?.email || "") : "";
-}
+  if ($("adminProfileEmail")) {
+    $("adminProfileEmail").textContent = isAdmin ? (currentUser?.email || "") : "";
+  }
 
-const action = $("floatingSupportAction");
-if (action) {
-action.textContent = currentUser
-? "সাপোর্ট চ্যাট খুলুন"
-: "লগইন / অ্যাকাউন্ট তৈরি করুন";
-}
+  const action = $("floatingSupportAction");
+  if (action) {
+    action.textContent = currentUser
+      ? "সাপোর্ট চ্যাট খুলুন"
+      : "লগইন / অ্যাকাউন্ট তৈরি করুন";
+  }
 }
 
 /* REGISTER */
 async function registerUser() {
-const full_name = $("registerName").value.trim();
-const phone = $("registerPhone").value.trim();
-const email = $("registerEmail").value.trim();
-const password = $("registerPassword").value;
+  const full_name = $("registerName").value.trim();
+  const phone = $("registerPhone").value.trim();
+  const email = $("registerEmail").value.trim();
+  const password = $("registerPassword").value;
 
-if (!full_name || !phone || !email || !password) {
-message("accountMessage","সব তথ্য পূরণ করুন।");
-return;
-}
+  if (!full_name || !phone || !email || !password) {
+    message("accountMessage","সব তথ্য পূরণ করুন।");
+    return;
+  }
 
-if (password.length < 6) {
-message("accountMessage","পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
-return;
-}
+  if (password.length < 6) {
+    message("accountMessage","পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
+    return;
+  }
 
-try {
-const result = await worker({action:"register",full_name,phone,email,password});
+  const button = document.querySelector('button[onclick="registerUser()"]');
+  if (button) button.disabled = true;
 
-if (result.session) await db.auth.setSession(result.session);  
-await refreshUser();  
+  try {
+    const result = await worker({
+      action:"register",
+      full_name,
+      phone,
+      email,
+      password
+    });
 
-if (currentUser) {  
-  await db.from("profiles").upsert({  
-    id:currentUser.id,full_name,phone  
-  },{onConflict:"id"});  
+    const session = result.session || result.data?.session || null;
+    if (session) {
+      const {error:setError} = await db.auth.setSession(session);
+      if (setError) throw setError;
+    }
 
-  showPage("profile");  
-  alert("অ্যাকাউন্ট তৈরি হয়েছে।");  
-} else {  
-  message("accountMessage","অ্যাকাউন্ট তৈরি হয়েছে। ইমেইল যাচাই করে লগইন করুন।",true);  
-}
+    await refreshUser();
 
-} catch(e) {
-message("accountMessage","রেজিস্ট্রেশন হয়নি: "+e.message);
-}
+    if (currentUser) {
+      const {error:profileError} = await db.from("profiles").upsert({
+        id:currentUser.id,
+        full_name,
+        phone
+      },{onConflict:"id"});
+
+      if (profileError) throw profileError;
+
+      showPage("profile");
+      alert("অ্যাকাউন্ট তৈরি হয়েছে।");
+    } else {
+      message("accountMessage","অ্যাকাউন্ট তৈরি হয়েছে। ইমেইল যাচাই করে লগইন করুন।",true);
+    }
+  } catch(e) {
+    message("accountMessage","রেজিস্ট্রেশন হয়নি: " + e.message);
+  } finally {
+    if (button) button.disabled = false;
+  }
 }
 
 /* LOGIN */
 async function loginUser() {
-const email = $("loginEmail").value.trim();
-const password = $("loginPassword").value;
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
 
-if (!email || !password) {
-return alert("ইমেইল ও পাসওয়ার্ড দিন।");
-}
+  if (!email || !password) {
+    alert("ইমেইল ও পাসওয়ার্ড দিন।");
+    return;
+  }
 
-try {
-const result = await worker({action:"login",email,password});
+  const button = document.querySelector('button[onclick="loginUser()"]');
+  if (button) button.disabled = true;
 
-if (!result.session) {  
-  throw new Error("লগইন সেশন পাওয়া যায়নি।");  
-}  
+  try {
+    const result = await worker({action:"login",email,password});
+    const session = result.session || result.data?.session || null;
 
-await db.auth.setSession(result.session);  
-await refreshUser();  
-showPage("home");  
-alert("লগইন সফল হয়েছে।");
+    if (!session) throw new Error("লগইন সেশন পাওয়া যায়নি।");
 
-} catch(e) {
-alert("লগইন হয়নি: "+e.message);
-}
+    const {error} = await db.auth.setSession(session);
+    if (error) throw error;
+
+    await refreshUser();
+    showPage("home");
+    alert("লগইন সফল হয়েছে।");
+  } catch(e) {
+    alert("লগইন হয়নি: " + e.message);
+  } finally {
+    if (button) button.disabled = false;
+  }
 }
 
 /* EMAIL PASSWORD RESET */
 async function resetPassword() {
-const email = $("resetEmail").value.trim();
+  const email = $("resetEmail").value.trim();
 
-if (!email) return alert("ইমেইল লিখুন।");
+  if (!email) {
+    alert("ইমেইল লিখুন।");
+    return;
+  }
 
-const {error} = await db.auth.resetPasswordForEmail(email,{
-redirectTo:location.origin+location.pathname
-});
+  const {error} = await db.auth.resetPasswordForEmail(email,{
+    redirectTo:location.origin + location.pathname
+  });
 
-if (error) alert(error.message);
-else alert("পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে।");
+  if (error) {
+    alert("রিসেট লিংক পাঠানো যায়নি: " + error.message);
+  } else {
+    alert("পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে।");
+  }
 }
 
 async function saveNewPassword() {
-const password = $("newPassword").value;
+  const password = $("newPassword").value;
 
-if (!password || password.length < 6) {
-return alert("কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।");
-}
+  if (!password || password.length < 6) {
+    alert("কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।");
+    return;
+  }
 
-const {error} = await db.auth.updateUser({password});
+  const {error} = await db.auth.updateUser({password});
 
-if (error) {
-alert(error.message);
-} else {
-alert("পাসওয়ার্ড পরিবর্তন হয়েছে।");
-$("newPassword").value = "";
-showPage("home");
-}
+  if (error) {
+    alert("পাসওয়ার্ড পরিবর্তন হয়নি: " + error.message);
+  } else {
+    alert("পাসওয়ার্ড পরিবর্তন হয়েছে।");
+    $("newPassword").value = "";
+    await refreshUser();
+    showPage("home");
+    history.replaceState(null,"",location.pathname);
+  }
 }
 
 async function changePassword() {
-$("newPassword").value = $("changePasswordInput").value;
-await saveNewPassword();
-$("changePasswordInput").value = "";
+  const value = $("changePasswordInput").value;
+  if (!value || value.length < 6) {
+    alert("কমপক্ষে ৬ অক্ষরের নতুন পাসওয়ার্ড দিন।");
+    return;
+  }
+
+  $("newPassword").value = value;
+  await saveNewPassword();
+  $("changePasswordInput").value = "";
 }
 
 async function logoutUser() {
-const {error} = await db.auth.signOut();
+  const {error} = await db.auth.signOut();
+  if (error) {
+    alert("লগআউট হয়নি: " + error.message);
+    return;
+  }
 
-if (error) return alert(error.message);
+  currentUser = null;
+  isAdmin = false;
+  selectedSupportUser = null;
 
-currentUser = null;
-isAdmin = false;
-
-updateNavigation();
-closeFloatingSupport();
-showPage("home");
-
-alert("লগআউট সফল হয়েছে।");
+  updateNavigation();
+  closeFloatingSupport();
+  showPage("home");
+  alert("লগআউট সফল হয়েছে।");
 }
 
 /* PROFILE */
 async function loadProfile() {
-if (!currentUser) return;
+  if (!currentUser) return;
 
-const {data,error} = await db.from("profiles")
-.select("full_name,phone,username,avatar_url,district,upazila,area,full_address")
-.eq("id",currentUser.id).maybeSingle();
+  const {data,error} = await db.from("profiles")
+    .select("full_name,phone,username,avatar_url,district,upazila,area,full_address")
+    .eq("id",currentUser.id)
+    .maybeSingle();
 
-if (error) return console.error(error);
+  if (error) {
+    console.error("প্রোফাইল লোড সমস্যা:",error);
+    return;
+  }
 
-const p = data || {};
+  const p = data || {};
+  const fields = {
+    profileName:p.full_name,
+    profilePhone:p.phone,
+    profileUsername:p.username,
+    profileDistrict:p.district,
+    profileUpazila:p.upazila,
+    profileArea:p.area,
+    profileFullAddress:p.full_address
+  };
 
-const fields = {
-profileName:p.full_name,
-profilePhone:p.phone,
-profileUsername:p.username,
-profileDistrict:p.district,
-profileUpazila:p.upazila,
-profileArea:p.area,
-profileFullAddress:p.full_address
-};
+  Object.entries(fields).forEach(([id,value]) => {
+    if ($(id) && value != null) $(id).value = value;
+  });
 
-Object.entries(fields).forEach(([id,value])=>{
-if ($(id) && value != null) $(id).value = value;
-});
-
-$("profileDisplayName").textContent = p.full_name || "আমার প্রোফাইল";
-$("profileEmail").textContent = currentUser.email || "";
-
-$("profileAvatar").src = p.avatar_url || "";
+  $("profileDisplayName").textContent = p.full_name || "আমার প্রোফাইল";
+  $("profileEmail").textContent = currentUser.email || "";
+  $("profileAvatar").src = p.avatar_url || "";
 }
 
 async function saveProfile() {
-if (!currentUser) return;
+  if (!currentUser) {
+    alert("আগে লগইন করুন।");
+    return;
+  }
 
-const {error} = await db.from("profiles").upsert({
-id:currentUser.id,
-full_name:$("profileName").value.trim(),
-phone:$("profilePhone").value.trim(),
-username:$("profileUsername").value.trim()
-},{onConflict:"id"});
+  const {error} = await db.from("profiles").upsert({
+    id:currentUser.id,
+    full_name:$("profileName").value.trim(),
+    phone:$("profilePhone").value.trim(),
+    username:$("profileUsername").value.trim()
+  },{onConflict:"id"});
 
-if (error) {
-alert("সংরক্ষণ হয়নি: "+error.message);
-} else {
-alert("প্রোফাইল সংরক্ষণ হয়েছে।");
-loadProfile();
-}
+  if (error) {
+    alert("সংরক্ষণ হয়নি: " + error.message);
+  } else {
+    alert("প্রোফাইল সংরক্ষণ হয়েছে।");
+    await loadProfile();
+  }
 }
 
 /* PROFILE IMAGE UPLOAD - MAX 5 MB */
 async function uploadProfileImage() {
-if (!currentUser) return alert("আগে লগইন করুন।");
+  if (!currentUser) {
+    alert("আগে লগইন করুন।");
+    return;
+  }
 
-const file = $("profileImageFile").files[0];
+  const file = $("profileImageFile").files[0];
+  if (!file) {
+    alert("একটি ছবি নির্বাচন করুন।");
+    return;
+  }
 
-if (!file) return alert("একটি ছবি নির্বাচন করুন।");
+  if (!file.type.startsWith("image/")) {
+    alert("শুধুমাত্র ছবির ফাইল আপলোড করতে পারবেন।");
+    return;
+  }
 
-if (!file.type.startsWith("image/")) {
-return alert("শুধুমাত্র ছবির ফাইল আপলোড করতে পারবেন।");
-}
+  if (file.size > 5 * 1024 * 1024) {
+    $("profileImageFile").value = "";
+    alert("ছবির সাইজ সর্বোচ্চ ৫ MB হতে পারবে।");
+    return;
+  }
 
-if (file.size > 5 * 1024 * 1024) {
-$("profileImageFile").value = "";
-return alert("ছবির সাইজ সর্বোচ্চ ৫ MB হতে পারবে।");
-}
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,"");
+  const path = currentUser.id + "/avatar-" + Date.now() + "-" + safeName;
 
-const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,"");
-const path = currentUser.id+"/avatar-"+Date.now()+"-"+safeName;
+  try {
+    const {error:uploadError} = await db.storage
+      .from("profile-images")
+      .upload(path,file,{upsert:true});
 
-const {error:uploadError} = await db.storage.from("profile-images")
-.upload(path,file,{upsert:true});
+    if (uploadError) throw uploadError;
 
-if (uploadError) {
-return alert("ছবি আপলোড হয়নি: "+uploadError.message);
-}
+    const {data} = db.storage.from("profile-images").getPublicUrl(path);
 
-const {data} = db.storage.from("profile-images").getPublicUrl(path);
+    const {error} = await db.from("profiles").upsert({
+      id:currentUser.id,
+      avatar_url:data.publicUrl
+    },{onConflict:"id"});
 
-const {error} = await db.from("profiles").upsert({
-id:currentUser.id,
-avatar_url:data.publicUrl
-},{onConflict:"id"});
+    if (error) throw error;
 
-if (error) return alert(error.message);
-
-$("profileAvatar").src = data.publicUrl;
-$("profileImageFile").value = "";
-
-alert("প্রোফাইল ছবি আপডেট হয়েছে।");
+    $("profileAvatar").src = data.publicUrl;
+    $("profileImageFile").value = "";
+    alert("প্রোফাইল ছবি আপডেট হয়েছে।");
+  } catch(e) {
+    alert("ছবি আপলোড হয়নি: " + e.message);
+  }
 }
 
 /* SAVED ADDRESS */
 async function saveAddress() {
-if (!currentUser) return alert("আগে লগইন করুন।");
+  if (!currentUser) {
+    alert("আগে লগইন করুন।");
+    return;
+  }
 
-const district = $("profileDistrict").value.trim();
-const upazila = $("profileUpazila").value.trim();
-const area = $("profileArea").value.trim();
-const full_address = $("profileFullAddress").value.trim();
+  const district = $("profileDistrict").value.trim();
+  const upazila = $("profileUpazila").value.trim();
+  const area = $("profileArea").value.trim();
+  const full_address = $("profileFullAddress").value.trim();
 
-if (!district || !upazila || !area || !full_address) {
-return message("addressStatus","ঠিকানার সব ঘর পূরণ করুন।");
-}
+  if (!district || !upazila || !area || !full_address) {
+    message("addressStatus","ঠিকানার সব ঘর পূরণ করুন।");
+    return;
+  }
 
-const {error} = await db.from("profiles").upsert({
-id:currentUser.id,district,upazila,area,full_address
-},{onConflict:"id"});
+  const {error} = await db.from("profiles").upsert({
+    id:currentUser.id,
+    district,
+    upazila,
+    area,
+    full_address
+  },{onConflict:"id"});
 
-if (error) {
-message("addressStatus","ঠিকানা সংরক্ষণ হয়নি: "+error.message);
-} else {
-message("addressStatus","ঠিকানা সংরক্ষণ হয়েছে। পরের অর্ডারে অটো-ফিল হবে।",true);
-loadCheckoutAddress();
-}
+  if (error) {
+    message("addressStatus","ঠিকানা সংরক্ষণ হয়নি: " + error.message);
+  } else {
+    message("addressStatus","ঠিকানা সংরক্ষণ হয়েছে। পরের অর্ডারে অটো-ফিল হবে।",true);
+    loadCheckoutAddress();
+  }
 }
 
 async function loadCheckoutAddress() {
-if (!currentUser) return;
+  if (!currentUser) return;
 
-const {data,error} = await db.from("profiles")
-.select("full_name,phone,district,upazila,area,full_address")
-.eq("id",currentUser.id).maybeSingle();
+  const {data,error} = await db.from("profiles")
+    .select("full_name,phone,district,upazila,area,full_address")
+    .eq("id",currentUser.id)
+    .maybeSingle();
 
-if (error || !data) return;
+  if (error || !data) return;
 
-const map = {
-orderName:data.full_name,
-orderPhone:data.phone,
-orderDistrict:data.district,
-orderUpazila:data.upazila,
-orderArea:data.area,
-orderAddress:data.full_address
-};
+  const map = {
+    orderName:data.full_name,
+    orderPhone:data.phone,
+    orderDistrict:data.district,
+    orderUpazila:data.upazila,
+    orderArea:data.area,
+    orderAddress:data.full_address
+  };
 
-Object.entries(map).forEach(([id,value])=>{
-if ($(id) && value) $(id).value = value;
-});
+  Object.entries(map).forEach(([id,value]) => {
+    if ($(id) && value) $(id).value = value;
+  });
 }
 
-/* PRODUCTS /
+/* PRODUCTS */
 async function loadProducts() {
-const {data,error} = await db.from("products")
-.select("").eq("is_active",true).order("created_at",{ascending:false});
+  const box = $("productList");
+  if (!box) return;
 
-if (error) {
-$("productList").textContent = "পণ্য লোড করা যায়নি: "+error.message;
-return;
-}
+  box.textContent = "পণ্য লোড হচ্ছে...";
 
-productsCache = data || [];
-renderProducts();
+  const {data,error} = await db.from("products")
+    .select("*")
+    .eq("is_active",true)
+    .order("created_at",{ascending:false});
+
+  if (error) {
+    box.textContent = "পণ্য লোড করা যায়নি: " + error.message;
+    return;
+  }
+
+  productsCache = data || [];
+  renderProducts();
 }
 
 function renderProducts() {
-const box = $("productList");
+  const box = $("productList");
+  if (!box) return;
 
-if (!productsCache.length) {
-box.innerHTML = "<p>এখনো কোনো পণ্য যোগ করা হয়নি।</p>";
-return;
-}
+  if (!productsCache.length) {
+    box.innerHTML = "<p>এখনো কোনো পণ্য যোগ করা হয়নি।</p>";
+    return;
+  }
 
-box.innerHTML = productsCache.map(p=>  <div class="product-card">   ${p.image_url ?<img src="${safe(p.image_url)}" alt="${safe(p.name)}">: ""}   <h3>${safe(p.name)}</h3>   <p>${safe(p.description || "")}</p>   <div class="price">${money(p.price)}</div>   <p>স্টক: ${Number(p.stock || 0)}</p>   <button ${Number(p.stock)<1?"disabled":""} onclick="addToCart('${p.id}')">কার্টে যোগ করুন</button>   </div>  ).join("");
+  box.innerHTML = productsCache.map(p => `
+    <div class="product-card">
+      ${p.image_url ? `<img src="${safe(p.image_url)}" alt="${safe(p.name)}">` : ""}
+      <h3>${safe(p.name)}</h3>
+      <p>${safe(p.description || "")}</p>
+      <div class="price">${money(p.price)}</div>
+      <p>স্টক: ${Number(p.stock || 0)}</p>
+      <button type="button" ${Number(p.stock)<1?"disabled":""} onclick="addToCart('${safe(p.id)}')">কার্টে যোগ করুন</button>
+    </div>
+  `).join("");
 }
 
 /* CART */
 function saveCart() {
-localStorage.setItem("zrx_cart",JSON.stringify(cart));
-$("cartCount").textContent = cart.reduce((s,p)=>s+Number(p.quantity),0);
+  localStorage.setItem("zrx_cart",JSON.stringify(cart));
+  $("cartCount").textContent = cart.reduce((sum,item) => sum + Number(item.quantity || 0),0);
 }
 
 function addToCart(id) {
-const p = productsCache.find(x=>x.id===id);
+  const p = productsCache.find(item => String(item.id) === String(id));
 
-if (!p) return alert("পণ্য পাওয়া যায়নি।");
+  if (!p) {
+    alert("পণ্য পাওয়া যায়নি।");
+    return;
+  }
 
-const existing = cart.find(x=>x.id===id);
+  const existing = cart.find(item => String(item.id) === String(id));
+  const currentQuantity = existing ? Number(existing.quantity) : 0;
 
-if (existing) {
-if (existing.quantity >= Number(p.stock)) {
-return alert("স্টকের বেশি নেওয়া যাবে না।");
-}
-existing.quantity++;
-} else {
-cart.push({
-id:p.id,
-name:p.name,
-price:Number(p.price),
-quantity:1
-});
-}
+  if (currentQuantity >= Number(p.stock || 0)) {
+    alert("স্টকের বেশি নেওয়া যাবে না।");
+    return;
+  }
 
-saveCart();
-renderCart();
-alert("কার্টে যোগ হয়েছে।");
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({
+      id:p.id,
+      name:p.name,
+      price:Number(p.price),
+      quantity:1
+    });
+  }
+
+  saveCart();
+  renderCart();
+  alert("কার্টে যোগ হয়েছে।");
 }
 
 function changeQuantity(id,amount) {
-const item = cart.find(x=>x.id===id);
-if (!item) return;
+  const item = cart.find(p => String(p.id) === String(id));
+  if (!item) return;
 
-item.quantity += amount;
+  const product = productsCache.find(p => String(p.id) === String(id));
+  const newQuantity = Number(item.quantity) + Number(amount);
 
-if (item.quantity <= 0) {
-cart = cart.filter(x=>x.id!==id);
-}
+  if (newQuantity > 0 && product && newQuantity > Number(product.stock || 0)) {
+    alert("বর্তমান স্টকের বেশি নেওয়া যাবে না।");
+    return;
+  }
 
-saveCart();
-renderCart();
+  item.quantity = newQuantity;
+
+  if (item.quantity <= 0) {
+    cart = cart.filter(p => String(p.id) !== String(id));
+  }
+
+  saveCart();
+  renderCart();
 }
 
 function removeFromCart(id) {
-cart = cart.filter(x=>x.id!==id);
-saveCart();
-renderCart();
+  cart = cart.filter(p => String(p.id) !== String(id));
+  saveCart();
+  renderCart();
 }
 
 function renderCart() {
-const box = $("cartItems");
-if (!box) return;
+  const box = $("cartItems");
+  if (!box) return;
 
-if (!cart.length) {
-box.innerHTML = "<p>আপনার কার্ট খালি।</p>";
-$("cartTotal").textContent = money(0);
-return;
-}
+  if (!cart.length) {
+    box.innerHTML = "<p>আপনার কার্ট খালি।</p>";
+    $("cartTotal").textContent = money(0);
+    return;
+  }
 
-box.innerHTML = cart.map(item=>  <div class="panel">   <strong>${safe(item.name)}</strong>   <p>${money(item.price)} × ${item.quantity}</p>   <button onclick="changeQuantity('${item.id}',-1)">−</button>   <button onclick="changeQuantity('${item.id}',1)">+</button>   <button class="danger" onclick="removeFromCart('${item.id}')">বাদ দিন</button>   </div>  ).join("");
+  box.innerHTML = cart.map(item => `
+    <div class="panel">
+      <strong>${safe(item.name)}</strong>
+      <p>${money(item.price)} × ${Number(item.quantity)}</p>
+      <button type="button" onclick="changeQuantity('${safe(item.id)}',-1)">−</button>
+      <button type="button" onclick="changeQuantity('${safe(item.id)}',1)">+</button>
+      <button type="button" class="danger" onclick="removeFromCart('${safe(item.id)}')">বাদ দিন</button>
+    </div>
+  `).join("");
 
-const total = cart.reduce((s,p)=>s+p.price*p.quantity,0);
-$("cartTotal").textContent = money(total);
+  const total = cart.reduce((sum,item) => sum + Number(item.price) * Number(item.quantity),0);
+  $("cartTotal").textContent = money(total);
 }
 
 /* CHECKOUT */
 function isBayezidAddress(district,upazila,area,address) {
-const text = [district,upazila,area,address].join(" ").toLowerCase();
-return /bayezid|বায়েজিদ|বায়েজিদ/.test(text);
+  const text = [district,upazila,area,address].join(" ").toLowerCase();
+  return /bayezid|বায়েজিদ|বায়েজিদ/.test(text);
 }
 
 async function placeOrder() {
-if (!currentUser) return alert("অর্ডারের আগে লগইন করুন।");
-if (!cart.length) return alert("কার্ট খালি।");
+  if (!currentUser) {
+    alert("অর্ডারের আগে লগইন করুন।");
+    return;
+  }
 
-const customer_name = $("orderName").value.trim();
-const phone = $("orderPhone").value.trim();
-const district = $("orderDistrict").value.trim();
-const upazila = $("orderUpazila").value.trim();
-const area = $("orderArea").value.trim();
-const full_address = $("orderAddress").value.trim();
+  if (!cart.length) {
+    alert("কার্ট খালি।");
+    return;
+  }
 
-if (![customer_name,phone,district,upazila,area,full_address].every(Boolean)) {
-return message("checkoutMessage","ডেলিভারির সব তথ্য পূরণ করুন।");
-}
+  const customer_name = $("orderName").value.trim();
+  const phone = $("orderPhone").value.trim();
+  const district = $("orderDistrict").value.trim();
+  const upazila = $("orderUpazila").value.trim();
+  const area = $("orderArea").value.trim();
+  const full_address = $("orderAddress").value.trim();
 
-const allAddress = [district,upazila,area,full_address].join(" ").toLowerCase();
-const mentionsBayezid = /bayezid|বায়েজিদ|বায়েজিদ/.test(allAddress);
-const mentionsOtherThana = /oxygen|অক্সিজেন|baluchara|বালুচরা|aman bazar|amanbazar|আমান বাজার/.test(allAddress);
+  if (![customer_name,phone,district,upazila,area,full_address].every(Boolean)) {
+    message("checkoutMessage","ডেলিভারির সব তথ্য পূরণ করুন।");
+    return;
+  }
 
-let deliveryMethod;
-let deliveryZone;
+  const inBayezid = isBayezidAddress(district,upazila,area,full_address);
+  let deliveryMethod;
+  let deliveryZone;
 
-if (mentionsBayezid && !mentionsOtherThana) {
-deliveryMethod = "Home Delivery";
-deliveryZone = "Bayezid";
-} else if (mentionsOtherThana) {
-deliveryMethod = "Courier";
-deliveryZone = "Outside Bayezid";
-} else {
-const confirmZone = confirm(
-"আপনার ঠিকানা বায়েজিদ থানার ভেতরে হলে OK চাপুন।\n" +
-"বায়েজিদ থানার বাইরে হলে Cancel চাপুন।"
-);
+  if (inBayezid) {
+    deliveryMethod = "Home Delivery";
+    deliveryZone = "Bayezid";
+  } else {
+    const confirmZone = confirm(
+      "আপনার ঠিকানা কি বায়েজিদ থানার ভেতরে?\n\n" +
+      "ভেতরে হলে OK চাপুন।\n" +
+      "বাইরে হলে Cancel চাপুন।"
+    );
 
-deliveryMethod = confirmZone ? "Home Delivery" : "Courier";  
-deliveryZone = confirmZone ? "Bayezid" : "Outside Bayezid";
+    deliveryMethod = confirmZone ? "Home Delivery" : "Courier";
+    deliveryZone = confirmZone ? "Bayezid" : "Outside Bayezid";
+  }
 
-}
+  const button = document.querySelector('button[onclick="placeOrder()"]');
+  if (button) button.disabled = true;
 
-const total = cart.reduce((s,p)=>s+p.price*p.quantity,0);
+  try {
+    /* সর্বশেষ পণ্যের স্টক যাচাই */
+    const productIds = cart.map(item => item.id);
+    const {data:latestProducts,error:stockError} = await db
+      .from("products")
+      .select("id,name,price,stock,is_active")
+      .in("id",productIds);
 
-const {data:order,error} = await db.from("orders").insert({
-customer_id:currentUser.id,
-customer_name,phone,district,upazila,area,full_address,
-delivery_method:deliveryMethod,
-payment_method:"Not required",
-total_amount:total,
-status:"Pending",
-delivery_zone:deliveryZone
-}).select().single();
+    if (stockError) throw stockError;
 
-if (error) {
-return message("checkoutMessage","অর্ডার হয়নি: "+error.message);
-}
+    for (const item of cart) {
+      const latest = (latestProducts || []).find(p => String(p.id) === String(item.id));
 
-const items = cart.map(p=>({
-order_id:order.id,
-product_id:p.id,
-product_name:p.name,
-quantity:p.quantity,
-unit_price:p.price
-}));
+      if (!latest || !latest.is_active) {
+        throw new Error((item.name || "একটি পণ্য") + " বর্তমানে পাওয়া যাচ্ছে না।");
+      }
 
-const {error:itemError} = await db.from("order_items").insert(items);
+      if (Number(item.quantity) > Number(latest.stock || 0)) {
+        throw new Error(item.name + " পণ্যের পর্যাপ্ত স্টক নেই।");
+      }
+    }
 
-if (itemError) {
-message("checkoutMessage","অর্ডার তৈরি হয়েছে, তবে পণ্যের তালিকা সংরক্ষণে সমস্যা: "+itemError.message);
-return;
-}
+    const total = cart.reduce((sum,item) => sum + Number(item.price) * Number(item.quantity),0);
 
-cart = [];
-saveCart();
-renderCart();
+    const {data:order,error} = await db.from("orders").insert({
+      customer_id:currentUser.id,
+      customer_name,
+      phone,
+      district,
+      upazila,
+      area,
+      full_address,
+      delivery_method:deliveryMethod,
+      payment_method:"Not required",
+      total_amount:total,
+      status:"Pending",
+      delivery_zone:deliveryZone
+    }).select().single();
 
-message("checkoutMessage","অর্ডার সফলভাবে গ্রহণ করা হয়েছে।",true);
+    if (error) throw error;
 
-alert("অর্ডার সফল হয়েছে!\nঅর্ডার নম্বর: "+order.id+"\nডেলিভারি: "+deliveryMethod);
+    const items = cart.map(item => ({
+      order_id:order.id,
+      product_id:item.id,
+      product_name:item.name,
+      quantity:item.quantity,
+      unit_price:item.price
+    }));
 
-showPage("profile");
-loadMyOrders();
+    const {error:itemError} = await db.from("order_items").insert(items);
+
+    if (itemError) {
+      message("checkoutMessage","অর্ডার তৈরি হয়েছে, তবে পণ্যের তালিকা সংরক্ষণে সমস্যা: " + itemError.message);
+      return;
+    }
+
+    cart = [];
+    saveCart();
+    renderCart();
+
+    message("checkoutMessage","অর্ডার সফলভাবে গ্রহণ করা হয়েছে।",true);
+
+    alert("অর্ডার সফল হয়েছে!\nঅর্ডার নম্বর: " + order.id + "\nডেলিভারি: " + deliveryMethod);
+
+    showPage("profile");
+    loadMyOrders();
+  } catch(e) {
+    message("checkoutMessage","অর্ডার হয়নি: " + e.message);
+  } finally {
+    if (button) button.disabled = false;
+  }
 }
 
 /* CUSTOMER ORDERS */
 async function loadMyOrders() {
-if (!currentUser) return;
+  if (!currentUser) return;
 
-const box = $("myOrders");
-if (!box) return;
+  const box = $("myOrders");
+  if (!box) return;
 
-box.textContent = "অর্ডার লোড হচ্ছে...";
+  box.textContent = "অর্ডার লোড হচ্ছে...";
 
-const {data,error} = await db.from("orders")
-.select("*").eq("customer_id",currentUser.id)
-.order("created_at",{ascending:false});
+  const {data,error} = await db.from("orders")
+    .select("*")
+    .eq("customer_id",currentUser.id)
+    .order("created_at",{ascending:false});
 
-if (error) {
-box.textContent = "অর্ডার লোড হয়নি: "+error.message;
-return;
-}
+  if (error) {
+    box.textContent = "অর্ডার লোড হয়নি: " + error.message;
+    return;
+  }
 
-if (!data?.length) {
-box.innerHTML = "<p>আপনার এখনো কোনো অর্ডার নেই।</p>";
-return;
-}
+  if (!data?.length) {
+    box.innerHTML = "<p>আপনার এখনো কোনো অর্ডার নেই।</p>";
+    return;
+  }
 
-box.innerHTML = data.map(o=>  <div class="order-card">   <h3>অর্ডার #${safe(o.id)}</h3>   <p>তারিখ: ${new Date(o.created_at).toLocaleString("bn-BD")}</p>   <p>মোট: <strong>${money(o.total_amount)}</strong></p>   <p>স্ট্যাটাস: <strong>${safe(o.status || "Pending")}</strong></p>   <p>ডেলিভারি: ${o.delivery_method==="Courier"?"কুরিয়ার":"নিজস্ব হোম ডেলিভারি"}</p>   ${o.delivery_method==="Courier" ?
-<p>কুরিয়ার: ${safe(o.courier_name || "এখনো নির্ধারিত হয়নি")}</p>
-<p>ট্র্যাকিং নম্বর: ${safe(o.courier_tracking_number || "এখনো দেওয়া হয়নি")}</p>
-${o.courier_tracking_url ? <a href="${safe(o.courier_tracking_url)}" target="_blank" rel="noopener">কুরিয়ার ট্র্যাকিং খুলুন</a>:""}
-:<p>বায়েজিদ এলাকার নিজস্ব ডেলিভারি।</p>}   </div>   ).join("");
+  box.innerHTML = data.map(o => `
+    <div class="order-card">
+      <h3>অর্ডার #${safe(o.id)}</h3>
+      <p>তারিখ: ${new Date(o.created_at).toLocaleString("bn-BD")}</p>
+      <p>মোট: <strong>${money(o.total_amount)}</strong></p>
+      <p>স্ট্যাটাস: <strong>${safe(o.status || "Pending")}</strong></p>
+      <p>ডেলিভারি: ${o.delivery_method === "Courier" ? "কুরিয়ার" : "নিজস্ব হোম ডেলিভারি"}</p>
+      ${
+        o.delivery_method === "Courier"
+        ? `
+          <p>কুরিয়ার: ${safe(o.courier_name || "এখনো নির্ধারিত হয়নি")}</p>
+          <p>ট্র্যাকিং নম্বর: ${safe(o.courier_tracking_number || "এখনো দেওয়া হয়নি")}</p>
+          ${o.courier_tracking_url ? `<p><a href="${safe(o.courier_tracking_url)}" target="_blank" rel="noopener noreferrer">কুরিয়ার ট্র্যাকিং খুলুন</a></p>` : ""}
+        `
+        : `<p>বায়েজিদ এলাকার নিজস্ব ডেলিভারি।</p>`
+      }
+    </div>
+  `).join("");
 }
 
 /* ADMIN PRODUCTS */
 async function addProduct() {
-if (!isAdmin) return alert("অ্যাডমিন অনুমতি প্রয়োজন।");
+  if (!isAdmin) {
+    alert("অ্যাডমিন অনুমতি প্রয়োজন।");
+    return;
+  }
 
-const name = $("productName").value.trim();
-const description = $("productDescription").value.trim();
-const price = Number($("productPrice").value);
-const stock = Number($("productStock").value);
-const category = $("productCategory").value.trim();
+  const name = $("productName").value.trim();
+  const description = $("productDescription").value.trim();
+  const price = Number($("productPrice").value);
+  const stock = Number($("productStock").value);
+  const category = $("productCategory").value.trim();
 
-if (!name || !Number.isFinite(price) || price<=0 || !Number.isInteger(stock) || stock<0) {
-return alert("পণ্যের নাম, সঠিক দাম ও স্টক দিন।");
-}
+  if (!name || !Number.isFinite(price) || price <= 0 || !Number.isInteger(stock) || stock < 0) {
+    alert("পণ্যের নাম, সঠিক দাম ও স্টক দিন।");
+    return;
+  }
 
-let image_url = "";
-const file = $("productImage").files[0];
+  const button = document.querySelector('button[onclick="addProduct()"]');
+  if (button) button.disabled = true;
 
-if (file) {
-const path = "products/"+Date.now()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"");
+  try {
+    let image_url = "";
+    const file = $("productImage").files[0];
 
-const {error:upError} = await db.storage.from("product-images").upload(path,file);  
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        throw new Error("শুধুমাত্র ছবির ফাইল নির্বাচন করুন।");
+      }
 
-if (upError) return alert("ছবি আপলোড হয়নি: "+upError.message);  
+      const path = "products/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9._-]/g,"");
+      const {error:upError} = await db.storage.from("product-images").upload(path,file);
 
-image_url = db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+      if (upError) throw upError;
 
-}
+      image_url = db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+    }
 
-const {error} = await db.from("products").insert({
-name,description,price,stock,category,image_url,is_active:true
-});
+    const {error} = await db.from("products").insert({
+      name,
+      description,
+      price,
+      stock,
+      category,
+      image_url,
+      is_active:true
+    });
 
-if (error) return alert("পণ্য যোগ হয়নি: "+error.message);
+    if (error) throw error;
 
-alert("পণ্য যোগ হয়েছে।");
+    alert("পণ্য যোগ হয়েছে।");
 
-["productName","productDescription","productPrice","productStock","productCategory"]
-.forEach(id=>$(id).value="");
+    ["productName","productDescription","productPrice","productStock","productCategory"]
+      .forEach(id => $(id).value = "");
 
-$("productImage").value="";
+    $("productImage").value = "";
 
-loadAdminProducts();
-loadProducts();
+    await loadAdminProducts();
+    await loadProducts();
+  } catch(e) {
+    alert("পণ্য যোগ হয়নি: " + e.message);
+  } finally {
+    if (button) button.disabled = false;
+  }
 }
 
 async function loadAdminProducts() {
-if (!isAdmin) return;
+  if (!isAdmin) return;
 
-const box = $("adminProducts");
+  const box = $("adminProducts");
+  const {data,error} = await db.from("products")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-const {data,error} = await db.from("products")
-.select("*").order("created_at",{ascending:false});
+  if (error) {
+    box.textContent = error.message;
+    return;
+  }
 
-if (error) return box.textContent = error.message;
+  if (!data?.length) {
+    box.innerHTML = "<p>কোনো পণ্য নেই।</p>";
+    return;
+  }
 
-if (!data?.length) return box.innerHTML = "<p>কোনো পণ্য নেই।</p>";
-
-box.innerHTML = data.map(p=>  <div class="panel">   <strong>${safe(p.name)}</strong>   <p>${money(p.price)} | স্টক: ${p.stock} | ${p.is_active?"চালু":"বন্ধ"}</p>   <button onclick="toggleProduct('${p.id}',${!p.is_active})">${p.is_active?"বন্ধ করুন":"চালু করুন"}</button>   <button class="danger" onclick="deleteProduct('${p.id}')">মুছুন</button>   </div>  ).join("");
+  box.innerHTML = data.map(p => `
+    <div class="panel">
+      <strong>${safe(p.name)}</strong>
+      <p>${money(p.price)} | স্টক: ${Number(p.stock || 0)} | ${p.is_active ? "চালু" : "বন্ধ"}</p>
+      <button type="button" onclick="toggleProduct('${safe(p.id)}',${!p.is_active})">${p.is_active ? "বন্ধ করুন" : "চালু করুন"}</button>
+      <button type="button" class="danger" onclick="deleteProduct('${safe(p.id)}')">মুছুন</button>
+    </div>
+  `).join("");
 }
 
 async function toggleProduct(id,active) {
-const {error} = await db.from("products")
-.update({is_active:active}).eq("id",id);
+  if (!isAdmin) return;
 
-if (error) alert(error.message);
+  const {error} = await db.from("products")
+    .update({is_active:active})
+    .eq("id",id);
 
-loadAdminProducts();
-loadProducts();
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  await loadAdminProducts();
+  await loadProducts();
 }
 
 async function deleteProduct(id) {
-if (!confirm("পণ্যটি মুছে ফেলবেন?")) return;
+  if (!isAdmin) return;
+  if (!confirm("পণ্যটি মুছে ফেলবেন?")) return;
 
-const {error} = await db.from("products").delete().eq("id",id);
+  const {error} = await db.from("products").delete().eq("id",id);
 
-if (error) return alert(error.message);
+  if (error) {
+    alert(error.message);
+    return;
+  }
 
-loadAdminProducts();
-loadProducts();
+  await loadAdminProducts();
+  await loadProducts();
 }
 
 /* ADMIN ORDERS */
 async function loadAdminOrders() {
-if (!isAdmin) return;
+  if (!isAdmin) return;
 
-const box = $("adminOrders");
+  const box = $("adminOrders");
+  const {data,error} = await db.from("orders")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-const {data,error} = await db.from("orders")
-.select("*").order("created_at",{ascending:false});
+  if (error) {
+    box.textContent = error.message;
+    return;
+  }
 
-if (error) return box.textContent = error.message;
+  if (!data?.length) {
+    box.innerHTML = "<p>এখনো কোনো অর্ডার আসেনি।</p>";
+    return;
+  }
 
-if (!data?.length) return box.innerHTML = "<p>এখনো কোনো অর্ডার আসেনি।</p>";
+  box.innerHTML = data.map(o => `
+    <div class="order-card">
+      <h3>অর্ডার #${safe(o.id)}</h3>
+      <p>কাস্টমার: ${safe(o.customer_name)}</p>
+      <p>ফোন: ${safe(o.phone)}</p>
+      <p>ঠিকানা: ${safe([o.district,o.upazila,o.area,o.full_address].filter(Boolean).join(", "))}</p>
+      <p>মোট: ${money(o.total_amount)} | ${safe(o.delivery_method)}</p>
 
-box.innerHTML = data.map(o=>`
-<div class="order-card">
-<h3>অর্ডার #${safe(o.id)}</h3>
-<p>কাস্টমার: ${safe(o.customer_name)}</p>
-<p>ফোন: ${safe(o.phone)}</p>
-<p>ঠিকানা: ${safe([o.district,o.upazila,o.area,o.full_address].filter(Boolean).join(", "))}</p>
-<p>মোট: ${money(o.total_amount)} | ${safe(o.delivery_method)}</p>
+      <label>স্ট্যাটাস</label>
+      <select id="orderStatus-${safe(o.id)}">
+        ${["Pending","Confirmed","Processing","Shipped","Out for Delivery","Delivered","Cancelled"].map(s =>
+          `<option value="${s}" ${o.status === s ? "selected" : ""}>${s}</option>`
+        ).join("")}
+      </select>
 
-<label>স্ট্যাটাস</label>  
-  <select id="orderStatus-${o.id}">  
-    ${["Pending","Confirmed","Processing","Shipped","Out for Delivery","Delivered","Cancelled"].map(s=>`<option value="${s}" ${o.status===s?"selected":""}>${s}</option>`).join("")}  
-  </select>  
+      <label>কুরিয়ার নাম</label>
+      <input id="courierName-${safe(o.id)}" value="${safe(o.courier_name || "")}" placeholder="কুরিয়ার কোম্পানি">
 
-  <label>কুরিয়ার নাম</label>  
-  <input id="courierName-${o.id}" value="${safe(o.courier_name||"")}" placeholder="কুরিয়ার কোম্পানি">  
+      <label>ট্র্যাকিং নম্বর</label>
+      <input id="courierNumber-${safe(o.id)}" value="${safe(o.courier_tracking_number || "")}" placeholder="ট্র্যাকিং নম্বর">
 
-  <label>ট্র্যাকিং নম্বর</label>  
-  <input id="courierNumber-${o.id}" value="${safe(o.courier_tracking_number||"")}" placeholder="ট্র্যাকিং নম্বর">  
+      <label>ট্র্যাকিং লিংক</label>
+      <input id="courierUrl-${safe(o.id)}" value="${safe(o.courier_tracking_url || "")}" placeholder="https://">
 
-  <label>ট্র্যাকিং লিংক</label>  
-  <input id="courierUrl-${o.id}" value="${safe(o.courier_tracking_url||"")}" placeholder="https://">  
-
-  <button onclick="updateOrder('${o.id}')">অর্ডার আপডেট করুন</button>  
-</div>
-
-`).join("");
+      <button type="button" onclick="updateOrder('${safe(o.id)}')">অর্ডার আপডেট করুন</button>
+    </div>
+  `).join("");
 }
 
 async function updateOrder(id) {
-if (!isAdmin) return;
+  if (!isAdmin) return;
 
-const courierUrl = $("courierUrl-"+id).value.trim();
+  const courierUrl = $("courierUrl-" + id).value.trim();
 
-if (courierUrl && !/^https?:///i.test(courierUrl)) {
-return alert("সঠিক ওয়েব লিংক দিন।");
-}
+  if (courierUrl && !/^https?:\/\//i.test(courierUrl)) {
+    alert("সঠিক ওয়েব লিংক দিন।");
+    return;
+  }
 
-const {error} = await db.from("orders").update({
-status:$("orderStatus-"+id).value,
-courier_name:$("courierName-"+id).value.trim() || null,
-courier_tracking_number:$("courierNumber-"+id).value.trim() || null,
-courier_tracking_url:courierUrl || null
-}).eq("id",id);
+  const {error} = await db.from("orders").update({
+    status:$("orderStatus-" + id).value,
+    courier_name:$("courierName-" + id).value.trim() || null,
+    courier_tracking_number:$("courierNumber-" + id).value.trim() || null,
+    courier_tracking_url:courierUrl || null
+  }).eq("id",id);
 
-if (error) return alert("আপডেট হয়নি: "+error.message);
+  if (error) {
+    alert("আপডেট হয়নি: " + error.message);
+    return;
+  }
 
-alert("অর্ডার আপডেট হয়েছে।");
-loadAdminOrders();
+  alert("অর্ডার আপডেট হয়েছে।");
+  await loadAdminOrders();
 }
 
 /* SUPPORT IMAGE */
 async function uploadChatImage(file,userId) {
-if (!file) return null;
+  if (!file) return null;
 
-const path = userId+"/"+Date.now()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"");
+  if (!file.type.startsWith("image/")) {
+    throw new Error("শুধুমাত্র ছবির ফাইল পাঠাতে পারবেন।");
+  }
 
-const {error} = await db.storage.from("chat-images").upload(path,file);
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error("ছবির সাইজ সর্বোচ্চ ৫ MB হতে পারবে।");
+  }
 
-if (error) throw error;
+  const path = userId + "/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9._-]/g,"");
+  const {error} = await db.storage.from("chat-images").upload(path,file);
 
-return db.storage.from("chat-images").getPublicUrl(path).data.publicUrl;
+  if (error) throw error;
+
+  return db.storage.from("chat-images").getPublicUrl(path).data.publicUrl;
 }
 
 /* CUSTOMER SUPPORT MESSAGE */
 async function sendProfileSupport() {
-if (!currentUser) return alert("আগে লগইন করুন।");
+  if (!currentUser) {
+    alert("আগে লগইন করুন।");
+    return;
+  }
 
-const text = $("profileSupportText").value.trim();
-const file = $("profileSupportImage").files[0];
+  const text = $("profileSupportText").value.trim();
+  const file = $("profileSupportImage").files[0];
 
-if (!text && !file) {
-return alert("মেসেজ লিখুন অথবা ছবি নির্বাচন করুন।");
-}
+  if (!text && !file) {
+    alert("মেসেজ লিখুন অথবা ছবি নির্বাচন করুন।");
+    return;
+  }
 
-let image_url = null;
+  const button = document.querySelector('#tab-support button[onclick="sendProfileSupport()"]');
+  if (button) button.disabled = true;
 
-try {
-if (file) image_url = await uploadChatImage(file,currentUser.id);
-} catch(e) {
-return alert("ছবি আপলোড হয়নি: "+e.message);
-}
+  try {
+    let image_url = null;
+    if (file) image_url = await uploadChatImage(file,currentUser.id);
 
-const {error} = await db.from("chat_messages").insert({
-user_id:currentUser.id,
-sender_id:currentUser.id,
-message:text,
-image_url
-});
+    const {error} = await db.from("chat_messages").insert({
+      user_id:currentUser.id,
+      sender_id:currentUser.id,
+      message:text,
+      image_url
+    });
 
-if (error) return alert("মেসেজ পাঠানো যায়নি: "+error.message);
+    if (error) throw error;
 
-$("profileSupportText").value="";
-$("profileSupportImage").value="";
-
-loadProfileSupport();
+    $("profileSupportText").value = "";
+    $("profileSupportImage").value = "";
+    await loadProfileSupport();
+  } catch(e) {
+    alert("মেসেজ পাঠানো যায়নি: " + e.message);
+  } finally {
+    if (button) button.disabled = false;
+  }
 }
 
 async function loadProfileSupport() {
-if (!currentUser) return;
+  if (!currentUser) return;
 
-const box = $("profileSupportMessages");
+  const box = $("profileSupportMessages");
+  const {data,error} = await db.from("chat_messages")
+    .select("*")
+    .eq("user_id",currentUser.id)
+    .order("created_at",{ascending:true});
 
-const {data,error} = await db.from("chat_messages")
-.select("*").eq("user_id",currentUser.id)
-.order("created_at",{ascending:true});
+  if (error) {
+    box.textContent = error.message;
+    return;
+  }
 
-if (error) return box.textContent = error.message;
+  box.innerHTML = (data || []).map(m => `
+    <div class="chat-message ${m.sender_id === currentUser.id ? "mine" : ""}">
+      <strong>${m.sender_id === currentUser.id ? "আপনি" : "ZRX Support"}</strong>
+      ${m.message ? `<p>${safe(m.message)}</p>` : ""}
+      ${m.image_url ? `<img src="${safe(m.image_url)}" alt="চ্যাট ছবি">` : ""}
+      <small>${new Date(m.created_at).toLocaleString("bn-BD")}</small>
+    </div>
+  `).join("");
 
-box.innerHTML = (data||[]).map(m=>   <div class="chat-message ${m.sender_id===currentUser.id?"mine":""}">   <strong>${m.sender_id===currentUser.id?"আপনি":"ZRX Support"}</strong>   ${m.message?<p>${safe(m.message)}</p>:""}   ${m.image_url?<img src="${safe(m.image_url)}" alt="চ্যাট ছবি">:""}   <small>${new Date(m.created_at).toLocaleString("bn-BD")}</small>   </div>   ).join("");
-
-box.scrollTop=box.scrollHeight;
+  box.scrollTop = box.scrollHeight;
 }
 
 /* ADMIN SUPPORT CUSTOMER LIST */
 async function loadAdminSupportCustomers() {
-if (!isAdmin) return;
+  if (!isAdmin) return;
 
-const box = $("adminSupportCustomers");
+  const box = $("adminSupportCustomers");
+  const {data:messages,error} = await db.from("chat_messages")
+    .select("user_id,created_at")
+    .order("created_at",{ascending:false});
 
-const {data:messages,error} = await db.from("chat_messages")
-.select("user_id,created_at").order("created_at",{ascending:false});
+  if (error) {
+    box.textContent = error.message;
+    return;
+  }
 
-if (error) return box.textContent = error.message;
+  const ids = [...new Set((messages || []).map(m => m.user_id).filter(Boolean))];
 
-const ids = [...new Set((messages||[]).map(m=>m.user_id).filter(Boolean))];
+  if (!ids.length) {
+    box.innerHTML = "<p>এখনো কোনো সাপোর্ট মেসেজ আসেনি।</p>";
+    return;
+  }
 
-if (!ids.length) {
-return box.innerHTML = "<p>এখনো কোনো সাপোর্ট মেসেজ আসেনি।</p>";
-}
+  const {data:profiles,error:profileError} = await db.from("profiles")
+    .select("id,full_name,phone")
+    .in("id",ids);
 
-const {data:profiles} = await db.from("profiles")
-.select("id,full_name,phone").in("id",ids);
+  if (profileError) console.error(profileError);
 
-const {data:visitors} = await db.from("support_visitors")
-.select("user_id,full_name,phone").in("user_id",ids);
+  const {data:visitors,error:visitorError} = await db.from("support_visitors")
+    .select("user_id,full_name,phone")
+    .in("user_id",ids);
 
-box.innerHTML = ids.map(id=>{
-const p=(profiles||[]).find(x=>x.id===id);
-const v=(visitors||[]).find(x=>x.user_id===id);
-const name=p?.full_name||v?.full_name||"কাস্টমার";
-const phone=p?.phone||v?.phone||"";
+  if (visitorError) console.error(visitorError);
 
-return `<button class="support-customer" onclick="openAdminSupport('${id}')">${safe(name)} ${safe(phone)}</button>`;
+  box.innerHTML = ids.map(id => {
+    const p = (profiles || []).find(x => x.id === id);
+    const v = (visitors || []).find(x => x.user_id === id);
+    const name = p?.full_name || v?.full_name || "কাস্টমার";
+    const phone = p?.phone || v?.phone || "";
 
-}).join("");
+    return `<button type="button" class="support-customer" onclick="openAdminSupport('${safe(id)}')">${safe(name)} ${safe(phone)}</button>`;
+  }).join("");
 }
 
 async function openAdminSupport(userId) {
-if (!isAdmin) return;
+  if (!isAdmin) return;
 
-selectedSupportUser=userId;
-$("adminSupportChat").classList.remove("hidden");
+  selectedSupportUser = userId;
+  $("adminSupportChat").classList.remove("hidden");
 
-const {data} = await db.from("profiles")
-.select("full_name,phone").eq("id",userId).maybeSingle();
+  const {data,error} = await db.from("profiles")
+    .select("full_name,phone")
+    .eq("id",userId)
+    .maybeSingle();
 
-$("adminSupportName").textContent=(data?.full_name||"কাস্টমার")+" "+(data?.phone||"");
+  if (error) console.error(error);
 
-loadAdminSupportMessages();
+  $("adminSupportName").textContent =
+    (data?.full_name || "কাস্টমার") + " " + (data?.phone || "");
+
+  await loadAdminSupportMessages();
 }
 
 async function loadAdminSupportMessages() {
-if (!isAdmin || !selectedSupportUser) return;
+  if (!isAdmin || !selectedSupportUser) return;
 
-const box=$("adminSupportMessages");
+  const box = $("adminSupportMessages");
+  const {data,error} = await db.from("chat_messages")
+    .select("*")
+    .eq("user_id",selectedSupportUser)
+    .order("created_at",{ascending:true});
 
-const {data,error}=await db.from("chat_messages")
-.select("*").eq("user_id",selectedSupportUser)
-.order("created_at",{ascending:true});
+  if (error) {
+    box.textContent = error.message;
+    return;
+  }
 
-if (error) return box.textContent=error.message;
+  box.innerHTML = (data || []).map(m => `
+    <div class="chat-message ${m.sender_id === currentUser.id ? "mine" : ""}">
+      <strong>${m.sender_id === currentUser.id ? "অ্যাডমিন" : "কাস্টমার"}</strong>
+      ${m.message ? `<p>${safe(m.message)}</p>` : ""}
+      ${m.image_url ? `<img src="${safe(m.image_url)}" alt="চ্যাট ছবি">` : ""}
+      <small>${new Date(m.created_at).toLocaleString("bn-BD")}</small>
+    </div>
+  `).join("");
 
-box.innerHTML=(data||[]).map(m=>   <div class="chat-message ${m.sender_id===currentUser.id?"mine":""}">   <strong>${m.sender_id===currentUser.id?"অ্যাডমিন":"কাস্টমার"}</strong>   ${m.message?<p>${safe(m.message)}</p>:""}   ${m.image_url?<img src="${safe(m.image_url)}" alt="চ্যাট ছবি">:""}   <small>${new Date(m.created_at).toLocaleString("bn-BD")}</small>   </div>   ).join("");
-
-box.scrollTop=box.scrollHeight;
+  box.scrollTop = box.scrollHeight;
 }
 
 async function sendAdminSupport() {
-if (!isAdmin || !selectedSupportUser) {
-return alert("আগে কাস্টমার নির্বাচন করুন।");
-}
+  if (!isAdmin || !selectedSupportUser) {
+    alert("আগে কাস্টমার নির্বাচন করুন।");
+    return;
+  }
 
-const text=$("adminSupportText").value.trim();
+  const text = $("adminSupportText").value.trim();
+  if (!text) {
+    alert("উত্তর লিখুন।");
+    return;
+  }
 
-if (!text) return alert("উত্তর লিখুন।");
+  const {error} = await db.from("chat_messages").insert({
+    user_id:selectedSupportUser,
+    sender_id:currentUser.id,
+    message:text,
+    image_url:null
+  });
 
-const {error}=await db.from("chat_messages").insert({
-user_id:selectedSupportUser,
-sender_id:currentUser.id,
-message:text,
-image_url:null
-});
+  if (error) {
+    alert("উত্তর পাঠানো যায়নি: " + error.message);
+    return;
+  }
 
-if (error) return alert("উত্তর পাঠানো যায়নি: "+error.message);
-
-$("adminSupportText").value="";
-loadAdminSupportMessages();
+  $("adminSupportText").value = "";
+  await loadAdminSupportMessages();
 }
 
 /* FLOATING SUPPORT PANEL */
 function openSupportFromFloating() {
-closeFloatingSupport();
+  closeFloatingSupport();
 
-if (!currentUser) {
-showPage("account");
-return;
-}
+  if (!currentUser) {
+    showPage("account");
+    return;
+  }
 
-showPage("profile");
+  showPage("profile");
 
-const supportButton = document.querySelector(
-'.profile-tabs button[onclick*="support"]'
-);
-
-profileTab("support",supportButton);
+  const supportButton = document.querySelector('.profile-tabs button[onclick*="support"]');
+  profileTab("support",supportButton);
 }
 
 function closeFloatingSupport() {
-$("floatingSupportPanel").classList.add("hidden");
+  $("floatingSupportPanel").classList.add("hidden");
 }
 
 function toggleFloatingSupport() {
-$("floatingSupportPanel").classList.toggle("hidden");
+  $("floatingSupportPanel").classList.toggle("hidden");
 }
 
 /* FLOATING BUTTON DRAG - KEEP INSIDE SCREEN */
 function setupFloatingSupport() {
-const button = $("floatingSupport");
-const panel = $("floatingSupportPanel");
+  const button = $("floatingSupport");
+  const panel = $("floatingSupportPanel");
 
-let dragging = false;
-let moved = false;
-let startX = 0;
-let startY = 0;
-let initialLeft = 0;
-let initialTop = 0;
+  let dragging = false;
+  let moved = false;
+  let startX = 0;
+  let startY = 0;
+  let initialLeft = 0;
+  let initialTop = 0;
 
-function clampPosition(left,top) {
-const maxLeft = Math.max(0,window.innerWidth-button.offsetWidth);
-const maxTop = Math.max(0,window.innerHeight-button.offsetHeight);
+  function clampPosition(left,top) {
+    const maxLeft = Math.max(0,window.innerWidth - button.offsetWidth);
+    const maxTop = Math.max(0,window.innerHeight - button.offsetHeight);
 
-return {  
-  left:Math.min(Math.max(0,left),maxLeft),  
-  top:Math.min(Math.max(0,top),maxTop)  
-};
+    return {
+      left:Math.min(Math.max(0,left),maxLeft),
+      top:Math.min(Math.max(0,top),maxTop)
+    };
+  }
 
-}
+  button.addEventListener("pointerdown",function(e) {
+    dragging = true;
+    moved = false;
 
-button.addEventListener("pointerdown",function(e) {
-dragging = true;
-moved = false;
+    const rect = button.getBoundingClientRect();
+    startX = e.clientX;
+    startY = e.clientY;
+    initialLeft = rect.left;
+    initialTop = rect.top;
 
-const rect = button.getBoundingClientRect();  
+    button.style.left = rect.left + "px";
+    button.style.top = rect.top + "px";
+    button.style.right = "auto";
+    button.style.bottom = "auto";
 
-startX = e.clientX;  
-startY = e.clientY;  
-initialLeft = rect.left;  
-initialTop = rect.top;  
+    button.setPointerCapture(e.pointerId);
+  });
 
-button.style.left = rect.left+"px";  
-button.style.top = rect.top+"px";  
-button.style.right = "auto";  
-button.style.bottom = "auto";  
+  button.addEventListener("pointermove",function(e) {
+    if (!dragging) return;
 
-button.setPointerCapture(e.pointerId);
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
 
-});
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) moved = true;
 
-button.addEventListener("pointermove",function(e) {
-if (!dragging) return;
+    const position = clampPosition(initialLeft + dx,initialTop + dy);
+    button.style.left = position.left + "px";
+    button.style.top = position.top + "px";
+  });
 
-const dx = e.clientX-startX;  
-const dy = e.clientY-startY;  
+  button.addEventListener("pointerup",function() {
+    if (!dragging) return;
+    dragging = false;
+    if (!moved) toggleFloatingSupport();
+  });
 
-if (Math.abs(dx)>5 || Math.abs(dy)>5) {  
-  moved = true;  
-}  
+  button.addEventListener("pointercancel",function() {
+    dragging = false;
+  });
 
-const position = clampPosition(  
-  initialLeft+dx,  
-  initialTop+dy  
-);  
+  window.addEventListener("resize",function() {
+    const rect = button.getBoundingClientRect();
+    const position = clampPosition(rect.left,rect.top);
 
-button.style.left = position.left+"px";  
-button.style.top = position.top+"px";
+    button.style.left = position.left + "px";
+    button.style.top = position.top + "px";
+    button.style.right = "auto";
+    button.style.bottom = "auto";
 
-});
-
-button.addEventListener("pointerup",function() {
-if (!dragging) return;
-
-dragging = false;  
-
-if (!moved) {  
-  toggleFloatingSupport();  
-}
-
-});
-
-button.addEventListener("pointercancel",function() {
-dragging = false;
-});
-
-window.addEventListener("resize",function() {
-const rect = button.getBoundingClientRect();
-const position = clampPosition(rect.left,rect.top);
-
-button.style.left = position.left+"px";  
-button.style.top = position.top+"px";  
-button.style.right = "auto";  
-button.style.bottom = "auto";  
-
-panel.style.maxHeight = Math.max(180,window.innerHeight-130)+"px";  
-panel.style.overflowY = "auto";
-
-});
+    panel.style.maxHeight = Math.max(180,window.innerHeight - 130) + "px";
+    panel.style.overflowY = "auto";
+  });
 }
 
 /* AUTH LISTENER */
-db.auth.onAuthStateChange(() => {
-setTimeout(async()=>{
-await refreshUser();
-},0);
+db.auth.onAuthStateChange((event,session) => {
+  setTimeout(async() => {
+    try {
+      currentUser = session?.user || null;
+      await refreshUser();
+      authReady = true;
+
+      if (event === "PASSWORD_RECOVERY") {
+        showPage("reset");
+      }
+    } catch(e) {
+      console.error("Auth state update error:",e);
+    }
+  },0);
 });
 
 /* START */
 async function initializeStore() {
-await refreshUser();
+  try {
+    await refreshUser();
+    authReady = true;
+  } catch(e) {
+    console.error("প্রাথমিক লগইন যাচাই সমস্যা:",e);
+  }
 
-saveCart();
-renderCart();
+  saveCart();
+  renderCart();
+  setupFloatingSupport();
 
-setupFloatingSupport();
-
-if (location.hash.includes("type=recovery")) {
-showPage("reset");
-} else {
-showPage("home");
+  if (location.hash.includes("type=recovery") || location.hash.includes("access_token=")) {
+    showPage("reset");
+  } else {
+    showPage("home");
+  }
 }
-}
-
-document.addEventListener("DOMContentLoaded",initializeStore);
 
 /* AUTO REFRESH SUPPORT CHAT */
-setInterval(()=>{
-if (currentUser && !$("profile").classList.contains("hidden")) {
-if (!$("tab-support").classList.contains("hidden")) {
-loadProfileSupport();
-}
-}
+setInterval(() => {
+  if (!authReady) return;
 
-if (isAdmin && selectedSupportUser &&
-!$("adminSupportChat").classList.contains("hidden")) {
-loadAdminSupportMessages();
-}
+  if (currentUser && $("profile") && !$("profile").classList.contains("hidden")) {
+    if (!$("tab-support").classList.contains("hidden")) {
+      loadProfileSupport();
+    }
+  }
+
+  if (isAdmin && selectedSupportUser &&
+      !$("adminSupportChat").classList.contains("hidden")) {
+    loadAdminSupportMessages();
+  }
 },12000);
 
-</script>  
-</body>  
-</html>  
+document.addEventListener("DOMContentLoaded",initializeStore);
+</script>
+</body>
+  </html>
