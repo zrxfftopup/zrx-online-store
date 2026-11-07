@@ -2,949 +2,1066 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ZRX Online Store</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+:root{--navy:#101c36;--green:#16a36a;--light:#f3f6fa;--white:#fff;--red:#d93636}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f3f5f8;color:#202633}
-header{background:#101d35;color:white;padding:20px 14px;text-align:center}
-header h1{margin:0;color:#53e18a}
-header p{margin:7px 0 0}
-nav{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;background:#172943;padding:10px}
-button{border:0;border-radius:8px;padding:11px 14px;background:#176b49;color:white;font-weight:bold;cursor:pointer}
-nav button{background:#29415f}
+body{margin:0;font-family:Arial,sans-serif;background:var(--light);color:#172033}
+header{background:var(--navy);color:white;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+header h2{margin:0;color:#fff}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+button{border:0;border-radius:8px;padding:10px 14px;background:var(--green);color:white;font-weight:bold;cursor:pointer}
 button:disabled{opacity:.5;cursor:not-allowed}
-main{max-width:950px;margin:auto;padding:14px}
-section{display:none}
-section.active{display:block}
-.panel,.product{background:white;padding:15px;border-radius:12px;margin:12px 0;box-shadow:0 2px 9px #0000000c}
-input,textarea,select{display:block;width:100%;padding:12px;margin:9px 0;border:1px solid #ccd3dc;border-radius:8px;font-size:15px}
-textarea{min-height:75px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
-.product img{width:100%;height:145px;object-fit:contain;background:#f5f6f8;border-radius:8px}
-.product h3{margin:9px 0 5px}
-.price{color:#087b48;font-weight:bold;font-size:19px}
-.muted{color:#657184;font-size:13px}
+nav button{background:#263958}
+button.secondary{background:#53627a}
+button.danger{background:var(--red)}
+main{max-width:1100px;margin:20px auto;padding:0 13px}
+.page{display:block}
 .hidden{display:none!important}
-#message{padding:10px;border-radius:8px;background:#eaf7ef;margin:10px 0}
-footer{text-align:center;padding:22px;color:#687386}
-.profile-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.avatar{width:88px;height:88px;border-radius:50%;object-fit:cover;background:#e7ebf0;border:3px solid #53e18a}
-.profile-label{font-weight:bold;margin-top:12px;display:block}
-
-/* Messenger style chat */
-#chat{padding:0}
-#chat h2{margin:8px 0}
-#chatHelp{margin:0 0 12px}
-.messenger{
- display:grid;
- grid-template-columns:270px minmax(0,1fr);
- height:570px;
- background:#fff;
- border:1px solid #e0e5ed;
- border-radius:16px;
- overflow:hidden;
- box-shadow:0 4px 18px #14213d12;
-}
-.messenger-sidebar{
- border-right:1px solid #e8ebf0;
- display:flex;
- flex-direction:column;
- min-width:0;
- background:#fff;
-}
-.inbox-heading{
- padding:17px 15px 12px;
- border-bottom:1px solid #edf0f4;
-}
-.inbox-heading h3{margin:0;font-size:20px;color:#172943}
-.inbox-heading p{margin:5px 0 0;color:#8993a2;font-size:12px}
-.chat-list{overflow-y:auto;flex:1;padding:7px}
-.chat-user{
- display:flex;
- align-items:center;
- gap:10px;
- width:100%;
- padding:11px 9px;
- margin:3px 0;
- border:0;
- border-radius:12px;
- background:white;
- color:#202633;
- text-align:left;
-}
-.chat-user:hover{background:#f3f6fb}
-.chat-user.selected{background:#e8f1ff;color:#176bce}
-.chat-user img{
- width:43px;height:43px;flex-shrink:0;
- border-radius:50%;object-fit:cover;background:#e6ebf2;
-}
-.chat-user-info{min-width:0;flex:1}
-.chat-user-name{font-weight:bold;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chat-user-sub{font-size:11px;color:#8993a2;margin-top:4px}
-.messenger-main{
- display:flex;
- flex-direction:column;
- min-width:0;
- background:#f7f9fc;
-}
-.messenger-top{
- height:68px;
- flex-shrink:0;
- background:white;
- border-bottom:1px solid #e8ebf0;
- display:flex;
- align-items:center;
- gap:11px;
- padding:10px 15px;
-}
-.messenger-top img{
- width:43px;height:43px;border-radius:50%;
- object-fit:cover;background:#e6ebf2;
-}
-.chat-top-name{font-weight:bold;font-size:15px;color:#172943}
-.chat-top-status{font-size:11px;color:#8993a2;margin-top:4px}
-.chat-box{
- flex:1;
- overflow-y:auto;
- padding:18px 15px;
- display:flex;
- flex-direction:column;
- gap:3px;
- background:#f7f9fc;
-}
-.chat-empty{
- margin:auto;
- text-align:center;
- color:#8993a2;
- font-size:13px;
-}
-.bubble-row{
- display:flex;
- align-items:flex-end;
- gap:7px;
- width:100%;
- margin:3px 0;
-}
-.bubble-row.mine{justify-content:flex-end}
-.bubble-row.theirs{justify-content:flex-start}
-.bubble-avatar{
- width:27px;height:27px;border-radius:50%;
- object-fit:cover;background:#e2e7ef;flex-shrink:0;
-}
-.bubble{
- max-width:min(75%,420px);
- padding:10px 14px;
- border-radius:18px;
- font-size:14px;
- line-height:1.45;
- overflow-wrap:anywhere;
- white-space:pre-wrap;
- box-shadow:0 1px 2px #0000000b;
-}
-.bubble.mine{
- background:#1684f8;
- color:white;
- border-bottom-right-radius:5px;
-}
-.bubble.theirs{
- background:#e9edf3;
- color:#202633;
- border-bottom-left-radius:5px;
-}
-.bubble img{
- display:block;
- max-width:220px;
- max-height:220px;
- object-fit:contain;
- border-radius:12px;
- margin-top:5px;
-}
-.message-time{
- font-size:10px;
- color:#9aa3b1;
- margin:2px 7px 5px;
-}
-.message-time.mine{text-align:right}
-.chat-compose{
- display:flex;
- align-items:flex-end;
- gap:9px;
- padding:12px;
- background:white;
- border-top:1px solid #e8ebf0;
-}
-.chat-compose textarea{
- flex:1;
- min-width:0;
- min-height:42px;
- max-height:110px;
- resize:vertical;
- border:0;
- outline:none;
- background:#f0f2f5;
- border-radius:22px;
- padding:12px 15px;
- margin:0;
- font-size:14px;
-}
-.chat-compose textarea:focus{box-shadow:0 0 0 2px #d6e8ff}
-.attach-btn{
- width:42px;height:42px;flex-shrink:0;
- border-radius:50%;
- padding:0;
- background:#eef5ff;
- color:#1684f8;
- font-size:21px;
-}
-.send-btn{
- width:43px;height:43px;flex-shrink:0;
- border-radius:50%;
- padding:0;
- background:#1684f8;
- color:white;
- font-size:19px;
-}
-#chatImage{display:none}
-.selected-file{
- padding:5px 12px;
- background:#fff;
- color:#1684f8;
- font-size:12px;
-}
-.chat-back{
- display:none;
- background:#eef5ff;
- color:#1684f8;
- border-radius:50%;
- width:35px;height:35px;padding:0;
-}
-@media(max-width:650px){
- main{padding:10px}
- .messenger{
-  display:block;
-  height:calc(100dvh - 205px);
-  min-height:430px;
-  position:relative;
-  border-radius:13px;
- }
- .messenger-sidebar{
-  height:100%;
-  width:100%;
-  border:0;
- }
- .messenger-main{
-  display:none;
-  height:100%;
-  width:100%;
- }
- .messenger.mobile-chat-open .messenger-sidebar{display:none}
- .messenger.mobile-chat-open .messenger-main{display:flex}
- .chat-back{display:block}
- .bubble{max-width:82%}
- .chat-box{padding:14px 10px}
- .chat-compose{gap:6px;padding:9px}
- .chat-compose textarea{font-size:14px}
-}
+.panel,.product-card,.order-card{background:white;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 2px 9px #0000000c}
+input,textarea,select{width:100%;padding:11px;margin:7px 0 12px;border:1px solid #ccd3df;border-radius:8px;font:inherit;background:white}
+textarea{min-height:85px;resize:vertical}
+label{font-weight:bold;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px}
+.product-card img{width:100%;height:165px;object-fit:contain;background:#f5f6f8;border-radius:8px}
+.product-card h3{margin:9px 0 5px}
+.price{font-size:19px;font-weight:bold;color:#087b4c}
+.muted{color:#687386;font-size:13px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row>*{flex:1}
+.profile-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.profile-tabs button{background:#52617a}
+.profile-tabs button.active{background:var(--green)}
+.avatar{width:85px;height:85px;object-fit:cover;border-radius:50%;background:#e5e9ef}
+.chat-box{height:260px;overflow:auto;background:#f3f5f8;border-radius:9px;padding:10px;margin:10px 0}
+.chat-message{background:white;border-radius:9px;padding:9px;margin:7px 0;overflow-wrap:anywhere}
+.chat-message.mine{background:#dff6e9;margin-left:18px}
+.chat-message img{max-width:180px;display:block;border-radius:8px;margin-top:6px}
+.support-customer{display:block;width:100%;text-align:left;margin:6px 0;background:#edf2f7;color:#18243a}
+footer{text-align:center;padding:25px;color:#758096}
+a{color:#087b4c}
+.status{padding:8px;border-radius:7px;background:#edf7f1;margin:8px 0}
+@media(max-width:600px){header{align-items:flex-start}nav{width:100%}nav button{flex:1;padding:9px 5px}main{margin:12px auto}.row{display:block}}
 </style>
 </head>
 <body>
 
 <header>
-<h1>ZRX Online Store</h1>
-<p>বিশ্বস্ত অনলাইন শপিং</p>
+  <h2>ZRX Online Store</h2>
+  <nav id="mainNav">
+    <button onclick="showPage('home')">হোম</button>
+    <button id="cartNav" onclick="showPage('cart')">কার্ট (<span id="cartCount">0</span>)</button>
+    <button id="profileNav" class="hidden" onclick="showPage('profile')">প্রোফাইল</button>
+    <button id="accountNav" onclick="showPage('account')">লগইন</button>
+    <button id="adminNav" class="hidden" onclick="showPage('admin')">অ্যাডমিন</button>
+  </nav>
 </header>
 
-<nav>
-<button onclick="showPage('home')">হোম 🏠</button>
-<button id="cartMenu" class="hidden" onclick="showPage('cart')">কার্ট 🛒</button>
-<button id="ordersMenu" class="hidden" onclick="showPage('orders')">আমার অর্ডার 📦</button>
-<button id="accountMenu" onclick="showPage('account')">লগইন / অ্যাকাউন্ট 👤</button>
-<button id="profileMenu" class="hidden" onclick="showPage('profile')">আমার প্রোফাইল</button>
-<button id="chatMenu" class="hidden" onclick="showPage('chat')">মেসেজ 💬</button>
-<button id="adminMenu" class="hidden" onclick="showPage('admin')">অ্যাডমিন 👑</button>
-</nav>
-
 <main>
-<div id="message" class="hidden"></div>
 
-<section id="home" class="active">
-<h2>আমাদের পণ্য</h2>
-<p class="muted">পণ্য দেখতে লগইন করার প্রয়োজন নেই। অর্ডার করতে অ্যাকাউন্টে লগইন করুন।</p>
-<div id="products" class="grid">পণ্য লোড হচ্ছে...</div>
-</section>
-
-<section id="account">
-<h2>কাস্টমার অ্যাকাউন্ট</h2>
-<div class="panel" id="registerBox">
-<h3>নতুন অ্যাকাউন্ট তৈরি করুন</h3>
-<input id="regName" placeholder="আপনার পুরো নাম">
-<input id="regPhone" type="tel" placeholder="মোবাইল নম্বর">
-<input id="regEmail" type="email" placeholder="ইমেইল">
-<input id="regUsername" placeholder="নিজের পছন্দের ইউজারনেম">
-<input id="regPassword" type="password" placeholder="পাসওয়ার্ড">
-<input id="regConfirm" type="password" placeholder="পাসওয়ার্ড আবার লিখুন">
-<button onclick="signUp()">নতুন অ্যাকাউন্ট খুলুন</button>
-</div>
-
-<div class="panel" id="loginBox">
-<h3>আগের অ্যাকাউন্টে লগইন</h3>
-<input id="loginUsername" placeholder="ইউজারনেম">
-<input id="loginPassword" type="password" placeholder="পাসওয়ার্ড">
-<button onclick="signIn()">লগইন</button>
-<hr>
-<h3>পাসওয়ার্ড ভুলে গেছেন?</h3>
-<input id="resetEmail" type="email" placeholder="অ্যাকাউন্টের ইমেইল">
-<button onclick="resetPassword()">ইমেইলে রিসেট লিংক পাঠান</button>
-<p class="muted">রিসেট লিংক ইমেইলে যাবে।</p>
-</div>
-
-<div class="panel hidden" id="loggedBox">
-<h3>আপনার অ্যাকাউন্ট</h3>
-<div class="profile-row">
-<img id="profileAvatar" class="avatar" alt="প্রোফাইল ছবি">
-<div><b id="profileDisplayName"></b><p class="muted">আপনার প্রোফাইল ছবি</p></div>
-</div>
-<p id="customerInfo"></p>
-<button onclick="showPage('profile')">আমার প্রোফাইল এডিট করুন</button>
-<button onclick="signOut()">লগআউট</button>
-</div>
-<p id="authStatus"></p>
-</section>
-
-<section id="profile">
-<h2>আমার প্রোফাইল 👤</h2>
-<div class="panel">
-<div class="profile-row">
-<img id="editProfileAvatar" class="avatar" alt="প্রোফাইল ছবি">
-<div><h3 id="editProfileName">আমার প্রোফাইল</h3><p class="muted">এখানে নিজের অ্যাকাউন্টের তথ্য পরিবর্তন করতে পারবেন।</p></div>
-</div>
-<label class="profile-label">প্রোফাইল ছবি</label>
-<input id="avatarFile" type="file" accept="image/*">
-<button onclick="uploadAvatar()">ছবি আপলোড / পরিবর্তন</button>
-<label class="profile-label">আপনার নাম</label>
-<input id="profileNameInput" placeholder="আপনার পুরো নাম">
-<label class="profile-label">অ্যাকাউন্টের ইমেইল (শুধু দেখা যাবে)</label>
-<input id="profileEmailInput" type="email" disabled>
-<label class="profile-label">ফোন নম্বর</label>
-<input id="profilePhoneInput" type="tel" placeholder="মোবাইল নম্বর">
-<label class="profile-label">ইউজারনেম</label>
-<input id="profileUsernameInput" placeholder="আপনার ইউজারনেম">
-<button onclick="saveProfile()">প্রোফাইলের তথ্য সংরক্ষণ করুন</button>
-<p id="profileStatus"></p>
-</div>
-<div class="panel">
-<h3>পাসওয়ার্ড পরিবর্তন 🔐</h3>
-<input id="oldPassword" type="password" placeholder="বর্তমান পাসওয়ার্ড">
-<input id="newPassword" type="password" placeholder="নতুন পাসওয়ার্ড">
-<input id="confirmPassword" type="password" placeholder="নতুন পাসওয়ার্ড আবার লিখুন">
-<button onclick="changePassword()">পাসওয়ার্ড পরিবর্তন করুন</button>
-<p class="muted">বর্তমান পাসওয়ার্ড যাচাই করে নতুন পাসওয়ার্ড সংরক্ষণ করা হবে।</p>
-</div>
-</section>
-
-<section id="resetPage">
-<div class="panel">
-<h2>নতুন পাসওয়ার্ড সেট করুন 🔐</h2>
-<p>আপনার অ্যাকাউন্টের জন্য নতুন পাসওয়ার্ড লিখুন।</p>
-<input id="recoveryPassword" type="password" placeholder="নতুন পাসওয়ার্ড">
-<input id="recoveryConfirm" type="password" placeholder="নতুন পাসওয়ার্ড আবার লিখুন">
-<button onclick="saveRecoveryPassword()">নতুন পাসওয়ার্ড সংরক্ষণ করুন</button>
-<p id="recoveryStatus"></p>
-</div>
-</section>
-
-<section id="cart">
-<h2>আপনার কার্ট 🛒</h2>
-<div id="cartItems"></div>
-<div class="panel">
-<h3>ডেলিভারি তথ্য</h3>
-<input id="orderName" placeholder="আপনার নাম">
-<input id="orderPhone" placeholder="মোবাইল নম্বর">
-<input id="orderDistrict" placeholder="জেলা">
-<input id="orderUpazila" placeholder="থানা / উপজেলা">
-<input id="orderArea" placeholder="এলাকা">
-<textarea id="orderAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
-<select id="deliveryMethod">
-<option value="Home Delivery">হোম ডেলিভারি</option>
-<option value="Pickup">নিজে এসে সংগ্রহ</option>
-</select>
-<p class="muted">পেমেন্ট পদ্ধতি এখানে নির্বাচন করতে হবে না। অর্ডার জমা দেওয়ার পর দোকান থেকে যোগাযোগ করা হবে।</p>
-<h3 id="cartTotal">মোট: ৳০</h3>
-<button onclick="placeOrder()">অর্ডার নিশ্চিত করুন</button>
-</div>
-</section>
-
-<section id="orders">
-<h2>আমার অর্ডার 📦</h2>
-<div id="myOrders">অর্ডার লোড হচ্ছে...</div>
-</section>
-
-<!-- Messenger style chat -->
-<section id="chat">
-<h2>মেসেজ 💬</h2>
-<p class="muted" id="chatHelp">অ্যাডমিনের সঙ্গে কথা বলুন।</p>
-
-<div class="messenger" id="messenger">
- <div class="messenger-sidebar">
-  <div class="inbox-heading">
-   <h3 id="chatListTitle">চ্যাট</h3>
-   <p>আপনার কথোপকথন</p>
+<!-- HOME -->
+<section id="home" class="page">
+  <div class="panel">
+    <h2>স্বাগতম ZRX Online Store-এ 🛍️</h2>
+    <p>আপনার প্রয়োজনীয় পণ্য অর্ডার করুন সহজেই।</p>
   </div>
-  <div id="chatUsers" class="chat-list">
-   <div class="chat-empty">কথোপকথন লোড হচ্ছে...</div>
-  </div>
- </div>
+  <h2>আমাদের পণ্য</h2>
+  <div id="productList" class="grid">পণ্য লোড হচ্ছে...</div>
+</section>
 
- <div class="messenger-main">
-  <div class="messenger-top">
-   <button class="chat-back" onclick="backToChatList()">‹</button>
-   <img id="chatHeaderAvatar" src="" alt="প্রোফাইল">
-   <div>
-    <div class="chat-top-name" id="chatWith">কথোপকথন নির্বাচন করুন</div>
-    <div class="chat-top-status">মেসেজ</div>
-   </div>
+<!-- ACCOUNT -->
+<section id="account" class="page hidden">
+  <div class="panel">
+    <h2>লগইন</h2>
+    <label>ইমেইল</label>
+    <input id="loginEmail" type="email" placeholder="আপনার ইমেইল">
+    <label>পাসওয়ার্ড</label>
+    <input id="loginPassword" type="password" placeholder="পাসওয়ার্ড">
+    <button onclick="loginUser()">লগইন করুন</button>
+    <button class="secondary" onclick="showPage('forgot')">পাসওয়ার্ড ভুলে গেছেন?</button>
+  </div>
+  <div class="panel">
+    <h2>নতুন অ্যাকাউন্ট তৈরি</h2>
+    <label>আপনার নাম</label>
+    <input id="registerName" placeholder="সম্পূর্ণ নাম">
+    <label>ফোন নম্বর</label>
+    <input id="registerPhone" type="tel" placeholder="ফোন নম্বর">
+    <label>ইমেইল</label>
+    <input id="registerEmail" type="email" placeholder="ইমেইল">
+    <label>পাসওয়ার্ড</label>
+    <input id="registerPassword" type="password" placeholder="কমপক্ষে ৬ অক্ষর">
+    <button onclick="registerUser()">অ্যাকাউন্ট তৈরি করুন</button>
+    <p id="accountMessage" class="muted"></p>
+  </div>
+</section>
+
+<!-- FORGOT PASSWORD -->
+<section id="forgot" class="page hidden">
+  <div class="panel">
+    <h2>পাসওয়ার্ড রিসেট</h2>
+    <p>আপনার অ্যাকাউন্টের ইমেইল দিন। রিসেট লিংক ইমেইলে পাঠানো হবে।</p>
+    <input id="resetEmail" type="email" placeholder="আপনার ইমেইল">
+    <button onclick="resetPassword()">রিসেট লিংক পাঠান</button>
+  </div>
+</section>
+
+<!-- PASSWORD RESET -->
+<section id="reset" class="page hidden">
+  <div class="panel">
+    <h2>নতুন পাসওয়ার্ড দিন</h2>
+    <input id="newPassword" type="password" placeholder="নতুন পাসওয়ার্ড">
+    <button onclick="saveNewPassword()">পাসওয়ার্ড পরিবর্তন করুন</button>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page hidden">
+  <div class="panel">
+    <div class="row">
+      <img id="profileAvatar" class="avatar" alt="প্রোফাইল ছবি">
+      <div>
+        <h2 id="profileDisplayName">আমার প্রোফাইল</h2>
+        <p id="profileEmail" class="muted"></p>
+      </div>
+    </div>
   </div>
 
-  <div id="chatMessages" class="chat-box">
-   <div class="chat-empty">একটি কথোপকথন নির্বাচন করুন</div>
+  <div class="profile-tabs">
+    <button class="active" onclick="profileTab('details',this)">প্রোফাইল</button>
+    <button onclick="profileTab('address',this)">ঠিকানা</button>
+    <button onclick="profileTab('orders',this)">আমার অর্ডার</button>
+    <button onclick="profileTab('settings',this)">সেটিংস</button>
+    <button onclick="profileTab('support',this)">কাস্টমার সাপোর্ট 💬</button>
   </div>
 
-  <div class="selected-file hidden" id="selectedFileName"></div>
-  <div class="chat-compose">
-   <label class="attach-btn" for="chatImage" title="ছবি পাঠান" style="display:flex;align-items:center;justify-content:center;cursor:pointer">＋</label>
-   <input id="chatImage" type="file" accept="image/*">
-   <textarea id="chatText" placeholder="Aa মেসেজ লিখুন..." rows="1"></textarea>
-   <button class="send-btn" id="sendMessageBtn" onclick="sendMessage()" title="পাঠান">➤</button>
+  <div id="tab-details" class="profile-panel">
+    <div class="panel">
+      <h3>প্রোফাইল এডিট করুন</h3>
+      <label>নাম</label>
+      <input id="profileName" placeholder="আপনার নাম">
+      <label>ফোন নম্বর</label>
+      <input id="profilePhone" placeholder="ফোন নম্বর">
+      <label>ইউজারনেম</label>
+      <input id="profileUsername" placeholder="ইউজারনেম">
+      <button onclick="saveProfile()">প্রোফাইল সংরক্ষণ করুন</button>
+      <hr>
+      <label>প্রোফাইল ছবি</label>
+      <input id="profileImageFile" type="file" accept="image/*">
+      <button onclick="uploadProfileImage()">ছবি আপলোড করুন</button>
+    </div>
   </div>
- </div>
-</div>
+
+  <div id="tab-address" class="profile-panel hidden">
+    <div class="panel">
+      <h3>আমার ঠিকানা 📍</h3>
+      <p class="muted">একবার ঠিকানা সংরক্ষণ করলে পরের অর্ডারে স্বয়ংক্রিয়ভাবে ব্যবহার হবে। প্রয়োজন হলে পরে পরিবর্তন করতে পারবেন।</p>
+      <label>জেলা</label>
+      <input id="profileDistrict" placeholder="জেলা">
+      <label>থানা / উপজেলা</label>
+      <input id="profileUpazila" placeholder="থানা / উপজেলা">
+      <label>এলাকা</label>
+      <input id="profileArea" placeholder="এলাকা">
+      <label>সম্পূর্ণ ঠিকানা</label>
+      <textarea id="profileFullAddress" placeholder="বাড়ি, রোড, ব্লক, পরিচিত স্থান ইত্যাদি"></textarea>
+      <button onclick="saveAddress()">ঠিকানা সংরক্ষণ করুন</button>
+      <p id="addressStatus"></p>
+    </div>
+  </div>
+
+  <div id="tab-orders" class="profile-panel hidden">
+    <div class="panel">
+      <h3>আমার অর্ডার</h3>
+      <div id="myOrders">অর্ডার লোড হচ্ছে...</div>
+    </div>
+  </div>
+
+  <div id="tab-settings" class="profile-panel hidden">
+    <div class="panel">
+      <h3>অ্যাকাউন্ট সেটিংস</h3>
+      <label>নতুন পাসওয়ার্ড</label>
+      <input id="changePasswordInput" type="password" placeholder="নতুন পাসওয়ার্ড">
+      <button onclick="changePassword()">পাসওয়ার্ড পরিবর্তন</button>
+      <hr>
+      <button class="danger" onclick="logoutUser()">লগআউট</button>
+    </div>
+  </div>
+
+  <div id="tab-support" class="profile-panel hidden">
+    <div class="panel">
+      <h3>কাস্টমার সাপোর্ট 💬</h3>
+      <div id="profileSupportMessages" class="chat-box"></div>
+      <textarea id="profileSupportText" placeholder="আপনার মেসেজ লিখুন..."></textarea>
+      <input id="profileSupportImage" type="file" accept="image/*">
+      <button onclick="sendProfileSupport()">মেসেজ পাঠান</button>
+    </div>
+  </div>
 </section>
 
-<section id="admin">
-<h2>অ্যাডমিন প্যানেল 👑</h2>
-<div class="panel">
-<h3>অ্যাডমিন প্রোফাইল</h3>
-<div class="profile-row">
-<img id="adminAvatar" class="avatar" alt="অ্যাডমিন ছবি">
-<div><b id="adminDisplayName">অ্যাডমিন</b><p class="muted">অ্যাডমিনের প্রোফাইল ছবি</p></div>
-</div>
-<button onclick="showPage('profile')">অ্যাডমিন প্রোফাইল এডিট করুন</button>
-</div>
-<div class="panel">
-<h3>নতুন পণ্য যোগ করুন</h3>
-<input id="productName" placeholder="পণ্যের নাম">
-<textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>
-<input id="productPrice" type="number" min="0" placeholder="দাম">
-<input id="productCategory" placeholder="ক্যাটাগরি">
-<input id="productStock" type="number" min="0" placeholder="স্টক সংখ্যা">
-<label>পণ্যের ছবি নির্বাচন করুন</label>
-<input id="productImage" type="file" accept="image/*">
-<button onclick="addProduct()">পণ্য যোগ করুন</button>
-</div>
-<h3>পণ্যের তালিকা</h3>
-<div id="adminProducts"></div>
+<!-- CART / CHECKOUT -->
+<section id="cart" class="page hidden">
+  <div class="panel">
+    <h2>আমার কার্ট 🛒</h2>
+    <div id="cartItems">কার্ট লোড হচ্ছে...</div>
+    <h3>সর্বমোট: <span id="cartTotal">৳0</span></h3>
+  </div>
+
+  <div class="panel">
+    <h2>ডেলিভারির তথ্য</h2>
+    <p class="muted">আপনার প্রোফাইলে সংরক্ষিত ঠিকানা থাকলে এখানে স্বয়ংক্রিয়ভাবে বসবে। অর্ডারের আগে তথ্য যাচাই করুন।</p>
+    <label>গ্রাহকের নাম</label>
+    <input id="orderName" placeholder="আপনার নাম">
+    <label>ফোন নম্বর</label>
+    <input id="orderPhone" placeholder="ফোন নম্বর">
+    <label>জেলা</label>
+    <input id="orderDistrict" placeholder="জেলা">
+    <label>থানা / উপজেলা</label>
+    <input id="orderUpazila" placeholder="থানা / উপজেলা">
+    <label>এলাকা</label>
+    <input id="orderArea" placeholder="এলাকা">
+    <label>সম্পূর্ণ ঠিকানা</label>
+    <textarea id="orderAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+    <div class="status">
+      <strong>ডেলিভারি নিয়ম:</strong>
+      <p>বায়েজিদ থানার ঠিকানায় নিজস্ব হোম ডেলিভারি। বায়েজিদ থানার বাইরে কুরিয়ার ডেলিভারি।</p>
+    </div>
+    <button onclick="placeOrder()">অর্ডার কনফার্ম করুন</button>
+    <p id="checkoutMessage"></p>
+  </div>
 </section>
+
+<!-- ADMIN -->
+<section id="admin" class="page hidden">
+  <div class="panel">
+    <h2>অ্যাডমিন ড্যাশবোর্ড ⚙️</h2>
+    <p>পণ্য, অর্ডার ও কাস্টমার সাপোর্ট পরিচালনা করুন।</p>
+  </div>
+
+  <div class="panel">
+    <h3>নতুন পণ্য যোগ করুন</h3>
+    <label>পণ্যের নাম</label>
+    <input id="productName" placeholder="পণ্যের নাম">
+    <label>বিবরণ</label>
+    <textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>
+    <label>দাম</label>
+    <input id="productPrice" type="number" min="0" placeholder="দাম">
+    <label>স্টক</label>
+    <input id="productStock" type="number" min="0" placeholder="স্টক">
+    <label>ক্যাটাগরি</label>
+    <input id="productCategory" placeholder="ক্যাটাগরি">
+    <label>পণ্যের ছবি</label>
+    <input id="productImage" type="file" accept="image/*">
+    <button onclick="addProduct()">পণ্য যোগ করুন</button>
+  </div>
+
+  <div class="panel">
+    <h3>পণ্য পরিচালনা</h3>
+    <div id="adminProducts">পণ্য লোড হচ্ছে...</div>
+  </div>
+
+  <div class="panel">
+    <h3>সব অর্ডার 📦</h3>
+    <div id="adminOrders">অর্ডার লোড হচ্ছে...</div>
+  </div>
+
+  <div class="panel">
+    <h3>কাস্টমার সাপোর্ট 💬</h3>
+    <div id="adminSupportCustomers">কাস্টমার লোড হচ্ছে...</div>
+    <div id="adminSupportChat" class="hidden">
+      <h4 id="adminSupportName">কাস্টমার</h4>
+      <div id="adminSupportMessages" class="chat-box"></div>
+      <textarea id="adminSupportText" placeholder="উত্তর লিখুন..."></textarea>
+      <button onclick="sendAdminSupport()">উত্তর পাঠান</button>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer>ZRX Online Store © 2026</footer>
 
 <script>
-const SUPABASE_URL="https://rtvbbksgppcjcrcxtkbe.supabase.co";
-const SUPABASE_KEY="sb_publishable_S80UCHIYfpC4rwe94bH_Lg_VCsQhc7o";
-const FUNCTION_URL=SUPABASE_URL+"/functions/v1/rapid-worker";
-const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+"use strict";
 
-let currentUser=null;
-let isAdmin=false;
-let cart=[];
-let selectedChatUserId=null;
-let selectedChatName="";
-let selectedChatAvatar="";
-let recoveryMode=false;
+/* SUPABASE CONFIG */
+const SUPABASE_URL = "https://rtvbbksgppcjcrcxtkbe.supabase.co";
+const SUPABASE_KEY = "sb_publishable_S80UCHIYfpC4rwe94bH_Lg_VCsQhc7o";
+const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-worker";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function message(text){
- const box=document.getElementById("message");
- box.textContent=text;
- box.classList.remove("hidden");
- window.scrollTo(0,0);
-}
-function hideMessage(){document.getElementById("message").classList.add("hidden");}
+let currentUser = null;
+let isAdmin = false;
+let cart = JSON.parse(localStorage.getItem("zrx_cart") || "[]");
+let selectedSupportUser = null;
+let productsCache = [];
 
-function showPage(id){
- hideMessage();
- if(["cart","orders","chat","profile"].includes(id)&&!currentUser){
-  showPage("account");message("এই সুবিধা ব্যবহার করতে আগে লগইন করুন।");return;
- }
- if(id==="admin"&&!isAdmin){message("এই পেজ শুধু অ্যাডমিনের জন্য।");return;}
- document.querySelectorAll("main section").forEach(s=>s.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- if(id==="cart")renderCart();
- if(id==="orders")loadOrders();
- if(id==="admin")loadAdminProducts();
- if(id==="chat")openChat();
- if(id==="profile")loadProfile();
+const $ = id => document.getElementById(id);
+const money = n => "৳" + Number(n || 0).toLocaleString("en-US");
+
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
 }
 
-function updateMenus(){
- ["cartMenu","ordersMenu","chatMenu","profileMenu"].forEach(id=>{
-  document.getElementById(id).classList.toggle("hidden",!currentUser);
- });
- document.getElementById("adminMenu").classList.toggle("hidden",!isAdmin);
- document.getElementById("accountMenu").textContent=currentUser?"আমার অ্যাকাউন্ট 👤":"লগইন / অ্যাকাউন্ট 👤";
- document.getElementById("registerBox").classList.toggle("hidden",!!currentUser);
- document.getElementById("loginBox").classList.toggle("hidden",!!currentUser);
- document.getElementById("loggedBox").classList.toggle("hidden",!currentUser);
+function message(id, text, good=false) {
+  const node = $(id);
+  if (node) {
+    node.textContent = text;
+    node.style.color = good ? "#087b4c" : "#c62828";
+  }
 }
 
-async function callWorker(payload){
- const response=await fetch(FUNCTION_URL,{
-  method:"POST",
-  headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY},
-  body:JSON.stringify(payload)
- });
- const result=await response.json();
- if(!response.ok)throw new Error(result.error||"অনুরোধ সম্পন্ন হয়নি");
- return result;
+async function worker(data) {
+  const response = await fetch(FUNCTION_URL, {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_KEY
+    },
+    body:JSON.stringify(data)
+  });
+  const result = await response.json();
+  if (!response.ok || result.error) {
+    throw new Error(result.error || result.message || "অনুরোধ ব্যর্থ হয়েছে");
+  }
+  return result;
 }
 
-async function signUp(){
- const full_name=document.getElementById("regName").value.trim();
- const phone=document.getElementById("regPhone").value.trim();
- const email=document.getElementById("regEmail").value.trim();
- const username=document.getElementById("regUsername").value.trim().toLowerCase();
- const password=document.getElementById("regPassword").value;
- const confirm=document.getElementById("regConfirm").value;
- if(!full_name||!phone||!email||!username||!password||!confirm){authMsg("সব ঘর পূরণ করুন।");return;}
- if(password.length<6){authMsg("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");return;}
- if(password!==confirm){authMsg("দুইটি পাসওয়ার্ড মিলছে না।");return;}
- try{
-  authMsg("অ্যাকাউন্ট তৈরি হচ্ছে...");
-  await callWorker({action:"register",full_name,phone,email,username,password});
-  authMsg("অ্যাকাউন্ট তৈরি হয়েছে। এখন ইউজারনেম ও পাসওয়ার্ড দিয়ে লগইন করুন।");
-  document.getElementById("loginUsername").value=username;
-  document.getElementById("loginPassword").value="";
- }catch(e){authMsg(e.message);}
-}
-function authMsg(t){document.getElementById("authStatus").textContent=t;}
+/* PAGE NAVIGATION */
+function showPage(id) {
+  if (["profile","cart"].includes(id) && !currentUser) {
+    showPage("account");
+    return;
+  }
+  if (id === "admin" && !isAdmin) {
+    alert("এই পেজটি শুধু অ্যাডমিনের জন্য।");
+    return;
+  }
 
-async function signIn(){
- const username=document.getElementById("loginUsername").value.trim().toLowerCase();
- const password=document.getElementById("loginPassword").value;
- if(!username||!password){authMsg("ইউজারনেম ও পাসওয়ার্ড দিন।");return;}
- try{
-  authMsg("লগইন হচ্ছে...");
-  const result=await callWorker({action:"login",username,password});
-  await db.auth.setSession(result.session);
-  await refreshUser();
-  authMsg("লগইন সফল হয়েছে।");
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  if ($(id)) $(id).classList.remove("hidden");
+
+  if (id === "home") loadProducts();
+  if (id === "profile") {
+    loadProfile();
+    loadMyOrders();
+  }
+  if (id === "cart") {
+    renderCart();
+    loadCheckoutAddress();
+  }
+  if (id === "admin") {
+    loadAdminProducts();
+    loadAdminOrders();
+    loadAdminSupportCustomers();
+  }
+  window.scrollTo(0,0);
+}
+
+function profileTab(tab, button) {
+  document.querySelectorAll(".profile-panel").forEach(p => p.classList.add("hidden"));
+  $("tab-" + tab)?.classList.remove("hidden");
+  document.querySelectorAll(".profile-tabs button").forEach(b => b.classList.remove("active"));
+  button?.classList.add("active");
+
+  if (tab === "address") loadProfile();
+  if (tab === "orders") loadMyOrders();
+  if (tab === "support") loadProfileSupport();
+}
+
+/* AUTH STATE */
+async function refreshUser() {
+  const {data:{session}} = await db.auth.getSession();
+  currentUser = session?.user || null;
+  isAdmin = false;
+
+  if (currentUser) {
+    const {data} = await db.from("admin_users")
+      .select("id").eq("id",currentUser.id).maybeSingle();
+    isAdmin = !!data;
+  }
+  updateNavigation();
+}
+
+function updateNavigation() {
+  $("profileNav").classList.toggle("hidden",!currentUser);
+  $("accountNav").classList.toggle("hidden",!!currentUser);
+  $("adminNav").classList.toggle("hidden",!isAdmin);
+}
+
+/* REGISTER */
+async function registerUser() {
+  const full_name = $("registerName").value.trim();
+  const phone = $("registerPhone").value.trim();
+  const email = $("registerEmail").value.trim();
+  const password = $("registerPassword").value;
+
+  if (!full_name || !phone || !email || !password) {
+    message("accountMessage","সব তথ্য পূরণ করুন।");
+    return;
+  }
+  if (password.length < 6) {
+    message("accountMessage","পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
+    return;
+  }
+
+  try {
+    const result = await worker({action:"register",full_name,phone,email,password});
+    if (result.session) await db.auth.setSession(result.session);
+    await refreshUser();
+
+    if (currentUser) {
+      await db.from("profiles").upsert({
+        id:currentUser.id,full_name,phone
+      },{onConflict:"id"});
+      showPage("profile");
+      alert("অ্যাকাউন্ট তৈরি হয়েছে।");
+    } else {
+      message("accountMessage","অ্যাকাউন্ট তৈরি হয়েছে। ইমেইল যাচাই করে লগইন করুন।",true);
+    }
+  } catch(e) {
+    message("accountMessage","রেজিস্ট্রেশন হয়নি: "+e.message);
+  }
+}
+
+/* LOGIN */
+async function loginUser() {
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+  if (!email || !password) return alert("ইমেইল ও পাসওয়ার্ড দিন।");
+
+  try {
+    const result = await worker({action:"login",email,password});
+    if (!result.session) throw new Error("লগইন সেশন পাওয়া যায়নি।");
+    await db.auth.setSession(result.session);
+    await refreshUser();
+    showPage("home");
+    alert("লগইন সফল হয়েছে।");
+  } catch(e) {
+    alert("লগইন হয়নি: "+e.message);
+  }
+}
+
+/* EMAIL PASSWORD RESET */
+async function resetPassword() {
+  const email = $("resetEmail").value.trim();
+  if (!email) return alert("ইমেইল লিখুন।");
+  const {error} = await db.auth.resetPasswordForEmail(email,{
+    redirectTo:location.origin+location.pathname
+  });
+  if (error) alert(error.message);
+  else alert("পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে।");
+}
+
+async function saveNewPassword() {
+  const password = $("newPassword").value;
+  if (!password || password.length < 6) return alert("কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।");
+  const {error} = await db.auth.updateUser({password});
+  if (error) alert(error.message);
+  else {
+    alert("পাসওয়ার্ড পরিবর্তন হয়েছে।");
+    $("newPassword").value = "";
+    showPage("home");
+  }
+}
+
+async function changePassword() {
+  $("newPassword").value = $("changePasswordInput").value;
+  await saveNewPassword();
+  $("changePasswordInput").value = "";
+}
+
+async function logoutUser() {
+  const {error} = await db.auth.signOut();
+  if (error) return alert(error.message);
+  currentUser = null;
+  isAdmin = false;
+  updateNavigation();
   showPage("home");
- }catch(e){authMsg(e.message);}
+  alert("লগআউট সফল হয়েছে।");
 }
 
-async function resetPassword(){
- const email=document.getElementById("resetEmail").value.trim();
- if(!email){authMsg("আপনার ইমেইল লিখুন।");return;}
- try{
-  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
-  if(error)throw error;
-  authMsg("পাসওয়ার্ড রিসেটের লিংক আপনার ইমেইলে পাঠানো হয়েছে।");
- }catch(e){authMsg("রিসেট লিংক পাঠানো যায়নি: "+e.message);}
-}
+/* PROFILE */
+async function loadProfile() {
+  if (!currentUser) return;
+  const {data,error} = await db.from("profiles")
+    .select("full_name,phone,username,avatar_url,district,upazila,area,full_address")
+    .eq("id",currentUser.id).maybeSingle();
 
-async function refreshUser(){
- const {data}=await db.auth.getUser();
- currentUser=data.user||null;
- isAdmin=false;
- if(currentUser){
-  const {data:profile}=await db.from("profiles").select("full_name,phone,username,avatar_url").eq("id",currentUser.id).maybeSingle();
-  const {data:admin}=await db.from("admin_users").select("user_id").eq("user_id",currentUser.id).maybeSingle();
-  isAdmin=!!admin;
-  const name=profile?.full_name||currentUser.email||"ব্যবহারকারী";
-  const avatar=profile?.avatar_url||avatarPlaceholder();
-  document.getElementById("customerInfo").textContent="নাম: "+(profile?.full_name||"")+" | ফোন: "+(profile?.phone||"")+" | ইউজারনেম: "+(profile?.username||"");
-  document.getElementById("profileDisplayName").textContent=name;
-  document.getElementById("profileAvatar").src=avatar;
-  document.getElementById("editProfileAvatar").src=avatar;
-  document.getElementById("adminAvatar").src=avatar;
-  document.getElementById("adminDisplayName").textContent=name;
-  document.getElementById("orderName").value=profile?.full_name||"";
-  document.getElementById("orderPhone").value=profile?.phone||"";
-  document.getElementById("profileNameInput").value=profile?.full_name||"";
-  document.getElementById("profilePhoneInput").value=profile?.phone||"";
-  document.getElementById("profileUsernameInput").value=profile?.username||"";
-  document.getElementById("profileEmailInput").value=currentUser.email||"";
- }
- updateMenus();
-}
+  if (error) return console.error(error);
+  const p = data || {};
 
-function avatarPlaceholder(){
- return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100%" height="100%" fill="#e7ebf0"/><circle cx="50" cy="37" r="19" fill="#9aa7b7"/><path d="M15 96c3-23 17-34 35-34s32 11 35 34" fill="#9aa7b7"/></svg>');
-}
-
-async function loadProfile(){
- if(!currentUser)return;
- const {data,error}=await db.from("profiles").select("full_name,phone,username,avatar_url").eq("id",currentUser.id).maybeSingle();
- if(error){document.getElementById("profileStatus").textContent="প্রোফাইল লোড হয়নি: "+error.message;return;}
- document.getElementById("profileNameInput").value=data?.full_name||"";
- document.getElementById("profilePhoneInput").value=data?.phone||"";
- document.getElementById("profileUsernameInput").value=data?.username||"";
- document.getElementById("profileEmailInput").value=currentUser.email||"";
- const avatar=data?.avatar_url||avatarPlaceholder();
- document.getElementById("editProfileAvatar").src=avatar;
- document.getElementById("editProfileName").textContent=data?.full_name||"আমার প্রোফাইল";
- document.getElementById("profileStatus").textContent="";
-}
-
-async function saveProfile(){
- if(!currentUser){message("আগে লগইন করুন।");return;}
- const full_name=document.getElementById("profileNameInput").value.trim();
- const phone=document.getElementById("profilePhoneInput").value.trim();
- const username=document.getElementById("profileUsernameInput").value.trim().toLowerCase();
- const status=document.getElementById("profileStatus");
- if(!full_name||!phone||!username){status.textContent="নাম, ফোন নম্বর ও ইউজারনেম পূরণ করুন।";return;}
- status.textContent="তথ্য সংরক্ষণ হচ্ছে...";
- const {error}=await db.from("profiles").update({full_name,phone,username}).eq("id",currentUser.id);
- if(error){status.textContent="তথ্য সংরক্ষণ হয়নি: "+error.message;return;}
- document.getElementById("profileDisplayName").textContent=full_name;
- document.getElementById("customerInfo").textContent="নাম: "+full_name+" | ফোন: "+phone+" | ইউজারনেম: "+username;
- document.getElementById("orderName").value=full_name;
- document.getElementById("orderPhone").value=phone;
- document.getElementById("editProfileName").textContent=full_name;
- status.textContent="প্রোফাইলের তথ্য সফলভাবে সংরক্ষণ হয়েছে।";
-}
-
-async function uploadAvatar(inputId="avatarFile"){
- if(!currentUser){message("আগে লগইন করুন।");return;}
- const file=document.getElementById(inputId).files[0];
- if(!file){message("আগে একটি ছবি নির্বাচন করুন।");return;}
- if(!file.type.startsWith("image/")){message("শুধু ছবির ফাইল নির্বাচন করুন।");return;}
- if(file.size>5*1024*1024){message("ছবির সাইজ ৫ MB-এর কম হতে হবে।");return;}
- const ext=(file.name.split(".").pop()||"jpg").toLowerCase();
- const path=currentUser.id+"/"+Date.now()+"."+ext;
- const {error:upErr}=await db.storage.from("profile-images").upload(path,file,{upsert:false,contentType:file.type});
- if(upErr){message("ছবি আপলোড হয়নি: "+upErr.message);return;}
- const {data:urlData}=db.storage.from("profile-images").getPublicUrl(path);
- const {error}=await db.from("profiles").update({avatar_url:urlData.publicUrl}).eq("id",currentUser.id);
- if(error){message("ছবি আপলোড হয়েছে, কিন্তু প্রোফাইলে সেভ হয়নি: "+error.message);return;}
- document.getElementById("profileAvatar").src=urlData.publicUrl;
- document.getElementById("editProfileAvatar").src=urlData.publicUrl;
- if(isAdmin)document.getElementById("adminAvatar").src=urlData.publicUrl;
- document.getElementById("avatarFile").value="";
- message("প্রোফাইল ছবি সফলভাবে আপডেট হয়েছে।");
-}
-
-async function changePassword(){
- if(!currentUser){message("আগে লগইন করুন।");return;}
- const oldPassword=document.getElementById("oldPassword").value;
- const newPassword=document.getElementById("newPassword").value;
- const confirm=document.getElementById("confirmPassword").value;
- const status=document.getElementById("profileStatus");
- if(!oldPassword||!newPassword||!confirm){status.textContent="সব পাসওয়ার্ডের ঘর পূরণ করুন।";return;}
- if(newPassword.length<6){status.textContent="নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।";return;}
- if(newPassword!==confirm){status.textContent="নতুন পাসওয়ার্ড দুটি মিলছে না।";return;}
- status.textContent="বর্তমান পাসওয়ার্ড যাচাই হচ্ছে...";
- const {error:verifyError}=await db.auth.signInWithPassword({email:currentUser.email,password:oldPassword});
- if(verifyError){status.textContent="বর্তমান পাসওয়ার্ড সঠিক নয়।";return;}
- const {error}=await db.auth.updateUser({password:newPassword});
- if(error){status.textContent="পাসওয়ার্ড পরিবর্তন হয়নি: "+error.message;return;}
- ["oldPassword","newPassword","confirmPassword"].forEach(id=>document.getElementById(id).value="");
- status.textContent="পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে।";
-}
-
-async function saveRecoveryPassword(){
- const password=document.getElementById("recoveryPassword").value;
- const confirm=document.getElementById("recoveryConfirm").value;
- const status=document.getElementById("recoveryStatus");
- if(password.length<6){status.textContent="পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।";return;}
- if(password!==confirm){status.textContent="দুইটি পাসওয়ার্ড মিলছে না।";return;}
- status.textContent="নতুন পাসওয়ার্ড সংরক্ষণ হচ্ছে...";
- const {error}=await db.auth.updateUser({password});
- if(error){status.textContent="পাসওয়ার্ড পরিবর্তন হয়নি: "+error.message;return;}
- recoveryMode=false;
- document.getElementById("recoveryPassword").value="";
- document.getElementById("recoveryConfirm").value="";
- status.textContent="পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে।";
- setTimeout(()=>showPage("account"),1800);
-}
-
-async function signOut(){
- await db.auth.signOut();
- currentUser=null;isAdmin=false;cart=[];selectedChatUserId=null;
- updateMenus();authMsg("লগআউট হয়েছে।");showPage("home");
-}
-
-async function loadProducts(){
- const box=document.getElementById("products");
- const {data,error}=await db.from("products").select("*").eq("is_active",true).order("created_at",{ascending:false});
- if(error){box.textContent="পণ্য লোড করা যায়নি: "+error.message;return;}
- if(!data||!data.length){box.textContent="এখনো কোনো পণ্য যোগ করা হয়নি।";return;}
- box.innerHTML="";
- data.forEach(p=>{
-  const card=document.createElement("div");card.className="product";
-  const img=document.createElement("img");img.src=p.image_url||"";img.alt=p.name||"পণ্য";
-  const title=document.createElement("h3");title.textContent=p.name;
-  const desc=document.createElement("p");desc.textContent=p.description||"";
-  const price=document.createElement("p");price.className="price";price.textContent="৳"+p.price;
-  const stock=document.createElement("p");stock.className="muted";stock.textContent="স্টক: "+p.stock;
-  const btn=document.createElement("button");btn.textContent="কার্টে যোগ করুন";btn.disabled=Number(p.stock)<=0;btn.onclick=()=>addToCart(p);
-  card.append(img,title,desc,price,stock,btn);box.appendChild(card);
- });
-}
-
-function addToCart(p){
- if(!currentUser){showPage("account");message("পণ্য কিনতে আগে লগইন করুন।");return;}
- const found=cart.find(x=>x.id===p.id);
- if(found){if(found.quantity>=Number(p.stock)){message("পর্যাপ্ত স্টক নেই।");return;}found.quantity++;}
- else cart.push({id:p.id,name:p.name,price:Number(p.price),stock:Number(p.stock),quantity:1});
- message("পণ্য কার্টে যোগ হয়েছে।");
-}
-
-function renderCart(){
- const box=document.getElementById("cartItems");box.innerHTML="";
- if(!cart.length){box.textContent="আপনার কার্ট খালি।";document.getElementById("cartTotal").textContent="মোট: ৳০";return;}
- let total=0;
- cart.forEach((p,i)=>{
-  total+=p.price*p.quantity;
-  const row=document.createElement("div");row.className="panel";
-  const title=document.createElement("b");title.textContent=p.name;
-  const info=document.createElement("p");info.textContent="৳"+p.price+" × "+p.quantity;
-  const minus=document.createElement("button");minus.textContent="−";minus.onclick=()=>{p.quantity--;if(p.quantity<=0)cart.splice(i,1);renderCart();};
-  const plus=document.createElement("button");plus.textContent="+";plus.style.marginLeft="8px";plus.onclick=()=>{if(p.quantity<p.stock)p.quantity++;else message("স্টক শেষ।");renderCart();};
-  const remove=document.createElement("button");remove.textContent="বাদ দিন";remove.style.marginLeft="8px";remove.onclick=()=>{cart.splice(i,1);renderCart();};
-  row.append(title,info,minus,plus,remove);box.append(row);
- });
- document.getElementById("cartTotal").textContent="মোট: ৳"+total;
-}
-
-async function placeOrder(){
- if(!currentUser){showPage("account");return;}
- if(!cart.length){message("কার্টে কোনো পণ্য নেই।");return;}
- const customer_name=document.getElementById("orderName").value.trim();
- const phone=document.getElementById("orderPhone").value.trim();
- const district=document.getElementById("orderDistrict").value.trim();
- const upazila=document.getElementById("orderUpazila").value.trim();
- const area=document.getElementById("orderArea").value.trim();
- const full_address=document.getElementById("orderAddress").value.trim();
- if(!customer_name||!phone||!district||!full_address){message("নাম, ফোন, জেলা ও ঠিকানা পূরণ করুন।");return;}
- const total_amount=cart.reduce((s,p)=>s+p.price*p.quantity,0);
- const order={customer_id:currentUser.id,customer_name,phone,district,upazila,area,full_address,delivery_method:document.getElementById("deliveryMethod").value,payment_method:"Not required",total_amount,status:"pending"};
- const {data,error}=await db.from("orders").insert(order).select().single();
- if(error){message("অর্ডার করা যায়নি: "+error.message);return;}
- const items=cart.map(p=>({order_id:data.id,product_id:p.id,product_name:p.name,quantity:p.quantity,unit_price:p.price}));
- const {error:itemError}=await db.from("order_items").insert(items);
- if(itemError){message("অর্ডার তৈরি হয়েছে, তবে পণ্যের তালিকা সংরক্ষণে সমস্যা হয়েছে: "+itemError.message);return;}
- cart=[];renderCart();message("আপনার অর্ডার গ্রহণ করা হয়েছে।");showPage("orders");
-}
-
-async function loadOrders(){
- const box=document.getElementById("myOrders");box.textContent="লোড হচ্ছে...";
- const {data,error}=await db.from("orders").select("*").eq("customer_id",currentUser.id).order("created_at",{ascending:false});
- if(error){box.textContent="অর্ডার দেখা যাচ্ছে না: "+error.message;return;}
- if(!data.length){box.textContent="আপনার কোনো অর্ডার নেই।";return;}
- box.innerHTML="";
- data.forEach(o=>{const card=document.createElement("div");card.className="panel";card.textContent="অর্ডার: "+o.id+" | মোট: ৳"+o.total_amount+" | অবস্থা: "+o.status;box.append(card);});
-}
-
-async function addProduct(){
- if(!isAdmin){message("অ্যাডমিন অনুমতি নেই।");return;}
- const name=document.getElementById("productName").value.trim();
- const description=document.getElementById("productDescription").value.trim();
- const price=Number(document.getElementById("productPrice").value);
- const category=document.getElementById("productCategory").value.trim();
- const stock=Number(document.getElementById("productStock").value);
- const file=document.getElementById("productImage").files[0];
- if(!name||price<=0||!file){message("পণ্যের নাম, সঠিক দাম ও ছবি দিন।");return;}
- const ext=file.name.split(".").pop();
- const path=Date.now()+"-"+Math.random().toString(36).slice(2)+"."+ext;
- const {error:uploadError}=await db.storage.from("product-images").upload(path,file,{upsert:false});
- if(uploadError){message("ছবি আপলোড হয়নি: "+uploadError.message);return;}
- const {data:urlData}=db.storage.from("product-images").getPublicUrl(path);
- const {error}=await db.from("products").insert({name,description,price,category,stock,image_url:urlData.publicUrl,is_active:true});
- if(error){message("পণ্য যোগ হয়নি: "+error.message);return;}
- message("পণ্য সফলভাবে যোগ হয়েছে।");
- ["productName","productDescription","productPrice","productCategory","productStock","productImage"].forEach(id=>document.getElementById(id).value="");
- loadProducts();loadAdminProducts();
-}
-
-async function loadAdminProducts(){
- const box=document.getElementById("adminProducts");
- const {data,error}=await db.from("products").select("*").order("created_at",{ascending:false});
- if(error){box.textContent=error.message;return;}
- box.innerHTML="";
- (data||[]).forEach(p=>{const row=document.createElement("div");row.className="panel";row.textContent=p.name+" | ৳"+p.price+" | স্টক: "+p.stock;box.append(row);});
-}
-
-/* Messenger chat functions */
-function backToChatList(){
- document.getElementById("messenger").classList.remove("mobile-chat-open");
-}
-
-function openMobileChat(){
- document.getElementById("messenger").classList.add("mobile-chat-open");
-}
-
-async function openChat(){
- document.getElementById("chatMessages").innerHTML='<div class="chat-empty">একটি কথোপকথন নির্বাচন করুন</div>';
- document.getElementById("messenger").classList.remove("mobile-chat-open");
- if(isAdmin){
-  document.getElementById("chatListTitle").textContent="মেসেজ";
-  document.getElementById("chatHelp").textContent="কাস্টমারের সঙ্গে কথা বলুন।";
-  await loadChatCustomers();
- }else{
-  document.getElementById("chatListTitle").textContent="দোকান";
-  document.getElementById("chatHelp").textContent="দোকানের সঙ্গে সরাসরি কথা বলুন।";
-  selectedChatUserId=currentUser.id;
-  selectedChatName="ZRX Online Store";
-  selectedChatAvatar=avatarPlaceholder();
-  document.getElementById("chatUsers").innerHTML="";
-  document.getElementById("chatWith").textContent=selectedChatName;
-  document.getElementById("chatHeaderAvatar").src=selectedChatAvatar;
-  openMobileChat();
-  await loadMessages();
- }
-}
-
-async function loadChatCustomers(){
- const list=document.getElementById("chatUsers");
- list.innerHTML='<div class="chat-empty">কাস্টমার লোড হচ্ছে...</div>';
- const {data,error}=await db.from("profiles").select("id,full_name,username,avatar_url").order("full_name");
- if(error){list.textContent="কাস্টমার লোড হয়নি: "+error.message;return;}
- list.innerHTML="";
- const customers=(data||[]).filter(p=>p.id!==currentUser.id);
- if(!customers.length){list.innerHTML='<div class="chat-empty">এখনো কোনো কাস্টমার নেই।</div>';return;}
- customers.forEach(p=>{
-  const b=document.createElement("button");
-  b.className="chat-user";
-  if(selectedChatUserId===p.id)b.classList.add("selected");
-  const img=document.createElement("img");img.src=p.avatar_url||avatarPlaceholder();
-  const info=document.createElement("div");info.className="chat-user-info";
-  const name=document.createElement("div");name.className="chat-user-name";name.textContent=p.full_name||p.username||"কাস্টমার";
-  const sub=document.createElement("div");sub.className="chat-user-sub";sub.textContent="মেসেজ করতে চাপ দিন";
-  info.append(name,sub);b.append(img,info);
-  b.onclick=()=>{
-   selectedChatUserId=p.id;
-   selectedChatName=p.full_name||p.username||"কাস্টমার";
-   selectedChatAvatar=p.avatar_url||avatarPlaceholder();
-   document.querySelectorAll(".chat-user").forEach(x=>x.classList.remove("selected"));
-   b.classList.add("selected");
-   document.getElementById("chatWith").textContent=selectedChatName;
-   document.getElementById("chatHeaderAvatar").src=selectedChatAvatar;
-   openMobileChat();
-   loadMessages();
+  const fields = {
+    profileName:p.full_name,
+    profilePhone:p.phone,
+    profileUsername:p.username,
+    profileDistrict:p.district,
+    profileUpazila:p.upazila,
+    profileArea:p.area,
+    profileFullAddress:p.full_address
   };
-  list.append(b);
- });
+  Object.entries(fields).forEach(([id,value])=>{
+    if ($(id) && value != null) $(id).value = value;
+  });
+
+  $("profileDisplayName").textContent = p.full_name || "আমার প্রোফাইল";
+  $("profileEmail").textContent = currentUser.email || "";
+  if (p.avatar_url) $("profileAvatar").src = p.avatar_url;
 }
 
-async function loadMessages(){
- if(!selectedChatUserId)return;
- const box=document.getElementById("chatMessages");
- box.innerHTML='<div class="chat-empty">মেসেজ লোড হচ্ছে...</div>';
- const {data,error}=await db.from("chat_messages").select("*")
-  .eq("user_id",selectedChatUserId).order("created_at",{ascending:true});
- if(error){box.textContent="মেসেজ লোড হয়নি: "+error.message;return;}
- box.innerHTML="";
- if(!data||!data.length){
-  box.innerHTML='<div class="chat-empty">👋 কথোপকথন শুরু করুন!<br>আপনার প্রথম মেসেজটি পাঠান।</div>';
-  return;
- }
- for(const m of data){
-  const mine=m.sender_id===currentUser.id;
-  const row=document.createElement("div");
-  row.className="bubble-row "+(mine?"mine":"theirs");
-  if(!mine){
-   const av=document.createElement("img");
-   av.className="bubble-avatar";av.src=selectedChatAvatar||avatarPlaceholder();
-   row.append(av);
+async function saveProfile() {
+  if (!currentUser) return;
+  const {error} = await db.from("profiles").upsert({
+    id:currentUser.id,
+    full_name:$("profileName").value.trim(),
+    phone:$("profilePhone").value.trim(),
+    username:$("profileUsername").value.trim()
+  },{onConflict:"id"});
+  if (error) alert("সংরক্ষণ হয়নি: "+error.message);
+  else {
+    alert("প্রোফাইল সংরক্ষণ হয়েছে।");
+    loadProfile();
   }
-  const bubble=document.createElement("div");
-  bubble.className="bubble "+(mine?"mine":"theirs");
-  if(m.message){
-   const t=document.createElement("div");t.textContent=m.message;bubble.append(t);
-  }
-  if(m.image_url){
-   const {data:signed}=await db.storage.from("chat-images").createSignedUrl(m.image_url,3600);
-   if(signed?.signedUrl){
-    const img=document.createElement("img");img.src=signed.signedUrl;img.alt="চ্যাটের ছবি";bubble.append(img);
-   }
-  }
-  row.append(bubble);box.append(row);
-  const time=document.createElement("div");
-  time.className="message-time"+(mine?" mine":"");
-  const date=new Date(m.created_at);
-  time.textContent=date.toLocaleTimeString("bn-BD",{hour:"2-digit",minute:"2-digit"});
-  box.append(time);
- }
- box.scrollTop=box.scrollHeight;
 }
 
-async function sendMessage(){
- if(!selectedChatUserId){message("আগে কথোপকথন নির্বাচন করুন।");return;}
- const textValue=document.getElementById("chatText").value.trim();
- const file=document.getElementById("chatImage").files[0];
- if(!textValue&&!file){message("মেসেজ লিখুন অথবা ছবি নির্বাচন করুন।");return;}
- const btn=document.getElementById("sendMessageBtn");
- btn.disabled=true;
- let image_url=null;
- if(file){
-  if(!file.type.startsWith("image/")){message("শুধু ছবির ফাইল পাঠানো যাবে।");btn.disabled=false;return;}
-  if(file.size>5*1024*1024){message("ছবির সাইজ ৫ MB-এর কম হতে হবে।");btn.disabled=false;return;}
-  const ext=(file.name.split(".").pop()||"jpg").toLowerCase();
-  const path=selectedChatUserId+"/"+Date.now()+"."+ext;
-  const {error:upErr}=await db.storage.from("chat-images").upload(path,file,{upsert:false,contentType:file.type});
-  if(upErr){message("ছবি পাঠানো যায়নি: "+upErr.message);btn.disabled=false;return;}
-  image_url=path;
- }
- const {error}=await db.from("chat_messages").insert({
-  user_id:selectedChatUserId,
-  sender_id:currentUser.id,
-  message:textValue||null,
-  image_url
- });
- btn.disabled=false;
- if(error){message("মেসেজ পাঠানো যায়নি: "+error.message);return;}
- document.getElementById("chatText").value="";
- document.getElementById("chatImage").value="";
- document.getElementById("selectedFileName").classList.add("hidden");
- await loadMessages();
+async function uploadProfileImage() {
+  if (!currentUser) return;
+  const file = $("profileImageFile").files[0];
+  if (!file) return alert("একটি ছবি নির্বাচন করুন।");
+
+  const path = currentUser.id+"/avatar-"+Date.now()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"");
+  const {error:uploadError} = await db.storage.from("profile-images")
+    .upload(path,file,{upsert:true});
+  if (uploadError) return alert("ছবি আপলোড হয়নি: "+uploadError.message);
+
+  const {data} = db.storage.from("profile-images").getPublicUrl(path);
+  const {error} = await db.from("profiles").upsert({
+    id:currentUser.id,avatar_url:data.publicUrl
+  },{onConflict:"id"});
+  if (error) return alert(error.message);
+
+  $("profileAvatar").src = data.publicUrl;
+  alert("প্রোফাইল ছবি আপডেট হয়েছে।");
 }
 
-document.getElementById("chatImage").addEventListener("change",function(){
- const file=this.files[0];
- const label=document.getElementById("selectedFileName");
- if(file){
-  label.textContent="📎 "+file.name;
-  label.classList.remove("hidden");
- }else{
-  label.classList.add("hidden");
- }
+/* SAVED ADDRESS */
+async function saveAddress() {
+  if (!currentUser) return alert("আগে লগইন করুন।");
+  const district = $("profileDistrict").value.trim();
+  const upazila = $("profileUpazila").value.trim();
+  const area = $("profileArea").value.trim();
+  const full_address = $("profileFullAddress").value.trim();
+
+  if (!district || !upazila || !area || !full_address) {
+    return message("addressStatus","ঠিকানার সব ঘর পূরণ করুন।");
+  }
+
+  const {error} = await db.from("profiles").upsert({
+    id:currentUser.id,district,upazila,area,full_address
+  },{onConflict:"id"});
+
+  if (error) message("addressStatus","ঠিকানা সংরক্ষণ হয়নি: "+error.message);
+  else {
+    message("addressStatus","ঠিকানা সংরক্ষণ হয়েছে। পরের অর্ডারে অটো-ফিল হবে।",true);
+    loadCheckoutAddress();
+  }
+}
+
+async function loadCheckoutAddress() {
+  if (!currentUser) return;
+  const {data,error} = await db.from("profiles")
+    .select("full_name,phone,district,upazila,area,full_address")
+    .eq("id",currentUser.id).maybeSingle();
+  if (error || !data) return;
+
+  const map = {
+    orderName:data.full_name,
+    orderPhone:data.phone,
+    orderDistrict:data.district,
+    orderUpazila:data.upazila,
+    orderArea:data.area,
+    orderAddress:data.full_address
+  };
+  Object.entries(map).forEach(([id,value])=>{
+    if ($(id) && value) $(id).value = value;
+  });
+}
+
+/* PRODUCTS */
+async function loadProducts() {
+  const {data,error} = await db.from("products")
+    .select("*").eq("is_active",true).order("created_at",{ascending:false});
+  if (error) {
+    $("productList").textContent = "পণ্য লোড করা যায়নি: "+error.message;
+    return;
+  }
+  productsCache = data || [];
+  renderProducts();
+}
+
+function renderProducts() {
+  const box = $("productList");
+  if (!productsCache.length) {
+    box.innerHTML = "<p>এখনো কোনো পণ্য যোগ করা হয়নি।</p>";
+    return;
+  }
+  box.innerHTML = productsCache.map(p=>`
+    <div class="product-card">
+      ${p.image_url ? `<img src="${safe(p.image_url)}" alt="${safe(p.name)}">` : ""}
+      <h3>${safe(p.name)}</h3>
+      <p>${safe(p.description || "")}</p>
+      <div class="price">${money(p.price)}</div>
+      <p>স্টক: ${Number(p.stock || 0)}</p>
+      <button ${Number(p.stock)<1?"disabled":""} onclick="addToCart('${p.id}')">কার্টে যোগ করুন</button>
+    </div>
+  `).join("");
+}
+
+/* CART */
+function saveCart() {
+  localStorage.setItem("zrx_cart",JSON.stringify(cart));
+  $("cartCount").textContent = cart.reduce((s,p)=>s+Number(p.quantity),0);
+}
+
+function addToCart(id) {
+  const p = productsCache.find(x=>x.id===id);
+  if (!p) return alert("পণ্য পাওয়া যায়নি।");
+  const existing = cart.find(x=>x.id===id);
+  if (existing) {
+    if (existing.quantity >= Number(p.stock)) return alert("স্টকের বেশি নেওয়া যাবে না।");
+    existing.quantity++;
+  } else {
+    cart.push({id:p.id,name:p.name,price:Number(p.price),quantity:1});
+  }
+  saveCart();
+  renderCart();
+  alert("কার্টে যোগ হয়েছে।");
+}
+
+function changeQuantity(id,amount) {
+  const item = cart.find(x=>x.id===id);
+  if (!item) return;
+  item.quantity += amount;
+  if (item.quantity <= 0) cart = cart.filter(x=>x.id!==id);
+  saveCart();
+  renderCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x=>x.id!==id);
+  saveCart();
+  renderCart();
+}
+
+function renderCart() {
+  const box = $("cartItems");
+  if (!box) return;
+  if (!cart.length) {
+    box.innerHTML = "<p>আপনার কার্ট খালি।</p>";
+    $("cartTotal").textContent = money(0);
+    return;
+  }
+  box.innerHTML = cart.map(item=>`
+    <div class="panel">
+      <strong>${safe(item.name)}</strong>
+      <p>${money(item.price)} × ${item.quantity}</p>
+      <button onclick="changeQuantity('${item.id}',-1)">−</button>
+      <button onclick="changeQuantity('${item.id}',1)">+</button>
+      <button class="danger" onclick="removeFromCart('${item.id}')">বাদ দিন</button>
+    </div>
+  `).join("");
+  const total = cart.reduce((s,p)=>s+p.price*p.quantity,0);
+  $("cartTotal").textContent = money(total);
+}
+
+/* CHECKOUT */
+function isBayezidAddress(district,upazila,area,address) {
+  const text = [district,upazila,area,address].join(" ").toLowerCase();
+  return /bayezid|বায়েজিদ|বায়েজিদ/.test(text);
+}
+
+async function placeOrder() {
+  if (!currentUser) return alert("অর্ডারের আগে লগইন করুন।");
+  if (!cart.length) return alert("কার্ট খালি।");
+
+  const customer_name = $("orderName").value.trim();
+  const phone = $("orderPhone").value.trim();
+  const district = $("orderDistrict").value.trim();
+  const upazila = $("orderUpazila").value.trim();
+  const area = $("orderArea").value.trim();
+  const full_address = $("orderAddress").value.trim();
+
+  if (![customer_name,phone,district,upazila,area,full_address].every(Boolean)) {
+    return message("checkoutMessage","ডেলিভারির সব তথ্য পূরণ করুন।");
+  }
+
+  /* বায়েজিদ থানার ঠিকানা হলে নিজস্ব ডেলিভারি,
+     অন্য ঠিকানা হলে কুরিয়ার। ঠিকানা অস্পষ্ট হলে অর্ডার থামানো হবে। */
+  const allAddress = [district,upazila,area,full_address].join(" ").toLowerCase();
+  const mentionsBayezid = /bayezid|বায়েজিদ|বায়েজিদ/.test(allAddress);
+  const mentionsOtherThana = /oxygen|অক্সিজেন|baluchara|বালুচরা|aman bazar|amanbazar|আমান বাজার/.test(allAddress);
+
+  let deliveryMethod;
+  let deliveryZone;
+
+  if (mentionsBayezid && !mentionsOtherThana) {
+    deliveryMethod = "Home Delivery";
+    deliveryZone = "Bayezid";
+  } else if (mentionsOtherThana) {
+    deliveryMethod = "Courier";
+    deliveryZone = "Outside Bayezid";
+  } else {
+    const confirmZone = confirm(
+      "আপনার ঠিকানা বায়েজিদ থানার ভেতরে হলে OK চাপুন।\n" +
+      "বায়েজিদ থানার বাইরে হলে Cancel চাপুন।"
+    );
+    deliveryMethod = confirmZone ? "Home Delivery" : "Courier";
+    deliveryZone = confirmZone ? "Bayezid" : "Outside Bayezid";
+  }
+
+  const total = cart.reduce((s,p)=>s+p.price*p.quantity,0);
+
+  const {data:order,error} = await db.from("orders").insert({
+    customer_id:currentUser.id,
+    customer_name,phone,district,upazila,area,full_address,
+    delivery_method:deliveryMethod,
+    payment_method:"Not required",
+    total_amount:total,
+    status:"Pending",
+    delivery_zone:deliveryZone
+  }).select().single();
+
+  if (error) return message("checkoutMessage","অর্ডার হয়নি: "+error.message);
+
+  const items = cart.map(p=>({
+    order_id:order.id,
+    product_id:p.id,
+    product_name:p.name,
+    quantity:p.quantity,
+    unit_price:p.price
+  }));
+
+  const {error:itemError} = await db.from("order_items").insert(items);
+  if (itemError) {
+    message("checkoutMessage","অর্ডার তৈরি হয়েছে, তবে পণ্যের তালিকা সংরক্ষণে সমস্যা: "+itemError.message);
+    return;
+  }
+
+  cart = [];
+  saveCart();
+  renderCart();
+  message("checkoutMessage","অর্ডার সফলভাবে গ্রহণ করা হয়েছে।",true);
+  alert("অর্ডার সফল হয়েছে!\nঅর্ডার নম্বর: "+order.id+"\nডেলিভারি: "+deliveryMethod);
+  showPage("profile");
+  loadMyOrders();
+}
+
+/* CUSTOMER ORDERS */
+async function loadMyOrders() {
+  if (!currentUser) return;
+  const box = $("myOrders");
+  if (!box) return;
+  box.textContent = "অর্ডার লোড হচ্ছে...";
+
+  const {data,error} = await db.from("orders")
+    .select("*").eq("customer_id",currentUser.id)
+    .order("created_at",{ascending:false});
+
+  if (error) {
+    box.textContent = "অর্ডার লোড হয়নি: "+error.message;
+    return;
+  }
+  if (!data?.length) {
+    box.innerHTML = "<p>আপনার এখনো কোনো অর্ডার নেই।</p>";
+    return;
+  }
+
+  box.innerHTML = data.map(o=>`
+    <div class="order-card">
+      <h3>অর্ডার #${safe(o.id)}</h3>
+      <p>তারিখ: ${new Date(o.created_at).toLocaleString("bn-BD")}</p>
+      <p>মোট: <strong>${money(o.total_amount)}</strong></p>
+      <p>স্ট্যাটাস: <strong>${safe(o.status || "Pending")}</strong></p>
+      <p>ডেলিভারি: ${o.delivery_method==="Courier"?"কুরিয়ার":"নিজস্ব হোম ডেলিভারি"}</p>
+      ${o.delivery_method==="Courier" ? `
+        <p>কুরিয়ার: ${safe(o.courier_name || "এখনো নির্ধারিত হয়নি")}</p>
+        <p>ট্র্যাকিং নম্বর: ${safe(o.courier_tracking_number || "এখনো দেওয়া হয়নি")}</p>
+        ${o.courier_tracking_url ? `<a href="${safe(o.courier_tracking_url)}" target="_blank" rel="noopener">কুরিয়ার ট্র্যাকিং খুলুন</a>`:""}
+      ` : `<p>বায়েজিদ এলাকার নিজস্ব ডেলিভারি।</p>`}
+    </div>
+  `).join("");
+}
+
+/* ADMIN PRODUCTS */
+async function addProduct() {
+  if (!isAdmin) return alert("অ্যাডমিন অনুমতি প্রয়োজন।");
+
+  const name = $("productName").value.trim();
+  const description = $("productDescription").value.trim();
+  const price = Number($("productPrice").value);
+  const stock = Number($("productStock").value);
+  const category = $("productCategory").value.trim();
+
+  if (!name || !Number.isFinite(price) || price<=0 || !Number.isInteger(stock) || stock<0) {
+    return alert("পণ্যের নাম, সঠিক দাম ও স্টক দিন।");
+  }
+
+  let image_url = "";
+  const file = $("productImage").files[0];
+
+  if (file) {
+    const path = "products/"+Date.now()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"");
+    const {error:upError} = await db.storage.from("product-images").upload(path,file);
+    if (upError) return alert("ছবি আপলোড হয়নি: "+upError.message);
+    image_url = db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+  }
+
+  const {error} = await db.from("products").insert({
+    name,description,price,stock,category,image_url,is_active:true
+  });
+
+  if (error) return alert("পণ্য যোগ হয়নি: "+error.message);
+  alert("পণ্য যোগ হয়েছে।");
+  ["productName","productDescription","productPrice","productStock","productCategory"].forEach(id=>$(id).value="");
+  $("productImage").value="";
+  loadAdminProducts();
+  loadProducts();
+}
+
+async function loadAdminProducts() {
+  if (!isAdmin) return;
+  const box = $("adminProducts");
+  const {data,error} = await db.from("products").select("*").order("created_at",{ascending:false});
+  if (error) return box.textContent = error.message;
+  if (!data?.length) return box.innerHTML = "<p>কোনো পণ্য নেই।</p>";
+
+  box.innerHTML = data.map(p=>`
+    <div class="panel">
+      <strong>${safe(p.name)}</strong>
+      <p>${money(p.price)} | স্টক: ${p.stock} | ${p.is_active?"চালু":"বন্ধ"}</p>
+      <button onclick="toggleProduct('${p.id}',${!p.is_active})">${p.is_active?"বন্ধ করুন":"চালু করুন"}</button>
+      <button class="danger" onclick="deleteProduct('${p.id}')">মুছুন</button>
+    </div>
+  `).join("");
+}
+
+async function toggleProduct(id,active) {
+  const {error} = await db.from("products").update({is_active:active}).eq("id",id);
+  if (error) alert(error.message);
+  loadAdminProducts();
+  loadProducts();
+}
+
+async function deleteProduct(id) {
+  if (!confirm("পণ্যটি মুছে ফেলবেন?")) return;
+  const {error} = await db.from("products").delete().eq("id",id);
+  if (error) return alert(error.message);
+  loadAdminProducts();
+  loadProducts();
+}
+
+/* ADMIN ORDERS */
+async function loadAdminOrders() {
+  if (!isAdmin) return;
+  const box = $("adminOrders");
+  const {data,error} = await db.from("orders").select("*").order("created_at",{ascending:false});
+  if (error) return box.textContent = error.message;
+  if (!data?.length) return box.innerHTML = "<p>এখনো কোনো অর্ডার আসেনি।</p>";
+
+  box.innerHTML = data.map(o=>`
+    <div class="order-card">
+      <h3>অর্ডার #${safe(o.id)}</h3>
+      <p>কাস্টমার: ${safe(o.customer_name)}</p>
+      <p>ফোন: ${safe(o.phone)}</p>
+      <p>ঠিকানা: ${safe([o.district,o.upazila,o.area,o.full_address].filter(Boolean).join(", "))}</p>
+      <p>মোট: ${money(o.total_amount)} | ${safe(o.delivery_method)}</p>
+      <label>স্ট্যাটাস</label>
+      <select id="orderStatus-${o.id}">
+        ${["Pending","Confirmed","Processing","Shipped","Out for Delivery","Delivered","Cancelled"].map(s=>`<option value="${s}" ${o.status===s?"selected":""}>${s}</option>`).join("")}
+      </select>
+      <label>কুরিয়ার নাম</label>
+      <input id="courierName-${o.id}" value="${safe(o.courier_name||"")}" placeholder="কুরিয়ার কোম্পানি">
+      <label>ট্র্যাকিং নম্বর</label>
+      <input id="courierNumber-${o.id}" value="${safe(o.courier_tracking_number||"")}" placeholder="ট্র্যাকিং নম্বর">
+      <label>ট্র্যাকিং লিংক</label>
+      <input id="courierUrl-${o.id}" value="${safe(o.courier_tracking_url||"")}" placeholder="https://">
+      <button onclick="updateOrder('${o.id}')">অর্ডার আপডেট করুন</button>
+    </div>
+  `).join("");
+}
+
+async function updateOrder(id) {
+  if (!isAdmin) return;
+  const courierUrl = $("courierUrl-"+id).value.trim();
+  if (courierUrl && !/^https?:\/\//i.test(courierUrl)) {
+    return alert("সঠিক ওয়েব লিংক দিন।");
+  }
+
+  const {error} = await db.from("orders").update({
+    status:$("orderStatus-"+id).value,
+    courier_name:$("courierName-"+id).value.trim() || null,
+    courier_tracking_number:$("courierNumber-"+id).value.trim() || null,
+    courier_tracking_url:courierUrl || null
+  }).eq("id",id);
+
+  if (error) return alert("আপডেট হয়নি: "+error.message);
+  alert("অর্ডার আপডেট হয়েছে।");
+  loadAdminOrders();
+}
+
+/* SUPPORT IMAGE */
+async function uploadChatImage(file,userId) {
+  if (!file) return null;
+  const path = userId+"/"+Date.now()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"");
+  const {error} = await db.storage.from("chat-images").upload(path,file);
+  if (error) throw error;
+  return db.storage.from("chat-images").getPublicUrl(path).data.publicUrl;
+}
+
+/* CUSTOMER SUPPORT MESSAGE */
+async function sendProfileSupport() {
+  if (!currentUser) return alert("আগে লগইন করুন।");
+  const text = $("profileSupportText").value.trim();
+  const file = $("profileSupportImage").files[0];
+  if (!text && !file) return alert("মেসেজ লিখুন অথবা ছবি নির্বাচন করুন।");
+
+  let image_url = null;
+  try {
+    if (file) image_url = await uploadChatImage(file,currentUser.id);
+  } catch(e) {
+    return alert("ছবি আপলোড হয়নি: "+e.message);
+  }
+
+  const {error} = await db.from("chat_messages").insert({
+    user_id:currentUser.id,
+    sender_id:currentUser.id,
+    message:text,
+    image_url
+  });
+  if (error) return alert("মেসেজ পাঠানো যায়নি: "+error.message);
+
+  $("profileSupportText").value="";
+  $("profileSupportImage").value="";
+  loadProfileSupport();
+}
+
+async function loadProfileSupport() {
+  if (!currentUser) return;
+  const box = $("profileSupportMessages");
+  const {data,error} = await db.from("chat_messages")
+    .select("*").eq("user_id",currentUser.id).order("created_at",{ascending:true});
+  if (error) return box.textContent = error.message;
+
+  box.innerHTML = (data||[]).map(m=>`
+    <div class="chat-message ${m.sender_id===currentUser.id?"mine":""}">
+      <strong>${m.sender_id===currentUser.id?"আপনি":"ZRX Support"}</strong>
+      ${m.message?`<p>${safe(m.message)}</p>`:""}
+      ${m.image_url?`<img src="${safe(m.image_url)}" alt="চ্যাট ছবি">`:""}
+      <small>${new Date(m.created_at).toLocaleString("bn-BD")}</small>
+    </div>
+  `).join("");
+  box.scrollTop=box.scrollHeight;
+}
+
+/* ADMIN SUPPORT CUSTOMER LIST */
+async function loadAdminSupportCustomers() {
+  if (!isAdmin) return;
+  const box = $("adminSupportCustomers");
+  const {data:messages,error} = await db.from("chat_messages")
+    .select("user_id,created_at").order("created_at",{ascending:false});
+  if (error) return box.textContent = error.message;
+
+  const ids = [...new Set((messages||[]).map(m=>m.user_id).filter(Boolean))];
+  if (!ids.length) return box.innerHTML = "<p>এখনো কোনো সাপোর্ট মেসেজ আসেনি।</p>";
+
+  const {data:profiles} = await db.from("profiles").select("id,full_name,phone").in("id",ids);
+  const {data:visitors} = await db.from("support_visitors").select("user_id,full_name,phone").in("user_id",ids);
+
+  box.innerHTML = ids.map(id=>{
+    const p=(profiles||[]).find(x=>x.id===id);
+    const v=(visitors||[]).find(x=>x.user_id===id);
+    const name=p?.full_name||v?.full_name||"কাস্টমার";
+    const phone=p?.phone||v?.phone||"";
+    return `<button class="support-customer" onclick="openAdminSupport('${id}')">${safe(name)} ${safe(phone)}</button>`;
+  }).join("");
+}
+
+async function openAdminSupport(userId) {
+  if (!isAdmin) return;
+  selectedSupportUser=userId;
+  $("adminSupportChat").classList.remove("hidden");
+  const {data} = await db.from("profiles").select("full_name,phone").eq("id",userId).maybeSingle();
+  $("adminSupportName").textContent=(data?.full_name||"কাস্টমার")+" "+(data?.phone||"");
+  loadAdminSupportMessages();
+}
+
+async function loadAdminSupportMessages() {
+  if (!isAdmin || !selectedSupportUser) return;
+  const box=$("adminSupportMessages");
+  const {data,error}=await db.from("chat_messages")
+    .select("*").eq("user_id",selectedSupportUser).order("created_at",{ascending:true});
+  if (error) return box.textContent=error.message;
+
+  box.innerHTML=(data||[]).map(m=>`
+    <div class="chat-message ${m.sender_id===currentUser.id?"mine":""}">
+      <strong>${m.sender_id===currentUser.id?"অ্যাডমিন":"কাস্টমার"}</strong>
+      ${m.message?`<p>${safe(m.message)}</p>`:""}
+      ${m.image_url?`<img src="${safe(m.image_url)}" alt="চ্যাট ছবি">`:""}
+      <small>${new Date(m.created_at).toLocaleString("bn-BD")}</small>
+    </div>
+  `).join("");
+  box.scrollTop=box.scrollHeight;
+}
+
+async function sendAdminSupport() {
+  if (!isAdmin || !selectedSupportUser) return alert("আগে কাস্টমার নির্বাচন করুন।");
+  const text=$("adminSupportText").value.trim();
+  if (!text) return alert("উত্তর লিখুন।");
+
+  const {error}=await db.from("chat_messages").insert({
+    user_id:selectedSupportUser,
+    sender_id:currentUser.id,
+    message:text,
+    image_url:null
+  });
+  if (error) return alert("উত্তর পাঠানো যায়নি: "+error.message);
+  $("adminSupportText").value="";
+  loadAdminSupportMessages();
+}
+
+/* AUTH LISTENER */
+db.auth.onAuthStateChange(() => {
+  setTimeout(async()=>{
+    await refreshUser();
+  },0);
 });
 
-document.getElementById("chatText").addEventListener("keydown",function(e){
- if(e.key==="Enter"&&!e.shiftKey){
-  e.preventDefault();
-  sendMessage();
- }
-});
+/* START */
+async function initializeStore() {
+  await refreshUser();
+  saveCart();
+  renderCart();
 
-db.auth.onAuthStateChange((event,session)=>{
- currentUser=session?.user||null;
- if(event==="PASSWORD_RECOVERY"){
-  recoveryMode=true;
-  setTimeout(()=>{
-   showPage("resetPage");
-   document.getElementById("recoveryStatus").textContent="নতুন পাসওয়ার্ড দিন।";
-  },300);
- }
- setTimeout(()=>refreshUser(),0);
-});
+  if (location.hash.includes("type=recovery")) {
+    showPage("reset");
+  } else {
+    showPage("home");
+  }
+}
 
-(async function start(){
- await refreshUser();
- await loadProducts();
-})();
+document.addEventListener("DOMContentLoaded",initializeStore);
+
+setInterval(()=>{
+  if (currentUser && !$("profile").classList.contains("hidden")) {
+    if (!$("tab-support").classList.contains("hidden")) loadProfileSupport();
+  }
+  if (isAdmin && selectedSupportUser && !$("adminSupportChat").classList.contains("hidden")) {
+    loadAdminSupportMessages();
+  }
+},12000);
+
 </script>
 </body>
-</html>
+     </html>
