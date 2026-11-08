@@ -107,7 +107,16 @@ a{color:#087b4c;overflow-wrap:anywhere}
 <p id="accountMessage"></p>
 </div>
 </section>
-
+<section id="emailVerification" class="page hidden">
+    <div class="panel email-verification-panel">
+        <div class="email-verification-icon">✉️</div>
+        <h2>আপনার ইমেইল যাচাই করুন</h2>
+        <p>আপনার দেওয়া ইমেইল ঠিকানায় একটি ভেরিফিকেশন লিংক পাঠানো হয়েছে।</p>
+        <p>অনুগ্রহ করে আপনার Gmail খুলে লিংকে ক্লিক করে অ্যাকাউন্টটি ভেরিফাই করুন।</p>
+        <p id="verificationEmail" class="muted"></p>
+        <button onclick="showPage('account'); switchAuth('login')">লগইন পেজে ফিরে যান</button>
+    </div>
+</section>
 <section id="forgot" class="page hidden"><div class="panel">
 <h2>পাসওয়ার্ড রিসেট</h2><p>আপনার ইমেইলে রিসেট লিংক পাঠানো হবে।</p>
 <input id="resetEmail" type="email" placeholder="আপনার ইমেইল">
