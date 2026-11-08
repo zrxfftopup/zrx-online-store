@@ -1271,14 +1271,22 @@ async function openAdminChat(userId) {
     return;
   }
 
-  $("adminChatMessages").innerHTML = (data || []).map(m => `
-    <div class="chat-message">
-      <b>${safe(m.sender || "Customer")}:</b>
-      ${safe(m.message || "")}
-      <br>
-      <small>${m.created_at ? new Date(m.created_at).toLocaleString("bn-BD") : ""}</small>
-    </div>
-  `).join("") || "<p>কোনো মেসেজ নেই।</p>";
+  $("adminChatMessages").innerHTML = (data || []).map(m => {
+    const isMine = isAdmin
+      ? m.sender === "admin"
+      : m.sender !== "admin";
+
+    return `
+      <div class="${isMine ? "zrx-right-row" : "zrx-left-row"}">
+        <div class="zrx-chat-bubble">
+          <b>${safe(m.sender === "admin" ? "Admin" : "Customer")}:</b>
+          ${safe(m.message || "")}
+          <br>
+          <small>${m.created_at ? new Date(m.created_at).toLocaleString("bn-BD") : ""}</small>
+        </div>
+      </div>
+    `;
+  }).join("") || "<p>কোনো মেসেজ নেই।</p>";
 
   $("adminChatMessages").scrollTop =
     $("adminChatMessages").scrollHeight;
