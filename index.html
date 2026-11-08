@@ -1301,6 +1301,35 @@ initializeStore();
   color:white;border-radius:14px;padding:15px;margin:12px 0;
 }
 .admin-brand h3,.admin-brand p {color:white;margin:4px}
+/* ADMIN MESSENGER */
+#adminMessengerFloat{
+position:fixed;right:18px;bottom:92px;z-index:100001;
+width:56px;height:56px;border-radius:50%;font-size:25px;
+background:linear-gradient(145deg,#3478f6,#1746a2);
+border:2px solid white;box-shadow:0 5px 18px #0006;
+touch-action:none;
+}
+#adminMessengerBadge{
+position:absolute;right:-2px;top:-2px;width:15px;height:15px;
+border-radius:50%;background:red;border:2px solid white;
+}
+#adminMessengerPanel{
+position:fixed;right:15px;bottom:160px;z-index:100000;
+width:min(350px,90vw);max-height:75vh;overflow:auto;
+background:white;color:#172033;border:1px solid #3478f6;
+border-radius:15px;box-shadow:0 8px 28px #0006;
+}
+#adminMessengerHead{
+display:flex;justify-content:space-between;align-items:center;
+padding:13px;background:#1746a2;color:white;touch-action:none;
+}
+#adminMessengerList{padding:10px;max-height:55vh;overflow:auto}
+#adminMessengerConversation{padding:8px}
+#adminChatMessages{
+height:230px;overflow:auto;background:#f3f6fa;padding:9px;
+}
+.admin-chat-compose{display:flex;gap:6px;padding:8px}
+.admin-chat-compose input{min-width:0;margin:0}
 </style>
 
 <script>
