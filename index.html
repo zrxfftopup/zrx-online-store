@@ -382,6 +382,9 @@ async function registerUser(event) {
     if (data.password.length < 6) {
       throw new Error("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
     }
+    if (data.password !== val("registerConfirmPassword")) {
+  throw new Error("দুইটি পাসওয়ার্ড মিলছে না। আবার পরীক্ষা করুন।");
+    }
 
     const result = await worker(data);
 
