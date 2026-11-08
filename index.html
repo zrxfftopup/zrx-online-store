@@ -1575,7 +1575,78 @@ if(supportBox) {
     document.getElementById("supportDragHandle")
   );
 }
+// OPEN SUPPORT BOX BESIDE THE FLOATING BUTTON
+function zrxPositionSupportBox() {
+  if (!supportBox || !supportFloat) return;
 
+  const gap = 10;
+  const margin = 10;
+  const b = supportFloat.getBoundingClientRect();
+
+  const w = supportBox.offsetWidth;
+  const h = supportBox.offsetHeight;
+
+  // বাটনের অবস্থান অনুযায়ী ডান অথবা বাম পাশে খোলা
+  const preferRight = b.left + b.width / 2 < window.innerWidth / 2;
+
+  let left = preferRight
+    ? b.right + gap
+    : b.left - w - gap;
+
+  if (left < margin || left + w > window.innerWidth - margin) {
+    left = preferRight
+      ? b.left - w - gap
+      : b.right + gap;
+  }
+
+  left = Math.max(
+    margin,
+    Math.min(window.innerWidth - w - margin, left)
+  );
+
+  // বাটনের অবস্থান অনুযায়ী নিচে অথবা উপরে খোলা
+  const preferBelow = b.top + b.height / 2 < window.innerHeight / 2;
+
+  let top = preferBelow
+    ? b.bottom + gap
+    : b.top - h - gap;
+
+  if (top < margin || top + h > window.innerHeight - margin) {
+    top = preferBelow
+      ? b.top - h - gap
+      : b.bottom + gap;
+  }
+
+  top = Math.max(
+    margin,
+    Math.min(window.innerHeight - h - margin, top)
+  );
+
+  supportBox.style.left = left + "px";
+  supportBox.style.top = top + "px";
+  supportBox.style.right = "auto";
+  supportBox.style.bottom = "auto";
+}
+
+// আগের Support বাটনের ক্লিক ফাংশন
+window.toggleSupport = function() {
+  if (!currentUser) {
+    notice("সাপোর্টে মেসেজ করতে আগে লগইন করুন।");
+    showPage("accountPage");
+    return;
+  }
+
+  const opening = supportBox.classList.contains("hidden");
+  supportBox.classList.toggle("hidden");
+
+  if (opening) {
+    requestAnimationFrame(() => {
+      zrxPositionSupportBox();
+    });
+  }
+
+  loadSupportMessages();
+};
 /* ADMIN BRANDING */
 const admin=document.getElementById("adminPage");
 if(admin && !admin.querySelector(".admin-brand")) {
