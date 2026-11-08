@@ -377,7 +377,9 @@ function showProfileTab(tab) {
 async function registerUser(event) {
   event?.preventDefault();
 
-  const registerButton = $("registerSubmit");
+$("registerError").textContent = "";
+
+const registerButton = $("registerSubmit");
   registerButton.disabled = true;
   registerButton.innerHTML = '<span class="auth-spinner"></span> রেজিস্ট্রেশন হচ্ছে...';
 
