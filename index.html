@@ -1201,6 +1201,7 @@ async function adminSendMessage() {
 
   const { error } = await db.from("chat_messages").insert({
     user_id: selectedChatUser,
+    sender_id: currentUser.id,
     message,
     sender: "admin"
   });
