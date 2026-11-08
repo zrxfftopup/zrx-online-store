@@ -84,8 +84,13 @@ a{color:#087b4c;overflow-wrap:anywhere}
 </div>
 <div id="loginForm">
 <h2>লগইন</h2>
-<label>ইউজারনেম</label><input id="loginUsername" placeholder="আপনার ইউজারনেম" autocomplete="username">
-<label>পাসওয়ার্ড</label><input id="loginPassword" type="password" placeholder="পাসওয়ার্ড">
+
+<label>ইউজারনেম অথবা ইমেইল</label>
+<input id="loginUsername" placeholder="আপনার ইউজারনেম অথবা ইমেইল লিখুন" autocomplete="username">
+
+<label>আপনার পাসওয়ার্ড দিন</label>
+<input id="loginPassword" type="password" placeholder="পাসওয়ার্ড" autocomplete="current-password">
+
 <button onclick="loginUser()">লগইন করুন</button>
 <button class="secondary" onclick="showPage('forgot')">পাসওয়ার্ড ভুলে গেছেন?</button>
 </div>
