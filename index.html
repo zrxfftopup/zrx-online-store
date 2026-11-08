@@ -1283,24 +1283,33 @@ async function openAdminChat(userId) {
 }
 
 async function adminSendMessage() {
-  if (!isAdmin || !selectedChatUser) {
+  if (!isAdmin || !currentUser || !selectedChatUser) {
     return notice("আগে একজন কাস্টমারের চ্যাট খুলুন।");
   }
 
-  const message = val("adminReply");
-  if (!message) return;
+  const message = val("adminReply").trim();
+
+  if (!message) {
+    return notice("আগে উত্তর লিখুন।");
+  }
 
   const { error } = await db.from("chat_messages").insert({
     user_id: selectedChatUser,
     sender_id: currentUser.id,
-    message,
+    message: message,
     sender: "admin"
   });
 
-  if (error) return notice(error.message);
+  if (error) {
+    return notice(error.message);
+  }
 
   $("adminReply").value = "";
-  openAdminChat(selectedChatUser);
+
+  await openAdminChat(selectedChatUser);
+  await loadAdminChats();
+
+  notice("উত্তর পাঠানো হয়েছে।");
 }
 
 /* FORM EVENTS */
