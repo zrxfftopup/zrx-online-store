@@ -282,7 +282,35 @@ a{color:#087b4c;overflow-wrap:anywhere}
   <input id="supportInput" placeholder="মেসেজ লিখুন">
   <button onclick="sendSupportMessage()">পাঠান</button>
 </div>
+<!-- ADMIN ONLY MESSENGER -->
+<button id="adminMessengerFloat" class="hidden" type="button"
+onclick="toggleAdminMessenger()">💬
+<span id="adminMessengerBadge" class="hidden"></span>
+</button>
 
+<div id="adminMessengerPanel" class="hidden">
+  <div id="adminMessengerHead">
+    <b>📨 ZRX Admin Messenger</b>
+    <button type="button" onclick="toggleAdminMessenger()">✕</button>
+  </div>
+
+  <div id="adminMessengerList"></div>
+
+  <div id="adminMessengerConversation" class="hidden">
+    <div class="admin-chat-title">
+      <button type="button" onclick="backToAdminInbox()">←</button>
+      <b id="adminChatCustomerName">কাস্টমার</b>
+      <small id="adminChatCustomerId"></small>
+    </div>
+
+    <div id="adminChatMessages"></div>
+
+    <div class="admin-chat-compose">
+      <input id="adminReply" placeholder="উত্তর লিখুন">
+      <button type="button" onclick="adminSendMessage()">পাঠান</button>
+    </div>
+  </div>
+</div>
 <footer>
   <p>© ZRX Online Store</p>
 </footer>
