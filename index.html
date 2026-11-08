@@ -1238,20 +1238,48 @@ async function loadAdminChats() {
 }
 
 async function openAdminChat(userId) {
+  if (!isAdmin) return;
+
   selectedChatUser = userId;
 
+  $("adminMessengerList").classList.add("hidden");
+  $("adminMessengerConversation").classList.remove("hidden");
+
+  $("adminChatMessages").innerHTML =
+    "<p>মেসেজ লোড হচ্ছে...</p>";
+
+  const { data: profile } = await db.from("profiles")
+    .select("full_name,username")
+    .eq("id", userId)
+    .maybeSingle();
+
+  $("adminChatCustomerName").textContent =
+    profile?.full_name || profile?.username || "কাস্টমার";
+
+  $("adminChatCustomerId").textContent =
+    "Customer ID: " + userId;
+
   const { data, error } = await db.from("chat_messages")
-    .select("*").eq("user_id", userId)
+    .select("*")
+    .eq("user_id", userId)
     .order("created_at", { ascending: true });
 
-  if (error) return notice(error.message);
+  if (error) {
+    $("adminChatMessages").textContent = error.message;
+    return;
+  }
 
   $("adminChatMessages").innerHTML = (data || []).map(m => `
     <div class="chat-message">
       <b>${safe(m.sender || "Customer")}:</b>
       ${safe(m.message || "")}
+      <br>
+      <small>${m.created_at ? new Date(m.created_at).toLocaleString("bn-BD") : ""}</small>
     </div>
-  `).join("");
+  `).join("") || "<p>কোনো মেসেজ নেই।</p>";
+
+  $("adminChatMessages").scrollTop =
+    $("adminChatMessages").scrollHeight;
 }
 
 async function adminSendMessage() {
