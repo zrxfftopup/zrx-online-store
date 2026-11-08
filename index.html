@@ -400,8 +400,11 @@ if (result.email_verification_required) {
 }
 
 throw new Error(result.message || "রেজিস্ট্রেশন সম্পন্ন হয়নি।");
-  } catch (error) {
-    notice(error.message);
+    } catch (error) {
+    $("registerError").textContent = error.message || "রেজিস্ট্রেশন করা যায়নি। আবার চেষ্টা করুন।";
+  } finally {
+    registerButton.disabled = false;
+    registerButton.innerHTML = "রেজিস্টার করুন";
   }
 }
 
