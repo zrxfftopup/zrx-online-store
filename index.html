@@ -458,6 +458,16 @@ async function verifyEmailOtp() {
   async function loginUser(event) {
   event?.preventDefault();
 
+  $("loginError").textContent = "";
+
+  const loginButton = $("loginForm").querySelector(
+    'button[onclick="loginUser()"]'
+  );
+
+  loginButton.disabled = true;
+  loginButton.innerHTML =
+    '<span class="auth-spinner"></span> লগইন হচ্ছে...';
+
   try {
     const result = await worker({
       action: "login",
@@ -466,14 +476,22 @@ async function verifyEmailOtp() {
     });
 
     const session = result.session || result.data?.session;
-    if (!session) throw new Error("লগইন সেশন পাওয়া যায়নি। আবার চেষ্টা করুন।");
+
+    if (!session) {
+      throw new Error("লগইন সেশন পাওয়া যায়নি। আবার চেষ্টা করুন।");
+    }
 
     await db.auth.setSession(session);
     await refreshUser();
-    notice("লগইন সফল হয়েছে।");
     showPage("homePage");
+
   } catch (error) {
-    notice(error.message);
+    $("loginError").textContent =
+      error.message || "লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।";
+
+  } finally {
+    loginButton.disabled = false;
+    loginButton.innerHTML = "লগইন করুন";
   }
 }
 
