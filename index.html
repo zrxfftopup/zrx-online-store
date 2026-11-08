@@ -1311,7 +1311,45 @@ async function adminSendMessage() {
 
   notice("উত্তর পাঠানো হয়েছে।");
 }
+function toggleAdminMessenger() {
+  if (!currentUser || !isAdmin) return;
 
+  const panel = $("adminMessengerPanel");
+  const opening = panel.classList.contains("hidden");
+
+  panel.classList.toggle("hidden");
+
+  if (opening) {
+    $("adminMessengerList").classList.remove("hidden");
+    $("adminMessengerConversation").classList.add("hidden");
+    loadAdminChats();
+  }
+}
+
+function backToAdminInbox() {
+  if (!isAdmin) return;
+
+  $("adminMessengerConversation").classList.add("hidden");
+  $("adminMessengerList").classList.remove("hidden");
+  selectedChatUser = null;
+
+  loadAdminChats();
+}
+
+function updateAdminMessengerVisibility() {
+  const messenger = $("adminMessengerFloat");
+  const support = $("supportFloat");
+  const supportBox = $("supportBox");
+
+  if (!messenger) return;
+
+  messenger.classList.toggle("hidden", !(currentUser && isAdmin));
+
+  if (isAdmin) {
+    support?.classList.add("hidden");
+    supportBox?.classList.add("hidden");
+  }
+}
 /* FORM EVENTS */
 $("registerForm")?.addEventListener("submit", registerUser);
 $("loginForm")?.addEventListener("submit", loginUser);
