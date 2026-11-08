@@ -1119,9 +1119,11 @@ async function sendSupportMessage() {
   if (!message) return;
 
   const { error } = await db.from("chat_messages").insert({
-    user_id: currentUser.id,
-    message,
-    sender: "customer"
+  user_id: currentUser.id,
+  sender_id: currentUser.id,
+  message,
+  sender: "customer"
+});
   });
 
   if (error) return notice(error.message);
