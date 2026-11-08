@@ -1516,8 +1516,7 @@ function zrxMakeDraggable(element,handle) {
   let sx=0,sy=0,left=0,top=0,moved=false;
 
   handle.addEventListener("pointerdown",e=>{
-    if(e.target.closest("button,input,textarea")) return;
-
+    if(e.target !== handle && e.target.closest("button,input,textarea")) return;
     const r=element.getBoundingClientRect();
     sx=e.clientX; sy=e.clientY;
     left=r.left; top=r.top; moved=false;
