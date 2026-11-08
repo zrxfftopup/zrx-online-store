@@ -103,15 +103,7 @@ a{color:#087b4c;overflow-wrap:anywhere}
 <label>পাসওয়ার্ড</label><input id="registerPassword" type="password" placeholder="কমপক্ষে ৬ অক্ষর">
 <button id="registerSubmit" onclick="registerUser()">রেজিস্টার করুন</button>
 </div>
-  <div id="otpForm" class="hidden">
-<h2>ইমেইল যাচাই</h2>
-<p>আপনার ইমেইলে পাঠানো ৬ সংখ্যার কোডটি লিখুন।</p>
-<label>৬ সংখ্যার OTP কোড</label>
-<input id="registerOtp" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="৬ সংখ্যার কোড">
-<button onclick="verifyEmailOtp()">কোড যাচাই করুন</button>
-<button class="secondary" onclick="switchAuth('register')">ফিরে যান</button>
-<p id="registerError" class="auth-error" role="alert"></p>
-  </div>
+
 <p id="accountMessage"></p>
 </div>
 </section>
