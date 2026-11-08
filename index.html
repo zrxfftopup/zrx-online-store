@@ -1175,24 +1175,66 @@ async function loadSupportMessages() {
 }
 
 async function loadAdminChats() {
-  if (!isAdmin || !$("adminChatList")) return;
+  if (!isAdmin || !$("adminMessengerList")) return;
+
+  $("adminMessengerList").innerHTML =
+    "<p>কাস্টমারদের মেসেজ লোড হচ্ছে...</p>";
 
   const { data, error } = await db.from("chat_messages")
-    .select("user_id,created_at")
+    .select("user_id,message,sender,created_at")
     .order("created_at", { ascending: false });
 
   if (error) {
-    $("adminChatList").textContent = error.message;
+    $("adminMessengerList").textContent = error.message;
     return;
   }
 
-  const ids = [...new Set((data || []).map(m => m.user_id))];
+  const latest = new Map();
 
-  $("adminChatList").innerHTML = ids.map(id => `
-    <button onclick="openAdminChat('${safe(id)}')">
-      কাস্টমার: ${safe(id)}
-    </button>
-  `).join("") || "<p>কোনো মেসেজ নেই।</p>";
+  (data || []).forEach(m => {
+    if (!latest.has(m.user_id)) latest.set(m.user_id, m);
+  });
+
+  const ids = [...latest.keys()];
+
+  if (!ids.length) {
+    $("adminMessengerList").innerHTML =
+      "<p>এখনো কোনো কাস্টমার মেসেজ করেনি।</p>";
+    return;
+  }
+
+  const { data: profiles, error: profileError } = await db
+    .from("profiles")
+    .select("id,full_name,username")
+    .in("id", ids);
+
+  if (profileError) {
+    $("adminMessengerList").textContent = profileError.message;
+    return;
+  }
+
+  const profileMap = new Map(
+    (profiles || []).map(p => [p.id, p])
+  );
+
+  $("adminMessengerList").innerHTML = ids.map(id => {
+    const msg = latest.get(id);
+    const p = profileMap.get(id) || {};
+    const name = p.full_name || p.username || "কাস্টমার";
+
+    return `
+      <button type="button"
+        onclick="openAdminChat('${safe(id)}')"
+        style="width:100%;text-align:left;padding:12px;
+        margin:5px 0;border:1px solid #ddd;
+        border-radius:10px;background:white;color:#172033">
+
+        <b>${safe(name)}</b><br>
+        <small>Customer ID: ${safe(id)}</small><br>
+        <small>${safe(msg.message || "")}</small>
+      </button>
+    `;
+  }).join("");
 }
 
 async function openAdminChat(userId) {
