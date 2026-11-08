@@ -383,25 +383,13 @@ async function registerUser(event) {
 
     const result = await worker(data);
 
-if (result.otp_sent) {
-  pendingOtpEmail = data.email;
-  $("registerForm")?.classList.add("hidden");
-  $("loginForm")?.classList.add("hidden");
-  $("otpForm")?.classList.remove("hidden");
-  $("registerOtp").value = "";
-  notice(result.message || "আপনার ইমেইলে ৬ সংখ্যার কোড পাঠানো হয়েছে।");
+if (result.email_verification_required) {
+  $("verificationEmail").textContent = data.email;
+  showPage("emailVerification");
   return;
 }
 
-const session = result.session || result.data?.session;
-if (session) {
-  await db.auth.setSession(session);
-  await refreshUser();
-  notice("রেজিস্ট্রেশন সফল হয়েছে!");
-  showPage("homePage");
-} else {
-  notice(result.message || "রেজিস্ট্রেশন সম্পন্ন হয়নি।");
-}
+throw new Error(result.message || "রেজিস্ট্রেশন সম্পন্ন হয়নি।");
   } catch (error) {
     notice(error.message);
   }
