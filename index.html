@@ -1746,6 +1746,24 @@ if(supportBox) {
     document.getElementById("supportDragHandle")
   );
 }
+const adminMessengerFloat = $("adminMessengerFloat");
+const adminMessengerPanel = $("adminMessengerPanel");
+const adminMessengerHead = $("adminMessengerHead");
+
+if(adminMessengerFloat) {
+  zrxMakeDraggable(adminMessengerFloat,adminMessengerFloat);
+
+  adminMessengerFloat.addEventListener("click",e=>{
+    if(adminMessengerFloat.dataset.justDragged==="yes") {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+    }
+  },true);
+}
+
+if(adminMessengerPanel && adminMessengerHead) {
+  zrxMakeDraggable(adminMessengerPanel,adminMessengerHead);
+}
 // OPEN SUPPORT BOX BESIDE THE FLOATING BUTTON
 function zrxPositionSupportBox() {
   if (!supportBox || !supportFloat) return;
