@@ -877,6 +877,118 @@ function renderCart() {
     if ($("cartCount")) $("cartCount").textContent = "0";
 
     return;
+
+function getCartItemKey(item) {
+  return item.cart_key ||
+    (String(item.id) + "::" + (item.size || "") + "::" + (item.color || ""));
+}
+
+function addToCart(id, size = "", color = "") {
+  const product = products.find(
+    p => String(p.id) === String(id)
+  );
+
+  if (!product) {
+    notice("পণ্য পাওয়া যায়নি।");
+    return false;
+  }
+
+  if (Number(product.stock ?? 999999) < 1) {
+    notice("এই পণ্যটি স্টকে নেই।");
+    return false;
+  }
+
+  const sizes = getProductSizes(product);
+  const colors = Array.isArray(product.colors) ? product.colors : [];
+
+  if (sizes.length && !size) {
+    notice("অনুগ্রহ করে সাইজ নির্বাচন করুন।");
+    return false;
+  }
+
+  if (colors.length && !color) {
+    notice("অনুগ্রহ করে কালার নির্বাচন করুন।");
+    return false;
+  }
+
+  const cartKey = String(id) + "::" + size + "::" + color;
+
+  const existing = cart.find(
+    item => getCartItemKey(item) === cartKey
+  );
+
+  if (existing) {
+    if (Number(existing.quantity) >= Number(product.stock ?? 999999)) {
+      notice("স্টকের চেয়ে বেশি নেওয়া যাবে না।");
+      return false;
+    }
+
+    existing.quantity++;
+    existing.cart_key = cartKey;
+  } else {
+    cart.push({
+      id: product.id,
+      cart_key: cartKey,
+      name: product.name,
+      price: Number(product.price),
+      image_url: product.image_url || "",
+      size: size,
+      color: color,
+      quantity: 1
+    });
+  }
+
+  saveCart();
+  notice("কার্টে যোগ হয়েছে।");
+  return true;
+}
+
+function changeCartQty(cartKey, amount) {
+  const item = cart.find(
+    x => getCartItemKey(x) === cartKey
+  );
+  if (!item) return;
+
+  const product = products.find(
+    p => String(p.id) === String(item.id)
+  );
+
+  if (!product) {
+    return notice("পণ্যটি পাওয়া যায়নি।");
+  }
+
+  const newQuantity = Number(item.quantity) + Number(amount);
+
+  if (newQuantity > Number(product.stock ?? 999999)) {
+    return notice("স্টকের চেয়ে বেশি নেওয়া যাবে না।");
+  }
+
+  if (newQuantity <= 0) {
+    cart = cart.filter(x => getCartItemKey(x) !== cartKey);
+  } else {
+    item.quantity = newQuantity;
+  }
+
+  saveCart();
+}
+
+function removeCartItem(cartKey) {
+  cart = cart.filter(
+    x => getCartItemKey(x) !== cartKey
+  );
+  saveCart();
+}
+
+function renderCart() {
+  const container = $("cartItems");
+  if (!container) return;
+
+  if (!cart.length) {
+    container.innerHTML = "<p>আপনার কার্ট খালি।</p>";
+
+    if ($("cartTotal")) $("cartTotal").textContent = "0";
+    if ($("cartCount")) $("cartCount").textContent = "0";
+    return;
   }
 
   let total = 0;
@@ -885,6 +997,7 @@ function renderCart() {
   container.innerHTML = cart.map(item => {
     const price = Number(item.price) || 0;
     const quantity = Number(item.quantity) || 1;
+    const key = getCartItemKey(item);
 
     total += price * quantity;
     totalQuantity += quantity;
@@ -905,15 +1018,17 @@ function renderCart() {
 
           <p>দাম: ৳${price.toFixed(2)}</p>
 
-          <p>পরিমাণ: ${quantity}</p>
+          ${item.size ? `<p>সাইজ: ${safe(item.size)}</p>` : ""}
+          ${item.color ? `<p>কালার: ${safe(item.color)}</p>` : ""}
 
+          <p>পরিমাণ: ${quantity}</p>
           <p>মোট: ৳${(price * quantity).toFixed(2)}</p>
 
-          <button onclick="changeCartQty('${safe(item.id)}',-1)">−</button>
+          <button onclick="changeCartQty(decodeURIComponent('${encodeURIComponent(key)}'),-1)">−</button>
 
-          <button onclick="changeCartQty('${safe(item.id)}',1)">+</button>
+          <button onclick="changeCartQty(decodeURIComponent('${encodeURIComponent(key)}'),1)">+</button>
 
-          <button onclick="removeCartItem('${safe(item.id)}')">বাদ দিন</button>
+          <button onclick="removeCartItem(decodeURIComponent('${encodeURIComponent(key)}'))">বাদ দিন</button>
         </div>
       </div>
     `;
@@ -927,6 +1042,7 @@ function renderCart() {
     $("cartCount").textContent = totalQuantity;
   }
 }
+
 function isBayezidAddress(upazila) {
   const text = String(upazila || "").toLowerCase();
   return text.includes("bayezid") ||
