@@ -614,8 +614,21 @@ async function refreshUser() {
 
   if (currentUser) loadProfile();
 
+
 window.updateAdminMessengerVisibility = function() {
-}
+  const messenger = $("adminMessengerFloat");
+  const support = $("supportFloat");
+  const supportBox = $("supportBox");
+
+  if (!messenger) return;
+
+  messenger.classList.toggle("hidden", !(currentUser && isAdmin));
+
+  if (isAdmin) {
+    support?.classList.add("hidden");
+    supportBox?.classList.add("hidden");
+  }
+};
 
 async function logoutUser() {
   const { error } = await db.auth.signOut();
