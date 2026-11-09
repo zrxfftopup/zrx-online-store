@@ -789,28 +789,41 @@ function saveCart() {
 }
 
 function addToCart(id) {
-  const product = products.find(p => String(p.id) === String(id));
-  if (!product) return notice("পণ্য পাওয়া যায়নি।");
-  if (Number(product.stock) < 1) return notice("এই পণ্যটি স্টকে নেই।");
+  const product = products.find(
+    p => String(p.id) === String(id)
+  );
 
-  const existing = cart.find(item => String(item.id) === String(id));
+  if (!product) {
+    return notice("পণ্য পাওয়া যায়নি।");
+  }
+
+  if (Number(product.stock) < 1) {
+    return notice("এই পণ্যটি স্টকে নেই।");
+  }
+
+  const existing = cart.find(
+    item => String(item.id) === String(id)
+  );
+
   if (existing) {
     if (existing.quantity >= Number(product.stock)) {
       return notice("স্টকের চেয়ে বেশি নেওয়া যাবে না।");
     }
+
     existing.quantity++;
   } else {
     cart.push({
       id: product.id,
       name: product.name,
       price: Number(product.price),
+      image_url: product.image_url || "",
       quantity: 1
     });
   }
 
   saveCart();
   notice("কার্টে যোগ হয়েছে।");
-}
+    }
 
 function changeCartQty(id, amount) {
   const item = cart.find(x => String(x.id) === String(id));
