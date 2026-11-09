@@ -632,6 +632,14 @@ async function refreshUser() {
 
   if (currentUser) await loadProfile();
 
+  const photoControls = $("profilePhotoUploadControls");
+photoControls?.classList.toggle("hidden", isAdmin);
+
+const avatar = $("profileAvatar");
+if (avatar && isAdmin) {
+  avatar.src = "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
+  }
+
   window.updateAdminMessengerVisibility();
 }
 
