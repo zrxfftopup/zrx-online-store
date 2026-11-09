@@ -1529,12 +1529,27 @@ async function loadSupportMessages() {
     return;
   }
 
-  $("supportMessages").innerHTML = (data || []).map(m => `
-    <div class="chat-message">
-      <b>${safe(m.sender || "Support")}:</b>
-      ${safe(m.message || "")}
-    </div>
-  `).join("");
+  $("supportMessages").innerHTML = (data || []).map(m => {
+    const isAdminMessage = m.sender === "admin";
+
+    return isAdminMessage ? `
+      <div class="chat-message admin-chat-message">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px">
+          <img src="https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg"
+            style="width:38px;height:38px;border-radius:50%;border:3px solid #d4af37;object-fit:cover">
+          <span style="background:linear-gradient(135deg,#ffd700,#b8860b);color:#211900;padding:4px 10px;border-radius:15px;font-size:11px;font-weight:900">
+            👑 ADMIN
+          </span>
+        </div>
+        ${safe(m.message || "")}
+      </div>
+    ` : `
+      <div class="chat-message mine">
+        <b>আপনি:</b>
+        ${safe(m.message || "")}
+      </div>
+    `;
+  }).join("");
 
   $("supportMessages").scrollTop = $("supportMessages").scrollHeight;
 }
