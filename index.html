@@ -1090,11 +1090,13 @@ async function placeOrder() {
       total += price * item.quantity;
 
       orderItems.push({
-        product_id: product.id,
-        product_name: product.name,
-        quantity: item.quantity,
-        unit_price: price
-      });
+  product_id: product.id,
+  product_name: product.name,
+  quantity: item.quantity,
+  unit_price: price,
+  product_size: item.size || null,
+  product_color: item.color || null
+});
     }
 
     const ownDelivery = isBayezidAddress(upazila);
