@@ -651,6 +651,8 @@ const avatar = $("profileAvatar");
 if (avatar && isAdmin) {
   avatar.src = "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
   }
+  const profileHero = $("profileHero");
+profileHero?.classList.toggle("zrx-admin-profile", isAdmin);
 
   window.updateAdminMessengerVisibility();
 }
