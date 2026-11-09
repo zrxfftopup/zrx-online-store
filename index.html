@@ -270,11 +270,21 @@ a{color:#087b4c;overflow-wrap:anywhere}
 
   <div class="card">
     <h3>📦 পণ্য যোগ করুন</h3>
+
     <input id="productName" placeholder="পণ্যের নাম">
-    <input id="productPrice" type="number" placeholder="দাম">
-    <input id="productStock" type="number" placeholder="স্টক">
-    <input id="productImage" type="url" placeholder="ছবির URL">
+    <input id="productPrice" type="number" placeholder="পণ্যের দাম">
+
+    <label>পণ্যের ছবি নির্বাচন করুন</label>
+    <input id="productImages" type="file" accept="image/*" multiple onchange="previewProductImages()">
+
+    <div id="productImagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;"></div>
+
+    <input id="productSizes" placeholder="সাইজ: S, M, L, XL">
+
+    <input id="productColors" placeholder="কালার: Black, White, Red">
+
     <textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>
+
     <button onclick="addProduct()">পণ্য যোগ করুন</button>
   </div>
 
@@ -287,6 +297,13 @@ a{color:#087b4c;overflow-wrap:anywhere}
     <h3>📋 অর্ডার পরিচালনা</h3>
     <div id="adminOrders"></div>
   </div>
+
+  <div class="card">
+    <h3>👥 কাস্টমার তালিকা</h3>
+    <div id="adminCustomers"></div>
+  </div>
+</section>
+
 
   <div class="card">
     <h3>👥 কাস্টমার তালিকা</h3>
