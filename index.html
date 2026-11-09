@@ -614,7 +614,7 @@ async function refreshUser() {
 
   if (currentUser) loadProfile();
 
-window.updateAdminMessengerVisibility();
+window.updateAdminMessengerVisibility = function() {
 }
 
 async function logoutUser() {
