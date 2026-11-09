@@ -297,13 +297,33 @@ a{color:#087b4c;overflow-wrap:anywhere}
 
   <div class="card">
     <h3>ডেলিভারি ঠিকানা</h3>
-    <input id="checkoutDistrict" placeholder="জেলা">
-    <input id="checkoutUpazila" placeholder="উপজেলা / থানা">
-    <input id="checkoutArea" placeholder="এলাকা">
-    <textarea id="checkoutAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+
+    <label>বিভাগ</label>
+    <select id="checkoutDivision">
+        <option value="">বিভাগ নির্বাচন করুন</option>
+    </select>
+
+    <label>জেলা</label>
+    <select id="checkoutDistrict" disabled>
+        <option value="">আগে বিভাগ নির্বাচন করুন</option>
+    </select>
+
+    <label>উপজেলা / থানা</label>
+    <select id="checkoutUpazila" disabled>
+        <option value="">আগে জেলা নির্বাচন করুন</option>
+    </select>
+
+    <label>এলাকা</label>
+    <input id="checkoutArea" placeholder="এলাকার নাম">
+
+    <label>সম্পূর্ণ ঠিকানা</label>
+    <textarea id="checkoutAddress" placeholder="বাড়ি, রোড, ব্লক ইত্যাদি"></textarea>
+
+    <label>মোবাইল নম্বর</label>
     <input id="checkoutPhone" placeholder="মোবাইল নম্বর">
+
     <button onclick="placeOrder()">অর্ডার নিশ্চিত করুন</button>
-  </div>
+</div>
 </section>
 
 <!-- ADMIN SECTION -->
