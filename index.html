@@ -1277,7 +1277,7 @@ const phone = val("checkoutPhone");
         total_amount: total,
         status: "Pending",
         delivery_type: ownDelivery ? "Own Delivery" : "Courier",
-        full_address: [district, upazila, area, fullAddress].join(", "),
+        full_address: [division, district, upazila, area, fullAddress].filter(Boolean).join(", "),
         phone: phone
       })
       .select().single();
