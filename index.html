@@ -2037,6 +2037,10 @@ window.loadProducts = async function() {
 
 /* PRODUCT DETAILS PAGE */
 
+window.detailImageList = [];
+window.detailImageIndex = 0;
+window.currentDetailProductId = null;
+
 window.openProductDetails = function(id) {
 
   const product = products.find(
@@ -2047,55 +2051,87 @@ window.openProductDetails = function(id) {
     return notice("পণ্যটি পাওয়া যায়নি।");
   }
 
+  window.currentDetailProductId = product.id;
+
   let detailsPage = document.getElementById("productDetails");
 
   if (!detailsPage) {
     detailsPage = document.createElement("section");
-
     detailsPage.id = "productDetails";
     detailsPage.className = "page hidden";
-
     document.querySelector("main").appendChild(detailsPage);
   }
 
   const sizes = getProductSizes(product);
+  const colors = Array.isArray(product.colors) ? product.colors : [];
+
+  window.detailImageList = Array.isArray(product.images)
+    ? product.images.filter(Boolean)
+    : [];
+
+  if (!window.detailImageList.length && product.image_url) {
+    window.detailImageList = [product.image_url];
+  }
+
+  window.detailImageIndex = 0;
 
   const sizeOptions = sizes.length
-    ? sizes.map(size => `
-        <option value="${safe(size)}">
-          ${safe(size)}
-        </option>
+    ? `<option value="">সাইজ নির্বাচন করুন</option>` +
+      sizes.map(size => `
+        <option value="${safe(size)}">${safe(size)}</option>
       `).join("")
-    : `
-        <option value="">সাইজের তথ্য নেই</option>
-      `;
+    : `<option value="">সাইজের অপশন নেই</option>`;
+
+  const colorOptions = colors.length
+    ? `<option value="">কালার নির্বাচন করুন</option>` +
+      colors.map(color => `
+        <option value="${safe(color)}">${safe(color)}</option>
+      `).join("")
+    : `<option value="">কালারের অপশন নেই</option>`;
 
   detailsPage.innerHTML = `
-
     <div class="panel">
 
-      <button
-        class="secondary"
-        type="button"
-        onclick="showPage('home')"
-      >
+      <button class="secondary" type="button"
+        onclick="showPage('home')">
         ← হোম পেজে ফিরে যান
       </button>
 
-      <div style="margin-top:18px;text-align:center">
+      <div style="margin-top:18px;text-align:center;">
 
-        <img
-          src="${safe(product.image_url || "https://placehold.co/500x400?text=ZRX")}"
-          alt="${safe(product.name)}"
-          style="
-            width:100%;
-            max-height:350px;
-            object-fit:contain;
-            border-radius:12px;
-            background:#f5f6f8;
-          "
-        >
+        <div style="position:relative;">
 
+          <img id="detailMainImage"
+            src="${safe(window.detailImageList[0] || "https://placehold.co/500x400?text=ZRX")}"
+            alt="${safe(product.name)}"
+            style="width:100%;max-height:350px;object-fit:contain;border-radius:12px;background:#f5f6f8;">
+
+          ${window.detailImageList.length > 1 ? `
+            <button type="button"
+              onclick="changeDetailImage(-1)"
+              style="position:absolute;left:8px;top:45%;">
+              ❮
+            </button>
+
+            <button type="button"
+              onclick="changeDetailImage(1)"
+              style="position:absolute;right:8px;top:45%;">
+              ❯
+            </button>
+          ` : ""}
+
+        </div>
+
+        <div id="detailImageThumbnails"
+          style="display:flex;gap:8px;overflow-x:auto;margin-top:12px;justify-content:center;">
+
+          ${window.detailImageList.map((url, index) => `
+            <img src="${safe(url)}"
+              onclick="selectDetailImage(${index})"
+              style="width:65px;height:65px;object-fit:cover;border-radius:8px;border:2px solid ${index === 0 ? "#168b52" : "#ddd"};cursor:pointer;">
+          `).join("")}
+
+        </div>
       </div>
 
       <h2>${safe(product.name)}</h2>
@@ -2108,13 +2144,8 @@ window.openProductDetails = function(id) {
 
       <h3>পণ্যের বিস্তারিত</h3>
 
-      <p style="line-height:1.8">
+      <p style="line-height:1.8;white-space:pre-wrap;">
         ${safe(product.description || "এই পণ্যের বিস্তারিত তথ্য দেওয়া হয়নি।")}
-      </p>
-
-      <p>
-        <b>স্টক:</b>
-        ${Number(product.stock || 0)}
       </p>
 
       <hr>
@@ -2127,14 +2158,71 @@ window.openProductDetails = function(id) {
         ${sizeOptions}
       </select>
 
-      <p class="muted">
-        পরবর্তী ধাপে এখানে একাধিক ছবির স্লাইডার,
-        কালার নির্বাচন, কাস্টমার রিভিউ এবং
-        কেনা ও কার্টে যোগ করার বাটন যুক্ত করা হবে।
-      </p>
+      <div style="height:12px;"></div>
+
+      <label for="detailProductColor">
+        আপনার পছন্দের কালার বেছে নিন
+      </label>
+
+      <select id="detailProductColor">
+        ${colorOptions}
+      </select>
+
+      <hr>
+
+      <h3>⭐ কাস্টমার রিভিউ</h3>
+
+      <div id="productReviews">
+        রিভিউ লোড হচ্ছে...
+      </div>
+
+      <div style="margin-top:18px;padding:12px;border:1px solid #ddd;border-radius:10px;">
+
+        <h3>আপনার মতামত লিখুন</h3>
+
+        <label for="detailReviewRating">রেটিং দিন</label>
+
+        <select id="detailReviewRating">
+          <option value="5">⭐⭐⭐⭐⭐ - ৫</option>
+          <option value="4">⭐⭐⭐⭐ - ৪</option>
+          <option value="3">⭐⭐⭐ - ৩</option>
+          <option value="2">⭐⭐ - ২</option>
+          <option value="1">⭐ - ১</option>
+        </select>
+
+        <label for="detailReviewText">আপনার রিভিউ</label>
+
+        <textarea id="detailReviewText"
+          rows="4"
+          placeholder="পণ্যটি সম্পর্কে আপনার মতামত লিখুন..."></textarea>
+
+        <button type="button"
+          onclick="submitProductReview()">
+          রিভিউ জমা দিন
+        </button>
+
+      </div>
+
+      <hr>
+
+      <div style="display:flex;gap:10px;margin-top:20px;">
+
+        <button type="button"
+          style="flex:1;"
+          onclick="buyProductNow()">
+          কিনুন
+        </button>
+
+        <button type="button"
+          class="secondary"
+          style="flex:1;"
+          onclick="addDetailProductToCart()">
+          কার্টে যোগ করুন
+        </button>
+
+      </div>
 
     </div>
-
   `;
 
   document.querySelectorAll(".page").forEach(page => {
@@ -2144,6 +2232,185 @@ window.openProductDetails = function(id) {
   detailsPage.classList.remove("hidden");
 
   window.scrollTo(0, 0);
+
+  loadProductReviews(product.id);
+};
+
+
+window.selectDetailImage = function(index) {
+
+  if (index < 0 || index >= window.detailImageList.length) return;
+
+  window.detailImageIndex = index;
+
+  const mainImage = document.getElementById("detailMainImage");
+
+  if (mainImage) {
+    mainImage.src = window.detailImageList[index];
+  }
+
+  document.querySelectorAll("#detailImageThumbnails img")
+    .forEach((img, i) => {
+      img.style.border = i === index
+        ? "2px solid #168b52"
+        : "2px solid #ddd";
+    });
+};
+
+
+window.changeDetailImage = function(amount) {
+
+  const total = window.detailImageList.length;
+
+  if (!total) return;
+
+  let next = window.detailImageIndex + amount;
+
+  if (next < 0) next = total - 1;
+  if (next >= total) next = 0;
+
+  selectDetailImage(next);
+};
+
+
+window.getDetailSelections = function() {
+
+  return {
+    size: document.getElementById("detailProductSize")?.value || "",
+    color: document.getElementById("detailProductColor")?.value || ""
+  };
+};
+
+
+window.addDetailProductToCart = function() {
+
+  const selections = getDetailSelections();
+
+  return addToCart(
+    window.currentDetailProductId,
+    selections.size,
+    selections.color
+  );
+};
+
+
+window.buyProductNow = function() {
+
+  const added = addDetailProductToCart();
+
+  if (added) {
+    showPage("cart");
+  }
+};
+
+
+window.loadProductReviews = async function(productId) {
+
+  const container = document.getElementById("productReviews");
+
+  if (!container) return;
+
+  container.innerHTML = "রিভিউ লোড হচ্ছে...";
+
+  try {
+
+    const { data, error } = await db
+      .from("product_reviews")
+      .select("*")
+      .eq("product_id", String(productId))
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    if (!data || !data.length) {
+      container.innerHTML = "<p>এখনো কোনো রিভিউ দেওয়া হয়নি।</p>";
+      return;
+    }
+
+    container.innerHTML = data.map(review => `
+      <div style="padding:12px;border-bottom:1px solid #ddd;">
+
+        <b>${safe(review.user_name || "কাস্টমার")}</b>
+
+        <p>${"⭐".repeat(Number(review.rating) || 0)}</p>
+
+        <p style="white-space:pre-wrap;">
+          ${safe(review.review)}
+        </p>
+
+        <small>
+          ${review.created_at
+            ? new Date(review.created_at).toLocaleDateString("bn-BD")
+            : ""}
+        </small>
+
+      </div>
+    `).join("");
+
+  } catch (error) {
+
+    container.innerHTML =
+      "<p>রিভিউ লোড করা যায়নি। পরে আবার চেষ্টা করুন।</p>";
+
+    console.error("Review loading error:", error);
+  }
+};
+
+
+window.submitProductReview = async function() {
+
+  if (!currentUser) {
+    return notice("রিভিউ দিতে আগে লগইন করুন।");
+  }
+
+  const productId = window.currentDetailProductId;
+
+  const rating = Number(
+    document.getElementById("detailReviewRating")?.value
+  );
+
+  const review = document.getElementById("detailReviewText")?.value.trim();
+
+  if (!review) {
+    return notice("আপনার রিভিউ লিখুন।");
+  }
+
+  if (rating < 1 || rating > 5) {
+    return notice("সঠিক রেটিং নির্বাচন করুন।");
+  }
+
+  try {
+
+    const userName =
+      currentUser.user_metadata?.full_name ||
+      currentUser.user_metadata?.name ||
+      currentUser.email ||
+      "কাস্টমার";
+
+    const { error } = await db
+      .from("product_reviews")
+      .insert({
+        product_id: String(productId),
+        user_id: currentUser.id,
+        user_name: userName,
+        rating: rating,
+        review: review
+      });
+
+    if (error) throw error;
+
+    notice("আপনার রিভিউ জমা হয়েছে!");
+
+    document.getElementById("detailReviewText").value = "";
+
+    await loadProductReviews(productId);
+
+  } catch (error) {
+
+    console.error("Review submission error:", error);
+
+    notice("রিভিউ জমা দেওয়া যায়নি: " + error.message);
+  }
 };
 
 /* EMAIL PASSWORD RESET FIX */
