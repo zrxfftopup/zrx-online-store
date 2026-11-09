@@ -584,7 +584,20 @@ async function updatePassword(event) {
     notice(error.message);
   }
 }
+window.updateAdminMessengerVisibility = function() {
+  const messenger = $("adminMessengerFloat");
+  const support = $("supportFloat");
+  const supportBox = $("supportBox");
 
+  if (!messenger) return;
+
+  messenger.classList.toggle("hidden", !(currentUser && isAdmin));
+
+  if (isAdmin) {
+    support?.classList.add("hidden");
+    supportBox?.classList.add("hidden");
+  }
+};
 
 async function refreshUser() {
   const { data } = await db.auth.getUser();
@@ -619,21 +632,6 @@ async function refreshUser() {
 
   window.updateAdminMessengerVisibility();
 }
-
-window.updateAdminMessengerVisibility = function() {
-  const messenger = $("adminMessengerFloat");
-  const support = $("supportFloat");
-  const supportBox = $("supportBox");
-
-  if (!messenger) return;
-
-  messenger.classList.toggle("hidden", !(currentUser && isAdmin));
-
-  if (isAdmin) {
-    support?.classList.add("hidden");
-    supportBox?.classList.add("hidden");
-  }
-};
 
 async function logoutUser() {
   const { error } = await db.auth.signOut();
