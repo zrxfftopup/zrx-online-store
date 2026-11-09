@@ -1182,7 +1182,7 @@ async function placeOrder() {
         total_amount: total,
         status: "Pending",
         delivery_type: ownDelivery ? "Own Delivery" : "Courier",
-        delivery_address: [district, upazila, area, fullAddress].join(", "),
+        full_address: [district, upazila, area, fullAddress].join(", "),
         phone: phone
       })
       .select().single();
