@@ -1664,7 +1664,7 @@ function backToAdminInbox() {
   loadAdminChats();
 }
 
-function updateAdminMessengerVisibility() {
+window.updateAdminMessengerVisibility = function() {
   const messenger = $("adminMessengerFloat");
   const support = $("supportFloat");
   const supportBox = $("supportBox");
@@ -1677,7 +1677,7 @@ function updateAdminMessengerVisibility() {
     support?.classList.add("hidden");
     supportBox?.classList.add("hidden");
   }
-}
+};
 /* FORM EVENTS */
 $("registerForm")?.addEventListener("submit", registerUser);
 $("loginForm")?.addEventListener("submit", loginUser);
