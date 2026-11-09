@@ -844,6 +844,79 @@ async function loadSavedAddress() {
   if ($("checkoutAddress")) $("checkoutAddress").value = data.full_address || "";
   if ($("checkoutPhone")) $("checkoutPhone").value = data.phone || "";
 }
+
+let bdLocations = [];
+
+async function loadCheckoutLocations() {
+    const divisionSelect = document.getElementById("checkoutDivision");
+    const districtSelect = document.getElementById("checkoutDistrict");
+    const upazilaSelect = document.getElementById("checkoutUpazila");
+
+    try {
+        const response = await fetch(
+            "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json"
+        );
+
+        if (!response.ok) throw new Error("তথ্য লোড হয়নি");
+
+        bdLocations = await response.json();
+
+        divisionSelect.innerHTML =
+            '<option value="">বিভাগ নির্বাচন করুন</option>';
+
+        bdLocations.forEach((division, index) => {
+            divisionSelect.add(new Option(division.bn_name, index));
+        });
+
+        divisionSelect.onchange = function () {
+            districtSelect.innerHTML =
+                '<option value="">জেলা নির্বাচন করুন</option>';
+
+            upazilaSelect.innerHTML =
+                '<option value="">আগে জেলা নির্বাচন করুন</option>';
+
+            upazilaSelect.disabled = true;
+
+            const division = bdLocations[this.value];
+            districtSelect.disabled = !division;
+
+            if (division) {
+                division.districts.forEach((district, index) => {
+                    districtSelect.add(
+                        new Option(district.bn_name, index)
+                    );
+                });
+            }
+        };
+
+        districtSelect.onchange = function () {
+            upazilaSelect.innerHTML =
+                '<option value="">উপজেলা নির্বাচন করুন</option>';
+
+            const division = bdLocations[divisionSelect.value];
+            const district = division?.districts[this.value];
+
+            upazilaSelect.disabled = !district;
+
+            if (district) {
+                district.upazilas.forEach(upazila => {
+                    upazilaSelect.add(
+                        new Option(upazila.bn_name, upazila.bn_name)
+                    );
+                });
+            }
+        };
+
+    } catch (error) {
+        console.error("ঠিকানার তালিকা লোড সমস্যা:", error);
+
+        divisionSelect.innerHTML =
+            '<option value="">তালিকা লোড হয়নি</option>';
+    }
+}
+
+loadCheckoutLocations();
+  
 </script>
 <script>
 async function loadProducts() {
