@@ -772,6 +772,19 @@ async function loadProducts() {
 
 function saveCart() {
   localStorage.setItem("zrxCart", JSON.stringify(cart));
+
+  // কার্টের সংখ্যা আপডেট
+  const cartCountElement = document.getElementById("cartCount");
+
+  if (cartCountElement) {
+    const totalItems = cart.reduce(
+      (total, item) => total + Number(item.quantity || 0),
+      0
+    );
+
+    cartCountElement.textContent = totalItems;
+  }
+
   renderCart();
 }
 
