@@ -1982,8 +1982,17 @@ if(admin && !admin.querySelector(".admin-brand")) {
   admin.prepend(brand);
 }
 
-/* START ON HOME */
-document.addEventListener("DOMContentLoaded",()=>{
+/* START ON HOME + CART INITIALIZATION */
+document.addEventListener("DOMContentLoaded", () => {
+  // পুরোনো কার্টের তথ্য যাচাই
+  if (!Array.isArray(cart)) {
+    cart = [];
+  }
+
+  // কার্টের সংখ্যা ও পণ্যের তালিকা আপডেট
+  saveCart();
+
+  // হোম পেজ দেখানো
   showPage("home");
 });
   </script>
