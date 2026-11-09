@@ -1064,41 +1064,111 @@ async function loadMyOrders() {
   `).join("") || "<p>এখনো কোনো অর্ডার নেই।</p>";
 }
 
+
+function previewProductImages() {
+  const files = Array.from(
+    document.getElementById("productImages").files || []
+  );
+
+  const preview = document.getElementById("productImagePreview");
+
+  preview.innerHTML = files.map(file => `
+    <img
+      src="${URL.createObjectURL(file)}"
+      style="width:85px;height:85px;object-fit:cover;border-radius:8px;"
+    >
+  `).join("");
+}
+
 async function addProduct() {
   if (!isAdmin) return notice("Admin অনুমতি প্রয়োজন।");
 
   try {
     const name = val("productName");
     const price = Number(val("productPrice"));
-    const stock = Number(val("productStock"));
+    const description = val("productDescription");
 
-    if (!name || price < 0 || !Number.isFinite(price) ||
-        stock < 0 || !Number.isFinite(stock)) {
-      throw new Error("পণ্যের নাম, সঠিক দাম ও স্টক দিন।");
+    const files = Array.from(
+      document.getElementById("productImages").files || []
+    );
+
+    const sizes = val("productSizes")
+      .split(",").map(x => x.trim()).filter(Boolean);
+
+    const colors = val("productColors")
+      .split(",").map(x => x.trim()).filter(Boolean);
+
+    if (!name || !Number.isFinite(price) || price <= 0) {
+      throw new Error("পণ্যের নাম ও সঠিক দাম দিন।");
+    }
+
+    if (!files.length) {
+      throw new Error("পণ্যের অন্তত একটি ছবি নির্বাচন করুন।");
+    }
+
+    const imageUrls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const filename = file.name.replace(
+        /[^a-zA-Z0-9._-]/g, "_"
+      );
+
+      const path = `${Date.now()}_${i}_${filename}`;
+
+      const { error: uploadError } = await db.storage
+        .from("product-images")
+        .upload(path, file, {
+          cacheControl: "3600",
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data } = db.storage
+        .from("product-images")
+        .getPublicUrl(path);
+
+      imageUrls.push(data.publicUrl);
     }
 
     const { error } = await db.from("products").insert({
       name,
       price,
-      stock,
-      image_url: val("productImage"),
-      description: val("productDescription")
+      stock: 999999,
+      image_url: imageUrls[0],
+      images: imageUrls,
+      sizes,
+      colors,
+      description
     });
 
     if (error) throw error;
 
-    ["productName","productPrice","productStock",
-     "productImage","productDescription"].forEach(id => {
-      if ($(id)) $(id).value = "";
+    [
+      "productName",
+      "productPrice",
+      "productImages",
+      "productSizes",
+      "productColors",
+      "productDescription"
+    ].forEach(id => {
+      const element = document.getElementById(id);
+      if (element) element.value = "";
     });
 
-    notice("পণ্য যোগ হয়েছে।");
+    document.getElementById("productImagePreview").innerHTML = "";
+
+    notice("পণ্য সফলভাবে যোগ হয়েছে!");
+
     await loadProducts();
     await loadAdminProducts();
+
   } catch (error) {
-    notice(error.message);
+    notice("সমস্যা হয়েছে: " + error.message);
   }
 }
+
 
 async function loadAdminProducts() {
   const { data, error } = await db.from("products").select("*");
