@@ -1238,7 +1238,7 @@ async function loadMyOrders() {
       <p>মোট: ৳${Number(order.total_amount || 0).toFixed(2)}</p>
       <p>অবস্থা: ${safe(order.status || "Pending")}</p>
       <p>ডেলিভারি: ${safe(order.delivery_type || "তথ্য নেই")}</p>
-      <p>ঠিকানা: ${safe(order.delivery_address || "")}</p>
+      <p>ঠিকানা: ${safe(order.full_address || "")}</p>
       <p>কুরিয়ার: ${safe(order.courier_name || "এখনো দেওয়া হয়নি")}</p>
       <p>ট্র্যাকিং নম্বর: ${safe(order.tracking_number || "এখনো দেওয়া হয়নি")}</p>
       ${order.tracking_url
