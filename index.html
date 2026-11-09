@@ -1422,7 +1422,7 @@ async function loadAdminOrders() {
       <b>অর্ডার: ${safe(o.id)}</b>
       <p>কাস্টমার: ${safe(o.user_id)}</p>
       <p>মোট: ৳${Number(o.total_amount || 0)}</p>
-      <p>ঠিকানা: ${safe(o.full_address || "")}</p>
+      <p>ঠিকানা: ${safe(o.delivery_address || o.full_address || "")}</p>
       <p>বর্তমান অবস্থা: ${safe(o.status || "")}</p>
       <select id="status_${safe(o.id)}">
         <option value="Pending">Pending</option>
