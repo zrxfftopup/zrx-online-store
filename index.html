@@ -1745,41 +1745,208 @@ window.loadSavedAddress = async function() {
 };
 
 
+
 /* PRODUCTS GRID FIX */
+
+function getProductSizes(product) {
+  let sizes = product.sizes || product.size || [];
+
+  if (typeof sizes === "string") {
+    const value = sizes.trim();
+
+    if (!value) return [];
+
+    try {
+      const parsed = JSON.parse(value);
+
+      if (Array.isArray(parsed)) {
+        sizes = parsed;
+      } else {
+        sizes = value.split(",");
+      }
+    } catch {
+      sizes = value.split(",");
+    }
+  }
+
+  if (!Array.isArray(sizes)) {
+    sizes = [];
+  }
+
+  return sizes
+    .map(size => String(size).trim())
+    .filter(Boolean);
+}
+
+
+/* PRODUCT LIST */
+
 window.loadProducts = async function() {
-  const {data,error}=await db.from("products")
-    .select("*").order("created_at",{ascending:false});
+  const { data, error } = await db.from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-  const container=document.getElementById("productList");
-  if(!container) return;
+  const container = document.getElementById("productList");
 
-  if(error) {
-    container.textContent=error.message;
+  if (!container) return;
+
+  if (error) {
+    container.textContent = error.message;
     return;
   }
 
-  products=data||[];
+  products = data || [];
 
-  container.innerHTML=products.map(p=>`
-    <div class="product-card">
-      <img
-        src="${safe(p.image_url||"https://placehold.co/300x200?text=ZRX")}"
-        alt="${safe(p.name)}"
-        onclick="openProductDetails('${safe(p.id)}')"
-        style="width:100%;max-height:190px;object-fit:cover;cursor:pointer"
+  if (!products.length) {
+    container.innerHTML = "<p>এখনো কোনো পণ্য যোগ করা হয়নি।</p>";
+    return;
+  }
+
+  container.innerHTML = products.map(p => {
+    const sizes = getProductSizes(p);
+
+    return `
+      <div class="product-card">
+
+        <img
+          src="${safe(p.image_url || "https://placehold.co/300x200?text=ZRX")}"
+          alt="${safe(p.name)}"
+          onclick="openProductDetails('${safe(p.id)}')"
+          style="width:100%;max-height:190px;object-fit:cover;cursor:pointer"
+        >
+
+        <h3>${safe(p.name)}</h3>
+
+        <p>${safe(p.description || "")}</p>
+
+        <b class="price">
+          ৳${Number(p.price || 0).toFixed(2)}
+        </b>
+
+        <p>
+          সাইজ:
+          ${sizes.length
+            ? sizes.map(size => safe(size)).join(", ")
+            : "সাইজের তথ্য নেই"}
+        </p>
+
+        <p>স্টক: ${Number(p.stock || 0)}</p>
+
+      </div>
+    `;
+  }).join("");
+};
+
+
+/* PRODUCT DETAILS PAGE */
+
+window.openProductDetails = function(id) {
+
+  const product = products.find(
+    p => String(p.id) === String(id)
+  );
+
+  if (!product) {
+    return notice("পণ্যটি পাওয়া যায়নি।");
+  }
+
+  let detailsPage = document.getElementById("productDetails");
+
+  if (!detailsPage) {
+    detailsPage = document.createElement("section");
+
+    detailsPage.id = "productDetails";
+    detailsPage.className = "page hidden";
+
+    document.querySelector("main").appendChild(detailsPage);
+  }
+
+  const sizes = getProductSizes(product);
+
+  const sizeOptions = sizes.length
+    ? sizes.map(size => `
+        <option value="${safe(size)}">
+          ${safe(size)}
+        </option>
+      `).join("")
+    : `
+        <option value="">সাইজের তথ্য নেই</option>
+      `;
+
+  detailsPage.innerHTML = `
+
+    <div class="panel">
+
+      <button
+        class="secondary"
+        type="button"
+        onclick="showPage('home')"
       >
+        ← হোম পেজে ফিরে যান
+      </button>
 
-      <h3>${safe(p.name)}</h3>
+      <div style="margin-top:18px;text-align:center">
 
-      <p>${safe(p.description||"")}</p>
+        <img
+          src="${safe(product.image_url || "https://placehold.co/500x400?text=ZRX")}"
+          alt="${safe(product.name)}"
+          style="
+            width:100%;
+            max-height:350px;
+            object-fit:contain;
+            border-radius:12px;
+            background:#f5f6f8;
+          "
+        >
 
-      <b class="price">৳${Number(p.price||0).toFixed(2)}</b>
+      </div>
 
-      <p>সাইজ: ${safe(p.sizes||p.size||"সাইজের তথ্য নেই")}</p>
+      <h2>${safe(product.name)}</h2>
 
-      <p>স্টক: ${Number(p.stock||0)}</p>
+      <h2 class="price">
+        ৳${Number(product.price || 0).toFixed(2)}
+      </h2>
+
+      <hr>
+
+      <h3>পণ্যের বিস্তারিত</h3>
+
+      <p style="line-height:1.8">
+        ${safe(product.description || "এই পণ্যের বিস্তারিত তথ্য দেওয়া হয়নি।")}
+      </p>
+
+      <p>
+        <b>স্টক:</b>
+        ${Number(product.stock || 0)}
+      </p>
+
+      <hr>
+
+      <label for="detailProductSize">
+        আপনার সাইজ বেছে নিন
+      </label>
+
+      <select id="detailProductSize">
+        ${sizeOptions}
+      </select>
+
+      <p class="muted">
+        পরবর্তী ধাপে এখানে একাধিক ছবির স্লাইডার,
+        কালার নির্বাচন, কাস্টমার রিভিউ এবং
+        কেনা ও কার্টে যোগ করার বাটন যুক্ত করা হবে।
+      </p>
+
     </div>
-  `).join("");
+
+  `;
+
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.add("hidden");
+  });
+
+  detailsPage.classList.remove("hidden");
+
+  window.scrollTo(0, 0);
 };
 
 /* EMAIL PASSWORD RESET FIX */
