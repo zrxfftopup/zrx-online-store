@@ -1222,13 +1222,14 @@ async function placeOrder() {
   if (!currentUser) return notice("আগে লগইন করুন।");
   if (!cart.length) return notice("আপনার কার্ট খালি।");
 
-  const district = val("checkoutDistrict");
-  const upazila = val("checkoutUpazila");
-  const area = val("checkoutArea");
-  const fullAddress = val("checkoutAddress");
-  const phone = val("checkoutPhone");
+  const division = $("checkoutDivision").selectedOptions[0]?.textContent || "";
+const district = $("checkoutDistrict").selectedOptions[0]?.textContent || "";
+const upazila = val("checkoutUpazila");
+const area = val("checkoutArea");
+const fullAddress = val("checkoutAddress");
+const phone = val("checkoutPhone");
 
-  if (!district || !upazila || !area || !fullAddress || !phone) {
+  if (!division || !district || !upazila || !area || !fullAddress || !phone) {
     return notice("ডেলিভারি ঠিকানার সব তথ্য পূরণ করুন।");
   }
 
