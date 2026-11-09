@@ -585,6 +585,7 @@ async function updatePassword(event) {
   }
 }
 
+
 async function refreshUser() {
   const { data } = await db.auth.getUser();
   currentUser = data.user || null;
@@ -610,10 +611,14 @@ async function refreshUser() {
   $("cartNav")?.classList.toggle("hidden", !currentUser);
   $("adminNav")?.classList.toggle("hidden", !isAdmin);
 
-  if ($("accountNav")) $("accountNav").classList.toggle("hidden", !!currentUser);
+  if ($("accountNav")) {
+    $("accountNav").classList.toggle("hidden", !!currentUser);
+  }
 
-  if (currentUser) loadProfile();
+  if (currentUser) await loadProfile();
 
+  window.updateAdminMessengerVisibility();
+}
 
 window.updateAdminMessengerVisibility = function() {
   const messenger = $("adminMessengerFloat");
