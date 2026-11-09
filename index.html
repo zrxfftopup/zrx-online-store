@@ -681,7 +681,8 @@ if (avatar && isAdmin) {
   }
   const profileHero = $("profileHero");
 profileHero?.classList.toggle("zrx-admin-profile", isAdmin);
-
+const detailsTab = $("tab-details");
+detailsTab?.classList.toggle("zrx-admin-details", isAdmin);
   const adminBadge = $("adminProfileBadge");
 adminBadge?.classList.toggle("hidden", !isAdmin);
 
