@@ -829,10 +829,26 @@ function changeCartQty(id, amount) {
   const item = cart.find(x => String(x.id) === String(id));
   if (!item) return;
 
-  item.quantity += amount;
-  if (item.quantity <= 0) {
-    cart = cart.filter(x => String(x.id) !== String(id));
+  const product = products.find(
+    p => String(p.id) === String(id)
+  );
+
+  if (!product) {
+    return notice("পণ্যটি পাওয়া যায়নি।");
   }
+
+  const newQuantity = Number(item.quantity) + Number(amount);
+
+  if (newQuantity > Number(product.stock)) {
+    return notice("স্টকের চেয়ে বেশি নেওয়া যাবে না।");
+  }
+
+  if (newQuantity <= 0) {
+    cart = cart.filter(x => String(x.id) !== String(id));
+  } else {
+    item.quantity = newQuantity;
+  }
+
   saveCart();
 }
 
