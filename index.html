@@ -660,7 +660,7 @@ async function loadProfile() {
   if ($("profileUsername")) $("profileUsername").textContent = currentProfile.username || "";
   if ($("profilePhoto")) {
     $("profilePhoto").src = currentProfile.avatar_url ||
-      "https://placehold.co/120x120?text=ZRX";
+      "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
   }
 
   if ($("settingName")) $("settingName").value = currentProfile.full_name || "";
