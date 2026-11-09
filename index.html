@@ -658,6 +658,9 @@ if (avatar && isAdmin) {
   const profileHero = $("profileHero");
 profileHero?.classList.toggle("zrx-admin-profile", isAdmin);
 
+  const adminBadge = $("adminProfileBadge");
+adminBadge?.classList.toggle("hidden", !isAdmin);
+
   window.updateAdminMessengerVisibility();
 }
 
