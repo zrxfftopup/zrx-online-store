@@ -1538,17 +1538,19 @@ async function updateOrder(id) {
   if (!isAdmin) return;
 
   const updates = {
-  status: $("status_" + id).value,
-  courier_name: $("courier_" + id).value.trim(),
-  courier_tracking_number: $("tracking_" + id).value.trim(),
-  courier_tracking_url: $("trackingUrl_" + id).value.trim()
-};
+    status: $("status_" + id).value,
+    admin_message: $("adminMessage_" + id).value.trim()
+  };
 
-  const { error } = await db.from("orders").update(updates).eq("id", id);
+  const { error } = await db
+    .from("orders")
+    .update(updates)
+    .eq("id", id);
+
   if (error) return notice(error.message);
 
-  notice("অর্ডার আপডেট হয়েছে।");
-  loadAdminOrders();
+  notice("অর্ডারের স্ট্যাটাস ও মেসেজ আপডেট হয়েছে।");
+  await loadAdminOrders();
 }
 
 async function loadAdminCustomers() {
