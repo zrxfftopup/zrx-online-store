@@ -1540,11 +1540,11 @@ async function updateOrder(id) {
   if (!isAdmin) return;
 
   const updates = {
-    status: $("status_" + id).value,
-    courier_name: $("courier_" + id).value.trim(),
-    tracking_number: $("tracking_" + id).value.trim(),
-    tracking_url: $("trackingUrl_" + id).value.trim()
-  };
+  status: $("status_" + id).value,
+  courier_name: $("courier_" + id).value.trim(),
+  courier_tracking_number: $("tracking_" + id).value.trim(),
+  courier_tracking_url: $("trackingUrl_" + id).value.trim()
+};
 
   const { error } = await db.from("orders").update(updates).eq("id", id);
   if (error) return notice(error.message);
