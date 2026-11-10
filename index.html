@@ -1337,7 +1337,18 @@ async function loadMyOrders() {
       <p>ডেলিভারি: ${safe(order.delivery_type || "তথ্য নেই")}</p>
       <p>ঠিকানা: ${safe(order.full_address || "")}</p>
       ${order.admin_message
-  ? `<p><b>দোকানের বার্তা:</b> ${safe(order.admin_message)}</p>`
+  ? `
+    <div class="admin-message">
+      <img
+        src="https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg"
+        alt="Admin Logo"
+      >
+      <div>
+        <b>এডমিনের বার্তা:</b>
+        <p>${safe(order.admin_message)}</p>
+      </div>
+    </div>
+  `
   : ""}
     </div>
   `).join("") || "<p>এখনো কোনো অর্ডার নেই।</p>";
