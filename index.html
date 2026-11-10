@@ -1520,12 +1520,12 @@ async function loadAdminOrders() {
       <p>ঠিকানা: ${safe(o.delivery_address || o.full_address || "")}</p>
       <p>বর্তমান অবস্থা: ${safe(o.status || "")}</p>
       <select id="status_${safe(o.id)}">
-        <option value="Pending">Pending</option>
-        <option value="Processing">Processing</option>
-        <option value="Shipped">Shipped</option>
-        <option value="Delivered">Delivered</option>
-        <option value="Cancelled">Cancelled</option>
-      </select>
+  <option value="Pending" ${o.status === "Pending" ? "selected" : ""}>Pending</option>
+  <option value="Processing" ${o.status === "Processing" ? "selected" : ""}>Processing</option>
+  <option value="Shipped" ${o.status === "Shipped" ? "selected" : ""}>Shipped</option>
+  <option value="Delivered" ${o.status === "Delivered" ? "selected" : ""}>Delivered</option>
+  <option value="Cancelled" ${o.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+</select>
       <textarea id="adminMessage_${safe(o.id)}" placeholder="কাস্টমারকে মেসেজ লিখুন">${safe(o.admin_message || "")}</textarea>
       <button onclick="updateOrder('${safe(o.id)}')">আপডেট</button>
     </div>
