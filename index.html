@@ -1528,9 +1528,7 @@ async function loadAdminOrders() {
         <option value="Delivered">Delivered</option>
         <option value="Cancelled">Cancelled</option>
       </select>
-      <input id="courier_${safe(o.id)}" placeholder="কুরিয়ার নাম">
-      <input id="tracking_${safe(o.id)}" placeholder="ট্র্যাকিং নম্বর">
-      <input id="trackingUrl_${safe(o.id)}" placeholder="ট্র্যাকিং লিংক">
+      <textarea id="adminMessage_${safe(o.id)}" placeholder="কাস্টমারকে মেসেজ লিখুন">${safe(o.admin_message || "")}</textarea>
       <button onclick="updateOrder('${safe(o.id)}')">আপডেট</button>
     </div>
   `).join("") || "<p>কোনো অর্ডার নেই।</p>";
