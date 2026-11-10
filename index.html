@@ -1271,19 +1271,21 @@ const phone = val("checkoutPhone");
     const ownDelivery = isBayezidAddress(upazila);
 
     const { data: order, error: orderError } = await db
-      .from("orders")
-      .insert({
-        user_id: currentUser.id,
-        total_amount: total,
-        status: "Pending",
-        delivery_type: ownDelivery ? "Own Delivery" : "Courier",
-        full_address: [division, district, upazila, area, fullAddress].filter(Boolean).join(", "),
-        phone: phone
-      })
-      .select().single();
+  .from("orders")
+  .insert({
+    user_id: currentUser.id,
+    customer_id: currentUser.id,
+    customer_name: currentProfile?.full_name || currentUser.user_metadata?.full_name || currentUser.email || "Customer",
+    total_amount: total,
+    status: "Pending",
+    delivery_type: ownDelivery ? "Own Delivery" : "Courier",
+    full_address: [division, district, upazila, area, fullAddress].filter(Boolean).join(", "),
+    phone: phone
+  })
+  .select()
+  .single();
 
-    if (orderError) throw orderError;
-
+if (orderError) throw orderError;
     const itemsWithOrder = orderItems.map(item => ({
       ...item,
       order_id: order.id
