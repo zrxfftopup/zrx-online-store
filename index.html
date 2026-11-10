@@ -1931,7 +1931,20 @@ initializeStore();
   max-height:30vh; overflow:auto;
   background:#ffffff15; border-radius:9px; padding:8px;
 }
-.card {background:white;border-radius:12px;padding:15px;margin:12px 0}
+.card {
+  background: white;
+  color: #000000;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 12px 0;
+}
+
+.card b,
+.card p,
+.card span,
+.card strong {
+  color: #000000 !important;
+}
 .admin-brand {
   display:flex;align-items:center;gap:12px;
   background:linear-gradient(120deg,#101c36,#087b4c);
