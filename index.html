@@ -1336,11 +1336,9 @@ async function loadMyOrders() {
       <p>অবস্থা: ${safe(order.status || "Pending")}</p>
       <p>ডেলিভারি: ${safe(order.delivery_type || "তথ্য নেই")}</p>
       <p>ঠিকানা: ${safe(order.full_address || "")}</p>
-      <p>কুরিয়ার: ${safe(order.courier_name || "এখনো দেওয়া হয়নি")}</p>
-      <p>ট্র্যাকিং নম্বর: ${safe(order.tracking_number || "এখনো দেওয়া হয়নি")}</p>
-      ${order.tracking_url
-        ? `<a href="${safe(order.tracking_url)}" target="_blank" rel="noopener">ট্র্যাকিং লিংক</a>`
-        : ""}
+      ${order.admin_message
+  ? `<p><b>দোকানের বার্তা:</b> ${safe(order.admin_message)}</p>`
+  : ""}
     </div>
   `).join("") || "<p>এখনো কোনো অর্ডার নেই।</p>";
 }
