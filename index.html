@@ -1617,10 +1617,13 @@ async function loadAdminOrders() {
 
   $("adminOrders").innerHTML = (data || []).map(o => `
     <div class="card">
-      <b>অর্ডার: ${safe(o.id)}</b>
-      <p>কাস্টমার: ${safe(o.user_id)}</p>
+      
+<b>অর্ডার: #${safe(String(o.id).slice(0, 8).toUpperCase())}</b>
+<p>কাস্টমার: ${safe(o.customer_name || "নাম পাওয়া যায়নি")}</p>
 <p>মোবাইল নম্বর: ${safe(o.phone || "নম্বর পাওয়া যায়নি")}</p>
-      <p>মোট: ৳${Number(o.total_amount || 0)}</p>
+<p>মোট: ৳${Number(o.total_amount || 0)}</p>
+<p>ঠিকানা: ${safe(o.full_address || o.delivery_address || "")}</p>
+
       <p>ঠিকানা: ${safe(o.delivery_address || o.full_address || "")}</p>
       <p>বর্তমান অবস্থা: ${safe(o.status || "")}</p>
       <select id="status_${safe(o.id)}">
