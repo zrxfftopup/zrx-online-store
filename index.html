@@ -902,6 +902,7 @@ window.updateAdminMessengerVisibility = function() {
   }
 };
 
+
 async function refreshUser() {
   const { data } = await db.auth.getUser();
   currentUser = data.user || null;
@@ -920,37 +921,43 @@ async function refreshUser() {
       .eq("user_id", currentUser.id).maybeSingle();
 
     isAdmin = !!admin;
+
+    // প্রোফাইল ও প্রয়োজনীয় তথ্য আগে লোড হবে
+    await loadProfile();
   }
 
+  // সব লোড শেষ হওয়ার পর নেভিগেশন আপডেট হবে
   $("loginNav")?.classList.toggle("hidden", !!currentUser);
   $("profileNav")?.classList.toggle("hidden", !currentUser);
   $("cartNav")?.classList.toggle("hidden", !currentUser || isAdmin);
   $("adminProfileNav")?.classList.toggle("hidden", !isAdmin);
 
-$("profileOrdersTab")?.classList.toggle("hidden", isAdmin);
+  $("profileOrdersTab")?.classList.toggle("hidden", isAdmin);
 
   if ($("accountNav")) {
     $("accountNav").classList.toggle("hidden", !!currentUser);
   }
 
-  if (currentUser) await loadProfile();
-
   const photoControls = $("profilePhotoUploadControls");
-photoControls?.classList.toggle("hidden", isAdmin);
+  photoControls?.classList.toggle("hidden", isAdmin);
 
-const avatar = $("profileAvatar");
-if (avatar && isAdmin) {
-  avatar.src = "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
+  const avatar = $("profileAvatar");
+  if (avatar && isAdmin) {
+    avatar.src = "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
   }
+
   const profileHero = $("profileHero");
-profileHero?.classList.toggle("zrx-admin-profile", isAdmin);
-const detailsTab = $("tab-details");
-detailsTab?.classList.toggle("zrx-admin-details", isAdmin);
+  profileHero?.classList.toggle("zrx-admin-profile", isAdmin);
+
+  const detailsTab = $("tab-details");
+  detailsTab?.classList.toggle("zrx-admin-details", isAdmin);
+
   const adminBadge = $("adminProfileBadge");
-adminBadge?.classList.toggle("hidden", !isAdmin);
+  adminBadge?.classList.toggle("hidden", !isAdmin);
 
   window.updateAdminMessengerVisibility();
 }
+
 
 async function logoutUser() {
   const { error } = await db.auth.signOut();
