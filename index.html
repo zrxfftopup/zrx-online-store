@@ -1856,7 +1856,9 @@ async function openAdminChat(userId) {
 
   $("adminChatCustomerName").textContent =
     profile?.full_name || profile?.username || "কাস্টমার";
-
+$("adminChatCustomerAvatar").src =
+  profile?.avatar_url ||
+  "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
   $("adminChatCustomerId").textContent =
     "Customer ID: " + userId;
 
