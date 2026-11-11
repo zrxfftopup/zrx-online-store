@@ -1392,7 +1392,7 @@ window.loadAdminNoticeBoard = async function() {
     return;
   }
 
-  const files = (data || []).filter(f => f.name && f.id);
+  const files = (data || []).filter(f => f.name);
 
   box.innerHTML = files.length
     ? files.map(f => {
@@ -1425,7 +1425,7 @@ window.uploadNoticeBoardImages = async function() {
 
   if (error) return notice(error.message);
 
-  const current = (existing || []).filter(f => f.name && f.id).length;
+  const current = (existing || []).filter(f => f.name).length;
 
   if (current + files.length > 15) {
     return notice("সর্বোচ্চ ১৫টি ছবি রাখা যাবে।");
@@ -1495,7 +1495,7 @@ window.loadNoticeBoard = async function() {
   }
 
   const files = (data || [])
-    .filter(f => f.name && f.id)
+    .filter(f => f.name)
     .slice(0, 15);
 
   if (!files.length) {
