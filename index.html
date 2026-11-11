@@ -407,7 +407,43 @@ a{color:#087b4c;overflow-wrap:anywhere}
     <div class="card">
       <h3>📦 পণ্য যোগ করুন</h3>
       <input id="productName" placeholder="পণ্যের নাম">
-      <input id="productPrice" type="number" placeholder="পণ্যের দাম">
+      <
+<input id="productPrice" type="number" placeholder="পণ্যের দাম">
+
+<!-- PRODUCT DISCOUNT OPTION -->
+<div style="margin:12px 0;padding:12px;border:1px solid #dbeafe;border-radius:10px;background:#f8fbff;">
+
+  <label style="display:flex;align-items:center;gap:8px;font-weight:bold;">
+    <input
+      id="productDiscountEnabled"
+      type="checkbox"
+      onchange="toggleProductDiscount()"
+      style="width:auto;"
+    >
+    🏷️ এই পণ্যে ডিসকাউন্ট অফার দিন
+  </label>
+
+  <div id="productDiscountFields" style="display:none;margin-top:10px;">
+
+    <label for="productDiscountPercent">
+      ডিসকাউন্টের পরিমাণ (%)
+    </label>
+
+    <input
+      id="productDiscountPercent"
+      type="number"
+      min="1"
+      max="99"
+      step="1"
+      placeholder="যেমন: ২০"
+    >
+
+    <small>শুধু এই পণ্যটিতেই ডিসকাউন্ট প্রযোজ্য হবে।</small>
+
+  </div>
+</div>
+<!-- END PRODUCT DISCOUNT OPTION -->
+
       <label>পণ্যের ছবি নির্বাচন করুন</label>
       <input id="productImages" type="file" accept="image/*" multiple onchange="previewProductImages()">
       <div id="productImagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;"></div>
