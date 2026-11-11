@@ -2147,6 +2147,48 @@ height:230px;overflow:auto;background:#f3f6fa;padding:9px;
 </style>
 
 <script>
+
+window.showAdminMenu = function() {
+  const sections = [
+    "adminMenu",
+    "adminAddProduct",
+    "adminProductList",
+    "adminOrderList",
+    "adminCustomerList"
+  ];
+
+  sections.forEach(id => {
+    document.getElementById(id)?.classList.add("hidden");
+  });
+
+  document.getElementById("adminMenu")?.classList.remove("hidden");
+  window.scrollTo(0, 0);
+};
+
+window.openAdminSection = function(sectionId) {
+  if (!isAdmin) {
+    notice("আপনার Admin অনুমতি নেই।");
+    return;
+  }
+
+  const sections = [
+    "adminMenu",
+    "adminAddProduct",
+    "adminProductList",
+    "adminOrderList",
+    "adminCustomerList"
+  ];
+
+  if (!sections.includes(sectionId)) return;
+
+  sections.forEach(id => {
+    document.getElementById(id)?.classList.add("hidden");
+  });
+
+  document.getElementById(sectionId)?.classList.remove("hidden");
+  window.scrollTo(0, 0);
+};
+
 /* PAGE NAVIGATION FIX */
 window.showPage = function(page) {
   const pages = {
