@@ -283,6 +283,105 @@ a{color:#087b4c;overflow-wrap:anywhere}
     border-radius: 8px;
     box-shadow: 0 0 10px #dc262655;
 }
+/* ===============================
+   ZRX NOTICE BOARD DESIGN
+================================ */
+
+.zrx-notice-board {
+  position: relative;
+  overflow: hidden;
+  margin: 18px 0 24px;
+  padding: 5px;
+  border-radius: 18px;
+  background: linear-gradient(
+    120deg,
+    #ff2d55,
+    #2878ff,
+    #20d66b,
+    #ffd43b,
+    #ff2d55
+  );
+  background-size: 300% 300%;
+  animation: zrxNoticeBorder 5s linear infinite;
+  box-shadow: 0 0 12px #2878ff66, 0 0 18px #ff2d5566;
+}
+
+@keyframes zrxNoticeBorder {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.zrx-notice-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s ease;
+}
+
+.zrx-notice-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 210px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 13px;
+}
+
+.zrx-notice-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  border: 0;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  background: #111a;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.zrx-notice-arrow.prev {
+  left: 12px;
+}
+
+.zrx-notice-arrow.next {
+  right: 12px;
+}
+
+.zrx-notice-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.zrx-notice-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff99;
+  font-size: 0;
+}
+
+.zrx-notice-dots button.active {
+  background: #ffffff;
+  transform: scale(1.4);
+}
+
+@media (max-width: 600px) {
+  .zrx-notice-slide {
+    height: 160px;
+  }
+}
+
+/* END ZRX NOTICE BOARD DESIGN */
 </style>
 </head>
 <body>
