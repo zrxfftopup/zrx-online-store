@@ -949,36 +949,8 @@ async function refreshUser() {
     await loadProfile();
   }
 
-  // সব লোড শেষ হওয়ার পর নেভিগেশন আপডেট হবে
-  $("loginNav")?.classList.toggle("hidden", !!currentUser);
-  $("profileNav")?.classList.toggle("hidden", !currentUser);
-  $("cartNav")?.classList.toggle("hidden", !currentUser || isAdmin);
-  $("adminProfileNav")?.classList.toggle("hidden", !isAdmin);
-
-  $("profileOrdersTab")?.classList.toggle("hidden", isAdmin);
-
-  if ($("accountNav")) {
-    $("accountNav").classList.toggle("hidden", !!currentUser);
-  }
-
-  const photoControls = $("profilePhotoUploadControls");
-  photoControls?.classList.toggle("hidden", isAdmin);
-
-  const avatar = $("profileAvatar");
-  if (avatar && isAdmin) {
-    avatar.src = "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
-  }
-
-  const profileHero = $("profileHero");
-  profileHero?.classList.toggle("zrx-admin-profile", isAdmin);
-
-  const detailsTab = $("tab-details");
-  detailsTab?.classList.toggle("zrx-admin-details", isAdmin);
-
-  const adminBadge = $("adminProfileBadge");
-  adminBadge?.classList.toggle("hidden", !isAdmin);
-
-  window.updateAdminMessengerVisibility();
+  if (!window.__zrxLoginInProgress) {
+  updateAuthNavigation();
 }
 
 
