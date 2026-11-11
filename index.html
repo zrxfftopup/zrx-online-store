@@ -817,7 +817,7 @@ async function verifyEmailOtp() {
   event?.preventDefault();
 
   $("loginError").textContent = "";
-
+window.__zrxLoginInProgress = true;
   const loginButton = $("loginForm").querySelector(
     'button[onclick="loginUser()"]'
   );
