@@ -1467,7 +1467,7 @@ const phone = val("checkoutPhone");
         throw new Error(item.name + " পর্যাপ্ত স্টকে নেই।");
       }
 
-      const price = Number(product.price);
+      const price = getProductFinalPrice(product);
       total += price * item.quantity;
 
       orderItems.push({
