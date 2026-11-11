@@ -2718,9 +2718,7 @@ window.loadProducts = async function() {
 
         <p>${safe(p.description || "")}</p>
 
-        <b class="price">
-          ৳${Number(p.price || 0).toFixed(2)}
-        </b>
+        ${getProductPriceHTML(p)}
 
         <p>
           সাইজ:
