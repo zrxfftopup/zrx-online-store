@@ -283,8 +283,13 @@ a{color:#087b4c;overflow-wrap:anywhere}
 </div>
 <div class="profile-tabs">
 <button class="active" onclick="profileTab('details',this)">প্রোফাইল</button>
-<button onclick="profileTab('address',this)">ঠিকানা</button>
-<button onclick="profileTab('orders',this)">আমার অর্ডার</button>
+
+<button id="profileAddressTab" onclick="profileTab('address',this)">ঠিকানা</button>
+
+<button id="profileOrdersTab" onclick="profileTab('orders',this)">আমার অর্ডার</button>
+
+<button id="adminProfileNav" class="hidden" onclick="showPage('adminPage')">অ্যাডমিন</button>
+
 <button onclick="profileTab('settings',this)">সেটিংস</button>
 </div>
 <div id="tab-details" class="profile-panel"><div class="panel">
