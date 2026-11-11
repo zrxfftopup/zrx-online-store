@@ -848,6 +848,8 @@ updateAuthNavigation();
 showPage("homePage");
 
   } catch (error) {
+    window.__zrxLoginInProgress = false;
+
     $("loginError").textContent =
       error.message || "লগইন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।";
 
