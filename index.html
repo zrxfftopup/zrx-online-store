@@ -1578,8 +1578,22 @@ async function addProduct() {
 
   try {
     const name = val("productName");
-    const price = Number(val("productPrice"));
-    const description = val("productDescription");
+const price = Number(val("productPrice"));
+const description = val("productDescription");
+
+const discountEnabled =
+  document.getElementById("productDiscountEnabled")?.checked || false;
+
+const discountPercent = discountEnabled
+  ? Number(val("productDiscountPercent"))
+  : 0;
+
+if (discountEnabled &&
+    (!Number.isFinite(discountPercent) ||
+     discountPercent < 1 ||
+     discountPercent > 99)) {
+  throw new Error("ডিসকাউন্ট ১ থেকে ৯৯ শতাংশের মধ্যে দিন।");
+}
 
     const files = Array.from(
       document.getElementById("productImages").files || []
@@ -1626,15 +1640,16 @@ async function addProduct() {
     }
 
     const { error } = await db.from("products").insert({
-      name,
-      price,
-      stock: 999999,
-      image_url: imageUrls[0],
-      images: imageUrls,
-      sizes,
-      colors,
-      description
-    });
+  name,
+  price,
+  discount_percent: discountPercent,
+  stock: 999999,
+  image_url: imageUrls[0],
+  images: imageUrls,
+  sizes,
+  colors,
+  description
+});
 
     if (error) throw error;
 
