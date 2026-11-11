@@ -841,7 +841,9 @@ window.__zrxLoginInProgress = true;
 
     await db.auth.setSession(session);
 await refreshUser();
-
+if (!currentUser || !currentProfile) {
+  throw new Error("প্রোফাইল তথ্য লোড হয়নি। আবার লগইন করুন।");
+  }
 window.__zrxLoginInProgress = false;
 updateAuthNavigation();
 
