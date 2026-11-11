@@ -2231,6 +2231,7 @@ $("profilePhotoInput")?.addEventListener("change", uploadProfilePhoto);
 
 /* AUTH SESSION */
 db.auth.onAuthStateChange(async (event, session) => {
+  if (event === "SIGNED_IN" && window.__zrxLoginInProgress) return;
   currentUser = session?.user || null;
   await refreshUser();
 
