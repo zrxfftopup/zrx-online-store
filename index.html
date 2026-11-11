@@ -1270,7 +1270,194 @@ function getProductPriceHTML(product) {
     </div>
   `;
 }
+// ===============================
+// ZRX NOTICE BOARD FUNCTIONS
+// ===============================
 
+let zrxNoticeFiles = [];
+let zrxNoticeIndex = 0;
+let zrxNoticeTimer = null;
+
+window.loadAdminNoticeBoard = async function() {
+  const box = document.getElementById("adminNoticeBoardImages");
+  if (!box) return;
+
+  box.innerHTML = "ছবি লোড হচ্ছে...";
+
+  const { data, error } = await db.storage
+    .from("product-images")
+    .list("notice-board", { limit: 100 });
+
+  if (error) {
+    box.textContent = error.message;
+    return;
+  }
+
+  const files = (data || []).filter(f => f.name && f.id);
+
+  box.innerHTML = files.length
+    ? files.map(f => {
+        const path = "notice-board/" + f.name;
+        const url = db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+
+        return `
+          <div style="display:inline-block;width:140px;margin:8px;vertical-align:top;">
+            <img src="${url}" style="width:100%;height:100px;object-fit:contain;">
+            <button type="button" onclick="deleteNoticeBoardImage('${encodeURIComponent(f.name)}')">
+              মুছুন
+            </button>
+          </div>
+        `;
+      }).join("")
+    : "এখনো কোনো ছবি আপলোড করা হয়নি।";
+};
+
+window.uploadNoticeBoardImages = async function() {
+  if (!isAdmin) return notice("Admin অনুমতি প্রয়োজন।");
+
+  const input = document.getElementById("noticeBoardUpload");
+  const files = Array.from(input.files || []);
+
+  if (!files.length) return notice("আগে ছবি নির্বাচন করুন।");
+
+  const { data: existing, error } = await db.storage
+    .from("product-images")
+    .list("notice-board", { limit: 100 });
+
+  if (error) return notice(error.message);
+
+  const current = (existing || []).filter(f => f.name && f.id).length;
+
+  if (current + files.length > 15) {
+    return notice("সর্বোচ্চ ১৫টি ছবি রাখা যাবে।");
+  }
+
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      if (!file.type.startsWith("image/")) {
+        throw new Error("শুধু ছবির ফাইল নির্বাচন করুন।");
+      }
+
+      const path = "notice-board/" + Date.now() + "_" + i + "_" +
+        file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+
+      const { error: uploadError } = await db.storage
+        .from("product-images")
+        .upload(path, file, { upsert: false });
+
+      if (uploadError) throw uploadError;
+    }
+
+    input.value = "";
+    document.getElementById("noticeBoardPreview").innerHTML = "";
+    notice("ছবিগুলো আপলোড হয়েছে।");
+
+    await loadAdminNoticeBoard();
+    await loadNoticeBoard();
+
+  } catch (error) {
+    notice("আপলোড সমস্যা: " + error.message);
+  }
+};
+
+window.deleteNoticeBoardImage = async function(encodedName) {
+  if (!isAdmin) return notice("Admin অনুমতি প্রয়োজন।");
+  if (!confirm("এই ছবিটি মুছে ফেলবেন?")) return;
+
+  const path = "notice-board/" + decodeURIComponent(encodedName);
+
+  const { error } = await db.storage
+    .from("product-images")
+    .remove([path]);
+
+  if (error) return notice(error.message);
+
+  notice("ছবিটি মুছে ফেলা হয়েছে।");
+  await loadAdminNoticeBoard();
+  await loadNoticeBoard();
+};
+
+window.loadNoticeBoard = async function() {
+  const board = document.getElementById("noticeBoard");
+  const track = document.getElementById("noticeBoardTrack");
+  const dots = document.getElementById("noticeBoardDots");
+
+  if (!board || !track || !dots) return;
+
+  const { data, error } = await db.storage
+    .from("product-images")
+    .list("notice-board", { limit: 100 });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const files = (data || [])
+    .filter(f => f.name && f.id)
+    .slice(0, 15);
+
+  if (!files.length) {
+    board.classList.add("hidden");
+    return;
+  }
+
+  zrxNoticeFiles = files.map(f =>
+    db.storage.from("product-images")
+      .getPublicUrl("notice-board/" + f.name).data.publicUrl
+  );
+
+  zrxNoticeIndex = 0;
+
+  track.innerHTML = zrxNoticeFiles.map(url =>
+    `<img src="${url}" class="zrx-notice-slide">`
+  ).join("");
+
+  dots.innerHTML = zrxNoticeFiles.map((_, i) =>
+    `<button type="button" onclick="zrxNoticeGo(${i})">${i + 1}</button>`
+  ).join("");
+
+  board.classList.remove("hidden");
+  zrxNoticeUpdate();
+
+  clearInterval(zrxNoticeTimer);
+  if (zrxNoticeFiles.length > 1) {
+    zrxNoticeTimer = setInterval(() => zrxNoticeMove(1), 4000);
+  }
+};
+
+window.zrxNoticeUpdate = function() {
+  const track = document.getElementById("noticeBoardTrack");
+  const dots = document.getElementById("noticeBoardDots");
+  if (!track) return;
+
+  track.style.transform = `translateX(-${zrxNoticeIndex * 100}%)`;
+
+  if (dots) {
+    Array.from(dots.children).forEach((dot, i) => {
+      dot.classList.toggle("active", i === zrxNoticeIndex);
+    });
+  }
+};
+
+window.zrxNoticeMove = function(direction) {
+  if (!zrxNoticeFiles.length) return;
+
+  zrxNoticeIndex =
+    (zrxNoticeIndex + direction + zrxNoticeFiles.length) %
+    zrxNoticeFiles.length;
+
+  zrxNoticeUpdate();
+};
+
+window.zrxNoticeGo = function(index) {
+  zrxNoticeIndex = index;
+  zrxNoticeUpdate();
+};
+
+// END ZRX NOTICE BOARD FUNCTIONS
 // ===============================
 // END PRODUCT DISCOUNT FUNCTIONS
 // ===============================
