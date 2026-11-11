@@ -902,7 +902,30 @@ window.updateAdminMessengerVisibility = function() {
   }
 };
 
+function updateAuthNavigation() {
+  $("loginNav")?.classList.toggle("hidden", !!currentUser);
+  $("profileNav")?.classList.toggle("hidden", !currentUser);
+  $("cartNav")?.classList.toggle("hidden", !currentUser || isAdmin);
+  $("adminProfileNav")?.classList.toggle("hidden", !isAdmin);
+  $("profileOrdersTab")?.classList.toggle("hidden", isAdmin);
 
+  if ($("accountNav")) {
+    $("accountNav").classList.toggle("hidden", !!currentUser);
+  }
+
+  $("profilePhotoUploadControls")?.classList.toggle("hidden", isAdmin);
+
+  const avatar = $("profileAvatar");
+  if (avatar && isAdmin) {
+    avatar.src = "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
+  }
+
+  $("profileHero")?.classList.toggle("zrx-admin-profile", isAdmin);
+  $("tab-details")?.classList.toggle("zrx-admin-details", isAdmin);
+  $("adminProfileBadge")?.classList.toggle("hidden", !isAdmin);
+
+  window.updateAdminMessengerVisibility();
+  }
 async function refreshUser() {
   const { data } = await db.auth.getUser();
   currentUser = data.user || null;
