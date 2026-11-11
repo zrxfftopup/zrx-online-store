@@ -1555,7 +1555,21 @@ window.zrxNoticeGo = function(index) {
   zrxNoticeIndex = index;
   zrxNoticeUpdate();
 };
+document.getElementById("noticeBoardUpload")?.addEventListener("change", function() {
+  const preview = document.getElementById("noticeBoardPreview");
+  const files = Array.from(this.files || []);
 
+  if (!preview) return;
+
+  preview.innerHTML = files.map(file => {
+    const url = URL.createObjectURL(file);
+
+    return `
+      <img src="${url}"
+        style="width:100px;height:90px;object-fit:contain;margin:6px;border:1px solid #ddd;border-radius:8px;">
+    `;
+  }).join("");
+});
 // END ZRX NOTICE BOARD FUNCTIONS
 // ===============================
 // END PRODUCT DISCOUNT FUNCTIONS
