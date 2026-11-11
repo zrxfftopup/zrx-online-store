@@ -616,7 +616,37 @@ a{color:#087b4c;overflow-wrap:anywhere}
       <div id="adminCustomers"></div>
     </div>
   </div>
+  <!-- NOTICE BOARD MANAGEMENT -->
+  <div id="adminNoticeBoard" class="hidden">
+    <button type="button" onclick="showAdminMenu()">← Admin Menu</button>
 
+    <div style="text-align:center;padding:18px;">
+      <div style="font-size:55px;">📢</div>
+      <h2>Notice Board পরিচালনা</h2>
+      <p>সর্বোচ্চ ১৫টি ছবি আপলোড করতে পারবেন।</p>
+    </div>
+
+    <div class="card">
+      <h3>নতুন ছবি যোগ করুন</h3>
+      <input
+        type="file"
+        id="noticeBoardUpload"
+        accept="image/*"
+        multiple
+      >
+      <div id="noticeBoardPreview"></div>
+      <button type="button" onclick="uploadNoticeBoardImages()">
+        ছবি আপলোড করুন
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>আপলোড করা ছবিগুলো</h3>
+      <div id="adminNoticeBoardImages">
+        ছবি লোড হচ্ছে...
+      </div>
+    </div>
+  </div>
 </section>
 
 
