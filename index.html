@@ -953,7 +953,7 @@ async function refreshUser() {
   updateAuthNavigation();
 }
 
-
+}
 async function logoutUser() {
   const { error } = await db.auth.signOut();
   if (error) return notice(error.message);
