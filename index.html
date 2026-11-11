@@ -1796,7 +1796,7 @@ async function loadAdminChats() {
 
   const { data: profiles, error: profileError } = await db
     .from("profiles")
-    .select("id,full_name,username")
+    .select("id,full_name,username,avatar_url")
     .in("id", ids);
 
   if (profileError) {
@@ -1820,9 +1820,18 @@ async function loadAdminChats() {
         margin:5px 0;border:1px solid #ddd;
         border-radius:10px;background:white;color:#172033">
 
-        <b>${safe(name)}</b><br>
-        <small>Customer ID: ${safe(id)}</small><br>
-        <small>${safe(msg.message || "")}</small>
+        <div style="display:flex;align-items:center;gap:10px">
+  <img
+    src="${safe(p.avatar_url || "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg")}"
+    style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid #16a34a"
+    alt="Customer Photo"
+  >
+  <div>
+    <b>${safe(name)}</b><br>
+    <small>Customer ID: ${safe(id)}</small><br>
+    <small>${safe(msg.message || "")}</small>
+  </div>
+</div>
       </button>
     `;
   }).join("");
