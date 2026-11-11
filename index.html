@@ -2204,6 +2204,37 @@ height:230px;overflow:auto;background:#f3f6fa;padding:9px;
   box-shadow: 0 3px 10px rgba(239, 68, 68, 0.25) !important;
 }
 
+/* ADMIN MESSENGER CHAT LEFT-RIGHT ALIGNMENT */
+#adminChatMessages .zrx-left-row {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 8px 0;
+}
+
+#adminChatMessages .zrx-right-row {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 8px 0;
+}
+
+#adminChatMessages .zrx-chat-bubble {
+  display: inline-block;
+  width: fit-content;
+  max-width: 80%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+  background: #e8edf5;
+  color: #172033;
+}
+
+#adminChatMessages .zrx-right-row .zrx-chat-bubble {
+  background: #d9fdd3;
+  color: #172033;
+}
+
 </style>
 
 <script>
