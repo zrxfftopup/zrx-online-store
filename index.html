@@ -1062,6 +1062,66 @@ loadCheckoutLocations();
   
 </script>
 <script>
+
+// ===============================
+// PRODUCT DISCOUNT FUNCTIONS
+// ===============================
+
+function toggleProductDiscount() {
+  const enabled = document.getElementById("productDiscountEnabled")?.checked;
+  const fields = document.getElementById("productDiscountFields");
+
+  if (fields) {
+    fields.style.display = enabled ? "block" : "none";
+  }
+}
+
+// পণ্যের ডিসকাউন্ট শতাংশ বের করবে
+function getProductDiscountPercent(product) {
+  const value = Number(product?.discount_percent || 0);
+
+  return Number.isFinite(value)
+    ? Math.min(99, Math.max(0, value))
+    : 0;
+}
+
+// ডিসকাউন্ট বাদ দিয়ে পণ্যের আসল বিক্রয়মূল্য হিসাব করবে
+function getProductFinalPrice(product) {
+  const original = Number(product?.price || 0);
+  const percent = getProductDiscountPercent(product);
+
+  return Math.max(0, original * (100 - percent) / 100);
+}
+
+// পণ্যের দাম ও ডিসকাউন্ট দেখানোর HTML তৈরি করবে
+function getProductPriceHTML(product) {
+  const original = Number(product?.price || 0);
+  const percent = getProductDiscountPercent(product);
+  const finalPrice = getProductFinalPrice(product);
+
+  if (!percent) {
+    return `<b>৳${original.toFixed(2)}</b>`;
+  }
+
+  return `
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:8px 0;">
+      <del style="color:#888;">৳${original.toFixed(2)}</del>
+
+      <span style="background:#fee2e2;color:#b91c1c;padding:3px 8px;border-radius:6px;font-size:13px;font-weight:bold;">
+        ${percent}% OFF
+      </span>
+
+      <strong style="color:#dc2626;font-size:19px;">
+        ৳${finalPrice.toFixed(2)}
+      </strong>
+    </div>
+  `;
+}
+
+// ===============================
+// END PRODUCT DISCOUNT FUNCTIONS
+// ===============================
+
 async function loadProducts() {
   const { data, error } = await db.from("products")
     .select("*").order("created_at", { ascending: false });
