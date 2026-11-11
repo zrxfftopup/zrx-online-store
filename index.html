@@ -1301,7 +1301,7 @@ function addToCart(id, size = "", color = "") {
       id: product.id,
       cart_key: cartKey,
       name: product.name,
-      price: Number(product.price),
+      price: getProductFinalPrice(product),
       image_url: product.image_url || "",
       size: size,
       color: color,
