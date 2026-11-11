@@ -361,47 +361,101 @@ a{color:#087b4c;overflow-wrap:anywhere}
 </div>
 </section>
 
+
 <!-- ADMIN SECTION -->
 <section id="adminPage" class="page hidden">
+
   <h2>⚙️ Admin Panel</h2>
-<button onclick="showPage('profile')">
-  ← প্রোফাইলে ফিরে যান
-</button>
-  <div class="card">
-    <h3>📦 পণ্য যোগ করুন</h3>
 
-    <input id="productName" placeholder="পণ্যের নাম">
-    <input id="productPrice" type="number" placeholder="পণ্যের দাম">
+  <button onclick="showPage('profile')">
+    ← প্রোফাইলে ফিরে যান
+  </button>
 
-    <label>পণ্যের ছবি নির্বাচন করুন</label>
-    <input id="productImages" type="file" accept="image/*" multiple onchange="previewProductImages()">
+  <!-- FOUR BUTTON MENU -->
+  <div id="adminMenu" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px;">
 
-    <div id="productImagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;"></div>
+    <button type="button" onclick="openAdminSection('adminAddProduct')" style="padding:20px 8px;min-height:125px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+      <span style="font-size:38px;">📦</span>
+      <b>পণ্য যোগ করুন</b>
+    </button>
 
-    <input id="productSizes" placeholder="সাইজ: S, M, L, XL">
+    <button type="button" onclick="openAdminSection('adminProductList')" style="padding:20px 8px;min-height:125px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+      <span style="font-size:38px;">🛍️</span>
+      <b>পণ্যের তালিকা</b>
+    </button>
 
-    <input id="productColors" placeholder="কালার: Black, White, Red">
+    <button type="button" onclick="openAdminSection('adminOrderList')" style="padding:20px 8px;min-height:125px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+      <span style="font-size:38px;">📋</span>
+      <b>অর্ডার পরিচালনা</b>
+    </button>
 
-    <textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>
+    <button type="button" onclick="openAdminSection('adminCustomerList')" style="padding:20px 8px;min-height:125px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+      <span style="font-size:38px;">👥</span>
+      <b>কাস্টমারের তালিকা</b>
+    </button>
 
-    <button onclick="addProduct()">পণ্য যোগ করুন</button>
   </div>
 
-  <div class="card">
-    <h3>পণ্য তালিকা</h3>
-    <div id="adminProducts"></div>
+  <!-- ADD PRODUCT -->
+  <div id="adminAddProduct" class="hidden">
+    <button type="button" onclick="showAdminMenu()">← Admin Menu</button>
+    <div style="text-align:center;padding:18px;">
+      <div style="font-size:55px;">📦</div>
+      <h2>পণ্য যোগ করুন</h2>
+    </div>
+
+    <div class="card">
+      <h3>📦 পণ্য যোগ করুন</h3>
+      <input id="productName" placeholder="পণ্যের নাম">
+      <input id="productPrice" type="number" placeholder="পণ্যের দাম">
+      <label>পণ্যের ছবি নির্বাচন করুন</label>
+      <input id="productImages" type="file" accept="image/*" multiple onchange="previewProductImages()">
+      <div id="productImagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;"></div>
+      <input id="productSizes" placeholder="সাইজ: S, M, L, XL">
+      <input id="productColors" placeholder="কালার: Black, White, Red">
+      <textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>
+      <button onclick="addProduct()">পণ্য যোগ করুন</button>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>📋 অর্ডার পরিচালনা</h3>
-    <div id="adminOrders"></div>
+  <!-- PRODUCT LIST -->
+  <div id="adminProductList" class="hidden">
+    <button type="button" onclick="showAdminMenu()">← Admin Menu</button>
+    <div style="text-align:center;padding:18px;">
+      <div style="font-size:55px;">🛍️</div>
+      <h2>পণ্যের তালিকা</h2>
+    </div>
+    <div class="card">
+      <div id="adminProducts"></div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>👥 কাস্টমার তালিকা</h3>
-    <div id="adminCustomers"></div>
+  <!-- ORDER MANAGEMENT -->
+  <div id="adminOrderList" class="hidden">
+    <button type="button" onclick="showAdminMenu()">← Admin Menu</button>
+    <div style="text-align:center;padding:18px;">
+      <div style="font-size:55px;">📋</div>
+      <h2>অর্ডার পরিচালনা</h2>
+    </div>
+    <div class="card">
+      <div id="adminOrders"></div>
+    </div>
   </div>
+
+  <!-- CUSTOMER LIST -->
+  <div id="adminCustomerList" class="hidden">
+    <button type="button" onclick="showAdminMenu()">← Admin Menu</button>
+    <div style="text-align:center;padding:18px;">
+      <div style="font-size:55px;">👥</div>
+      <h2>কাস্টমারের তালিকা</h2>
+    </div>
+    <div class="card">
+      <div id="adminCustomers"></div>
+    </div>
+  </div>
+
 </section>
+
 
 <!-- FLOATING SUPPORT -->
 <button id="supportFloat" onclick="toggleSupport()">💬</button>
