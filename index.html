@@ -301,7 +301,18 @@ a{color:#087b4c;overflow-wrap:anywhere}
 <main>
 <section id="home" class="page">
 <div class="panel"><h2>স্বাগতম ZRX Online Store-এ 🛍️</h2><p>আপনার প্রয়োজনীয় পণ্য অর্ডার করুন সহজেই।</p></div>
-<h2>আমাদের পণ্য</h2><div id="productList" class="grid">পণ্য লোড হচ্ছে...</div>
+
+<!-- NOTICE BOARD -->
+<section id="noticeBoard" class="zrx-notice-board hidden">
+  <div id="noticeBoardTrack" class="zrx-notice-track"></div>
+  <button type="button" class="zrx-notice-arrow prev" onclick="zrxNoticeMove(-1)">‹</button>
+  <button type="button" class="zrx-notice-arrow next" onclick="zrxNoticeMove(1)">›</button>
+  <div id="noticeBoardDots" class="zrx-notice-dots"></div>
+</section>
+
+<h2>আমাদের পণ্য</h2>
+<div id="productList" class="grid">পণ্য লোড হচ্ছে...</div>
+
 </section>
 
 <section id="account" class="page hidden">
