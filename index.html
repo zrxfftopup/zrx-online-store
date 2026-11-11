@@ -718,7 +718,7 @@ async function refreshUser() {
 
   $("loginNav")?.classList.toggle("hidden", !!currentUser);
   $("profileNav")?.classList.toggle("hidden", !currentUser);
-  $("cartNav")?.classList.toggle("hidden", !currentUser);
+  $("cartNav")?.classList.toggle("hidden", !currentUser || isAdmin);
   $("adminProfileNav")?.classList.toggle("hidden", !isAdmin);
 
 $("profileOrdersTab")?.classList.toggle("hidden", isAdmin);
