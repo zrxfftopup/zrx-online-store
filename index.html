@@ -486,7 +486,8 @@ onclick="toggleAdminMessenger()">💬
   <div id="adminMessengerConversation" class="hidden">
     <div class="admin-chat-title">
       <button type="button" onclick="backToAdminInbox()">←</button>
-      <b id="adminChatCustomerName">কাস্টমার</b>
+      <img id="adminChatCustomerAvatar" src="https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg" alt="Customer Photo">
+<b id="adminChatCustomerName">কাস্টমার</b>
       <small id="adminChatCustomerId"></small>
     </div>
 
@@ -1849,7 +1850,7 @@ async function openAdminChat(userId) {
     "<p>মেসেজ লোড হচ্ছে...</p>";
 
   const { data: profile } = await db.from("profiles")
-    .select("full_name,username")
+    .select("full_name,username,avatar_url")
     .eq("id", userId)
     .maybeSingle();
 
