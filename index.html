@@ -840,8 +840,12 @@ window.__zrxLoginInProgress = true;
     }
 
     await db.auth.setSession(session);
-    await refreshUser();
-    showPage("homePage");
+await refreshUser();
+
+window.__zrxLoginInProgress = false;
+updateAuthNavigation();
+
+showPage("homePage");
 
   } catch (error) {
     $("loginError").textContent =
