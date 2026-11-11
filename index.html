@@ -2933,6 +2933,9 @@ window.openAdminSection = function(sectionId) {
   });
 
   document.getElementById(sectionId)?.classList.remove("hidden");
+  if (sectionId === "adminNoticeBoard") {
+  window.loadAdminNoticeBoard();
+  }
   window.scrollTo(0, 0);
 };
 
