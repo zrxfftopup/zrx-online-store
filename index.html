@@ -3337,7 +3337,8 @@ window.openProductDetails = function(id) {
   }
 
   window.currentDetailProductId = product.id;
-
+    sessionStorage.setItem("zrxLastPage", "productDetails");
+  sessionStorage.setItem("zrxProductId", String(product.id));
   let detailsPage = document.getElementById("productDetails");
 
   if (!detailsPage) {
