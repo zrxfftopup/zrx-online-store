@@ -949,8 +949,38 @@ a{color:#087b4c;overflow-wrap:anywhere}
       <label>পণ্যের ছবি নির্বাচন করুন</label>
       <input id="productImages" type="file" accept="image/*" multiple onchange="previewProductImages()">
       <div id="productImagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;"></div>
-      <input id="productSizes" placeholder="সাইজ: S, M, L, XL">
-      <input id="productColors" placeholder="কালার: Black, White, Red">
+      <div style="margin:12px 0;padding:12px;border:1px solid #888;border-radius:10px;">
+
+  <b>সাইজ নির্বাচন</b>
+
+  <label style="display:block;margin:10px 0;">
+    <input type="checkbox" id="clothingSizeEnabled">
+    জামার সাইজ
+  </label>
+
+  <label style="display:block;margin:10px 0;">
+    <input type="checkbox" id="pantsSizeEnabled">
+    প্যান্টের সাইজ
+  </label>
+
+  <label style="display:block;margin:10px 0;">
+    <input type="checkbox" id="shoeSizeEnabled">
+    জুতার সাইজ
+  </label>
+
+  <hr>
+
+  <b>কালার নির্বাচন</b>
+
+  <label style="display:block;margin:10px 0;">
+    <input type="checkbox" id="productColorEnabled">
+    কালার
+  </label>
+
+</div>
+
+<input type="hidden" id="productSizes">
+<input type="hidden" id="productColors">
       <textarea id="productDescription" placeholder="পণ্যের বিবরণ"></textarea>
       <div style="
   margin-top:12px;
