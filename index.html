@@ -1618,30 +1618,44 @@ window.captureDeliveryLocation = async function() {
                 const addressInput =
                     document.getElementById("directCheckoutAddress");
 
-                const normalize = value =>
-                    String(value || "")
-                        .toLowerCase()
-                        .replace(/[^a-z0-9\u0980-\u09ff]/g, "");
+                
+const normalize = value =>
+    String(value || "")
+        .toLowerCase()
+        .replace(/division|div|[^a-z0-9\u0980-\u09ff]/g, "");
 
-                const adminNames = [
-                    ...(data.localityInfo?.administrative || [])
-                        .map(item => item.name),
-                    data.city,
-                    data.locality
-                ].filter(Boolean);
+const adminNames = [
+    ...(data.localityInfo?.administrative || [])
+        .map(item => item.name),
+    data.city,
+    data.locality
+].filter(Boolean);
 
-                const findOption = (select, names) => {
-                    const targets = names.map(normalize);
+const findOption = (select, names) => {
+    const targets = names.map(normalize);
 
-                    return Array.from(select.options).find(option =>
-                        targets.includes(normalize(option.textContent))
-                    );
-                };
+    return Array.from(select.options).find(option =>
+        targets.includes(normalize(option.textContent))
+    );
+};
 
-                const divisionOption = findOption(
-                    divisionSelect,
-                    [data.principalSubdivision]
-                );
+const divisionNames = [data.principalSubdivision];
+
+const gpsDivision = normalize(data.principalSubdivision);
+
+if (
+    gpsDivision.includes("chattogram") ||
+    gpsDivision.includes("chittagong") ||
+    gpsDivision.includes("chattagram")
+) {
+    divisionNames.push("Chattagram", "Chattogram", "Chittagong");
+}
+
+const divisionOption = findOption(
+    divisionSelect,
+    divisionNames
+);
+
 
                 if (divisionOption) {
                     divisionSelect.value = divisionOption.value;
