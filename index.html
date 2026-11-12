@@ -773,7 +773,22 @@ a{color:#087b4c;overflow-wrap:anywhere}
 
   <div class="card">
     <h3>ডেলিভারি ঠিকানা</h3>
+<div class="card">
+  <h3>📍 ডেলিভারির লাইভ লোকেশন</h3>
 
+  <p>
+    আপনি যেখান থেকে পণ্যটি গ্রহণ করতে চান,
+    অনুগ্রহ করে সেই স্থানে দাঁড়িয়ে লাইভ লোকেশন চালু করুন।
+  </p>
+
+  <button type="button" onclick="captureDeliveryLocation()">
+    📍 লাইভ লোকেশন দিন
+  </button>
+
+  <p id="directLocationStatus">
+    এখনো লোকেশন দেওয়া হয়নি।
+  </p>
+</div>
     <label>বিভাগ</label>
     <select id="directCheckoutDivision">
       <option value="">বিভাগ নির্বাচন করুন</option>
