@@ -2203,35 +2203,57 @@ async function loadAdminOrders() {
     return;
   }
 
-  $("adminOrders").innerHTML = (data || []).map(o => `
-    <div class="card">
-      
-<b>অর্ডার: #${safe(String(o.id).slice(0, 8).toUpperCase())}</b>
-<p>কাস্টমার: ${safe(o.customer_name || "নাম পাওয়া যায়নি")}</p>
-<p>মোবাইল নম্বর: ${safe(o.phone || "নম্বর পাওয়া যায়নি")}</p>
-<p>মোট: ৳${Number(o.total_amount || 0)}</p>
+  const activeOrders = (data || []).filter(o =>
+    !["delivery confirm", "cancelled"].includes(
+      String(o.status || "").toLowerCase()
+    )
+  );
 
-      <p>ঠিকানা: ${safe(o.delivery_address || o.full_address || "")}</p>
-      <p>বর্তমান অবস্থা: ${safe(o.status || "")}</p>
-      <select id="status_${safe(o.id)}">
-  <option value="Pending" ${o.status === "Pending" ? "selected" : ""}>Pending</option>
-  <option value="Processing" ${o.status === "Processing" ? "selected" : ""}>Processing</option>
-  <option value="Shipped" ${o.status === "Shipped" ? "selected" : ""}>Shipped</option>
-  <option value="Delivered" ${o.status === "Delivered" ? "selected" : ""}>Delivered</option>
-  <option value="Cancelled" ${o.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
-</select>
-      <textarea id="adminMessage_${safe(o.id)}" placeholder="কাস্টমারকে মেসেজ লিখুন">${safe(o.admin_message || "")}</textarea>
-      <button onclick="updateOrder('${safe(o.id)}')">আপডেট</button>
-    </div>
-  `).join("") || "<p>কোনো অর্ডার নেই।</p>";
+  $("adminOrders").innerHTML = activeOrders.map(o => {
+    const selectedStatus =
+      o.status === "Shipped" ? "Delivered" : o.status;
+
+    return `
+      <div class="card">
+        <b>অর্ডার: #${safe(String(o.id).slice(0, 8).toUpperCase())}</b>
+        <p>কাস্টমার: ${safe(o.customer_name || "নাম পাওয়া যায়নি")}</p>
+        <p>মোবাইল নম্বর: ${safe(o.phone || "নম্বর পাওয়া যায়নি")}</p>
+        <p>মোট: ৳${Number(o.total_amount || 0)}</p>
+        <p>ঠিকানা: ${safe(o.delivery_address || o.full_address || "")}</p>
+        <p>বর্তমান অবস্থা: ${safe(selectedStatus || "")}</p>
+
+        <select id="status_${safe(o.id)}">
+          <option value="Pending" ${selectedStatus === "Pending" ? "selected" : ""}>Pending</option>
+          <option value="Processing" ${selectedStatus === "Processing" ? "selected" : ""}>Processing</option>
+          <option value="Delivered" ${selectedStatus === "Delivered" ? "selected" : ""}>Delivered</option>
+          <option value="Cancelled" ${selectedStatus === "Cancelled" ? "selected" : ""}>Cancelled</option>
+          <option value="Delivery Confirm" ${selectedStatus === "Delivery Confirm" ? "selected" : ""}>Delivery Confirm</option>
+        </select>
+
+        <textarea id="adminMessage_${safe(o.id)}" placeholder="কাস্টমারকে মেসেজ লিখুন">${safe(o.admin_message || "")}</textarea>
+        <button onclick="updateOrder('${safe(o.id)}')">আপডেট</button>
+      </div>
+    `;
+  }).join("") || "<p>কোনো সক্রিয় অর্ডার নেই।</p>";
 }
 
 async function updateOrder(id) {
   if (!isAdmin) return;
 
+  const status = $("status_" + id).value;
+  let adminMessage = $("adminMessage_" + id).value.trim();
+
+  if (status === "Delivered") {
+    adminMessage = "আপনার পণ্যটি ডেলিভারি ম্যানের কাছে পাঠানো হয়েছে।";
+  } else if (status === "Delivery Confirm") {
+    adminMessage = "আপনার পণ্যটি সম্পূর্ণভাবে আপনার কাছে পৌঁছে দেওয়া হয়েছে। ZRX Online Store থেকে কেনাকাটার জন্য ধন্যবাদ।";
+  } else if (status === "Cancelled") {
+    adminMessage = "দুঃখিত, আপনার অর্ডারটি বাতিল করা হয়েছে। প্রয়োজনে ZRX Online Store-এর সাথে যোগাযোগ করুন।";
+  }
+
   const updates = {
-    status: $("status_" + id).value,
-    admin_message: $("adminMessage_" + id).value.trim()
+    status: status,
+    admin_message: adminMessage
   };
 
   const { error } = await db
@@ -2243,8 +2265,7 @@ async function updateOrder(id) {
 
   notice("অর্ডারের স্ট্যাটাস ও মেসেজ আপডেট হয়েছে।");
   await loadAdminOrders();
-}
-
+  }
 async function loadAdminCustomers() {
   const { data, error } = await db.from("profiles").select("*");
   if (error) {
