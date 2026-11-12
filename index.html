@@ -2611,10 +2611,66 @@ db.auth.onAuthStateChange(async (event, session) => {
 
 /* START STORE */
 async function initializeStore() {
+  const savedPage = sessionStorage.getItem("zrxLastPage") || "home";
+  const savedProfileTab = sessionStorage.getItem("zrxProfileTab") || "details";
+  const savedAdminSection = sessionStorage.getItem("zrxAdminSection") || "adminMenu";
+
   await refreshUser();
   await loadProducts();
   renderCart();
-  showPage("homePage");
+
+  const allowedPages = [
+    "home",
+    "cartPage",
+    "profile",
+    "account",
+    "forgot",
+    "reset",
+    "adminPage"
+  ];
+
+  let pageToRestore = allowedPages.includes(savedPage)
+    ? savedPage
+    : "home";
+
+  if (pageToRestore === "adminPage" && !isAdmin) {
+    pageToRestore = "home";
+  }
+
+  showPage(pageToRestore);
+
+  if (pageToRestore === "profile") {
+    const allowedTabs = ["details", "orders", "settings"];
+
+    const tabToRestore = allowedTabs.includes(savedProfileTab)
+      ? savedProfileTab
+      : "details";
+
+    const tabButton = [...document.querySelectorAll(".profile-tabs button")]
+      .find(b => (b.getAttribute("onclick") || "")
+        .includes("'" + tabToRestore + "'"));
+
+    profileTab(tabToRestore, tabButton);
+  }
+
+  if (pageToRestore === "adminPage") {
+    const allowedSections = [
+      "adminMenu",
+      "adminAddProduct",
+      "adminProductList",
+      "adminOrderList",
+      "adminCustomerList",
+      "adminNoticeBoard"
+    ];
+
+    const sectionToRestore = allowedSections.includes(savedAdminSection)
+      ? savedAdminSection
+      : "adminMenu";
+
+    if (sectionToRestore !== "adminMenu") {
+      openAdminSection(sectionToRestore);
+    }
+  }
 }
 
 initializeStore();
