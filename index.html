@@ -3755,10 +3755,9 @@ window.changeDetailImage = function(amount) {
 
 
 window.getDetailSelections = function() {
-
   return {
-    size: document.getElementById("detailProductSize")?.value || "",
-    color: document.getElementById("detailProductColor")?.value || ""
+    size: document.querySelector('input[name="detailSizeChoice"]:checked')?.value || "",
+    color: document.querySelector('input[name="detailColorChoice"]:checked')?.value || ""
   };
 };
 
