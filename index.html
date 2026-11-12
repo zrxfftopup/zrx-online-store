@@ -1490,10 +1490,20 @@ async function loadSavedAddress() {
 
 let bdLocations = [];
 
+
 async function loadCheckoutLocations() {
-    const divisionSelect = document.getElementById("checkoutDivision");
-    const districtSelect = document.getElementById("checkoutDistrict");
-    const upazilaSelect = document.getElementById("checkoutUpazila");
+    const checkoutPairs = [
+        {
+            division: document.getElementById("checkoutDivision"),
+            district: document.getElementById("checkoutDistrict"),
+            upazila: document.getElementById("checkoutUpazila")
+        },
+        {
+            division: document.getElementById("directCheckoutDivision"),
+            district: document.getElementById("directCheckoutDistrict"),
+            upazila: document.getElementById("directCheckoutUpazila")
+        }
+    ];
 
     try {
         const response = await fetch(
@@ -1504,57 +1514,55 @@ async function loadCheckoutLocations() {
 
         bdLocations = await response.json();
 
-        divisionSelect.innerHTML =
-            '<option value="">বিভাগ নির্বাচন করুন</option>';
+        checkoutPairs.forEach(({ division, district, upazila }) => {
+            if (!division || !district || !upazila) return;
 
-        bdLocations.forEach((division, index) => {
-            divisionSelect.add(new Option(division.bn_name, index));
+            division.innerHTML =
+                '<option value="">বিভাগ নির্বাচন করুন</option>';
+
+            bdLocations.forEach((item, index) => {
+                division.add(new Option(item.bn_name, index));
+            });
+
+            division.onchange = function () {
+                district.innerHTML =
+                    '<option value="">জেলা নির্বাচন করুন</option>';
+
+                upazila.innerHTML =
+                    '<option value="">আগে জেলা নির্বাচন করুন</option>';
+
+                upazila.disabled = true;
+
+                const selectedDivision = bdLocations[this.value];
+                district.disabled = !selectedDivision;
+
+                if (selectedDivision) {
+                    selectedDivision.districts.forEach((item, index) => {
+                        district.add(new Option(item.bn_name, index));
+                    });
+                }
+            };
+
+            district.onchange = function () {
+                upazila.innerHTML =
+                    '<option value="">উপজেলা নির্বাচন করুন</option>';
+
+                const selectedDivision = bdLocations[division.value];
+                const selectedDistrict =
+                    selectedDivision?.districts[this.value];
+
+                upazila.disabled = !selectedDistrict;
+
+                if (selectedDistrict) {
+                    selectedDistrict.upazilas.forEach(item => {
+                        upazila.add(new Option(item.bn_name, item.bn_name));
+                    });
+                }
+            };
         });
-
-        divisionSelect.onchange = function () {
-            districtSelect.innerHTML =
-                '<option value="">জেলা নির্বাচন করুন</option>';
-
-            upazilaSelect.innerHTML =
-                '<option value="">আগে জেলা নির্বাচন করুন</option>';
-
-            upazilaSelect.disabled = true;
-
-            const division = bdLocations[this.value];
-            districtSelect.disabled = !division;
-
-            if (division) {
-                division.districts.forEach((district, index) => {
-                    districtSelect.add(
-                        new Option(district.bn_name, index)
-                    );
-                });
-            }
-        };
-
-        districtSelect.onchange = function () {
-            upazilaSelect.innerHTML =
-                '<option value="">উপজেলা নির্বাচন করুন</option>';
-
-            const division = bdLocations[divisionSelect.value];
-            const district = division?.districts[this.value];
-
-            upazilaSelect.disabled = !district;
-
-            if (district) {
-                district.upazilas.forEach(upazila => {
-                    upazilaSelect.add(
-                        new Option(upazila.bn_name, upazila.bn_name)
-                    );
-                });
-            }
-        };
 
     } catch (error) {
         console.error("ঠিকানার তালিকা লোড সমস্যা:", error);
-
-        divisionSelect.innerHTML =
-            '<option value="">তালিকা লোড হয়নি</option>';
     }
 }
 
