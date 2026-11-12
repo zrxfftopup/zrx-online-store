@@ -3483,39 +3483,25 @@ window.loadProducts = async function() {
     return;
   }
 
+  
   container.innerHTML = products.map(p => {
-    const sizes = getProductSizes(p);
-
     return `
       <div class="product-card">
-
         <img
           src="${safe(p.image_url || "https://placehold.co/300x200?text=ZRX")}"
           alt="${safe(p.name)}"
           onclick="openProductDetails('${safe(p.id)}')"
           style="width:100%;max-height:190px;object-fit:cover;cursor:pointer"
         >
-
         <h3>${safe(p.name)}</h3>
-
-        <p>${safe(p.description || "")}</p>
-
-        ${getProductPriceHTML(p)}
-
-        <p>
-          সাইজ:
-          ${sizes.length
-            ? sizes.map(size => safe(size)).join(", ")
-            : "সাইজের তথ্য নেই"}
-        </p>
-
-        <p>স্টক: ${Number(p.stock || 0)}</p>
-
+        <strong class="home-product-price">
+          ৳${getProductFinalPrice(p).toFixed(2)}
+        </strong>
       </div>
     `;
   }).join("");
-};
 
+};
 
 /* PRODUCT DETAILS PAGE */
 
