@@ -1639,47 +1639,58 @@ const findOption = (select, names) => {
     );
 };
 
-const divisionNames = [data.principalSubdivision];
 
-const gpsDivision = normalize(data.principalSubdivision);
+const findGeoItem = (items, names) => {
+    const targets = names.map(normalize).filter(Boolean);
+
+    return items.find(item =>
+        targets.includes(normalize(item.name)) ||
+        targets.includes(normalize(item.bn_name))
+    );
+};
+
+const divisionName = normalize(data.principalSubdivision);
+
+const divisionAliases = [divisionName];
 
 if (
-    gpsDivision.includes("chattogram") ||
-    gpsDivision.includes("chittagong") ||
-    gpsDivision.includes("chattagram")
+    divisionName.includes("chattogram") ||
+    divisionName.includes("chittagong") ||
+    divisionName.includes("chattagram")
 ) {
-    divisionNames.push("Chattagram", "Chattogram", "Chittagong");
+    divisionAliases.push("chattagram", "chattogram", "chittagong");
 }
 
-const divisionOption = findOption(
-    divisionSelect,
-    divisionNames
-);
+const divisionData = findGeoItem(bdLocations, divisionAliases);
 
+if (divisionData) {
+    const divisionIndex = bdLocations.indexOf(divisionData);
 
-                if (divisionOption) {
-                    divisionSelect.value = divisionOption.value;
-                    divisionSelect.dispatchEvent(new Event("change"));
+    divisionSelect.value = String(divisionIndex);
+    divisionSelect.dispatchEvent(new Event("change"));
 
-                    const districtOption = findOption(
-                        districtSelect,
-                        adminNames
-                    );
+    const districtData = findGeoItem(
+        divisionData.districts,
+        adminNames
+    );
 
-                    if (districtOption) {
-                        districtSelect.value = districtOption.value;
-                        districtSelect.dispatchEvent(new Event("change"));
+    if (districtData) {
+        const districtIndex =
+            divisionData.districts.indexOf(districtData);
 
-                        const upazilaOption = findOption(
-                            upazilaSelect,
-                            adminNames
-                        );
+        districtSelect.value = String(districtIndex);
+        districtSelect.dispatchEvent(new Event("change"));
 
-                        if (upazilaOption) {
-                            upazilaSelect.value = upazilaOption.value;
-                        }
-                    }
-                }
+        const upazilaData = findGeoItem(
+            districtData.upazilas,
+            adminNames
+        );
+
+        if (upazilaData) {
+            upazilaSelect.value = upazilaData.bn_name;
+        }
+    }
+}
 
                 areaInput.value =
                     data.locality || data.city || "";
