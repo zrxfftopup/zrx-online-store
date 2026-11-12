@@ -2809,7 +2809,26 @@ async function loadAdminOrders() {
     $("adminOrders").textContent = error.message;
     return;
   }
+  const { data: orderItemsData, error: orderItemsError } = await db
+    .from("order_items")
+    .select("*");
 
+  if (orderItemsError) {
+    $("adminOrders").textContent = orderItemsError.message;
+    return;
+  }
+
+  const itemsByOrder = new Map();
+
+  (orderItemsData || []).forEach(item => {
+    const orderId = String(item.order_id);
+
+    if (!itemsByOrder.has(orderId)) {
+      itemsByOrder.set(orderId, []);
+    }
+
+    itemsByOrder.get(orderId).push(item);
+  });
   const activeOrders = (data || []).filter(o =>
     !["delivery confirm", "cancelled"].includes(
       String(o.status || "").toLowerCase()
