@@ -2946,6 +2946,25 @@ window.showAdminMenu = function() {
   window.scrollTo(0, 0);
 };
 
+window.showAdminMenu = function() {
+  const sections = [
+    "adminMenu",
+    "adminAddProduct",
+    "adminProductList",
+    "adminOrderList",
+    "adminCustomerList",
+    "adminNoticeBoard"
+  ];
+
+  sections.forEach(id => {
+    document.getElementById(id)?.classList.add("hidden");
+  });
+
+  document.getElementById("adminMenu")?.classList.remove("hidden");
+  sessionStorage.setItem("zrxAdminSection", "adminMenu");
+  window.scrollTo(0, 0);
+};
+
 window.openAdminSection = function(sectionId) {
   if (!isAdmin) {
     notice("আপনার Admin অনুমতি নেই।");
@@ -2968,13 +2987,17 @@ window.openAdminSection = function(sectionId) {
   });
 
   document.getElementById(sectionId)?.classList.remove("hidden");
+
+  sessionStorage.setItem("zrxAdminSection", sectionId);
+
   if (sectionId === "adminNoticeBoard") {
-  window.loadAdminNoticeBoard();
+    window.loadAdminNoticeBoard();
   }
+
   window.scrollTo(0, 0);
 };
 
-/* PAGE NAVIGATION FIX */
+/* PAGE NAVIGATION + REFRESH RESTORE */
 window.showPage = function(page) {
   const pages = {
     home:"home", homePage:"home",
@@ -2984,43 +3007,58 @@ window.showPage = function(page) {
     forgot:"forgot", reset:"reset",
     admin:"adminPage", adminPage:"adminPage"
   };
+
   page = pages[page] || page;
 
-  if ((page==="profile" || page==="cartPage") && !currentUser) {
+  if ((page === "profile" || page === "cartPage") && !currentUser) {
     notice("আগে লগইন করুন।");
-    page="account";
+    page = "account";
   }
-  if (page==="adminPage" && !isAdmin) {
+
+  if (page === "adminPage" && !isAdmin) {
     notice("আপনার Admin অনুমতি নেই।");
     return;
   }
 
-  document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
-  document.getElementById(page)?.classList.remove("hidden");
-  window.scrollTo(0,0);
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.add("hidden")
+  );
 
-  if(page==="cartPage") renderCart();
-  if(page==="profile") loadProfile();
-  if(page==="adminPage") {
-  showAdminMenu();
-  loadAdmin();
-}
-  if(page==="home") window.loadProducts();
-  if(page==="home") window.loadNoticeBoard();
+  document.getElementById(page)?.classList.remove("hidden");
+
+  sessionStorage.setItem("zrxLastPage", page);
+
+  window.scrollTo(0, 0);
+
+  if (page === "cartPage") renderCart();
+  if (page === "profile") loadProfile();
+
+  if (page === "adminPage") {
+    showAdminMenu();
+    loadAdmin();
+  }
+
+  if (page === "home") window.loadProducts();
+  if (page === "home") window.loadNoticeBoard();
 };
 
-/* PROFILE TABS FIX */
-window.profileTab = function(tab,button) {
-  document.querySelectorAll(".profile-panel")
-    .forEach(p=>p.classList.add("hidden"));
+/* PROFILE TAB + REFRESH RESTORE */
+window.profileTab = function(tab, button) {
+  document.querySelectorAll(".profile-panel").forEach(p =>
+    p.classList.add("hidden")
+  );
 
-  document.getElementById("tab-"+tab)?.classList.remove("hidden");
+  document.getElementById("tab-" + tab)?.classList.remove("hidden");
 
-  document.querySelectorAll(".profile-tabs button")
-    .forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".profile-tabs button").forEach(b =>
+    b.classList.remove("active")
+  );
 
-  if(button) button.classList.add("active");
-  if(tab==="orders") loadMyOrders();
+  if (button) button.classList.add("active");
+
+  sessionStorage.setItem("zrxProfileTab", tab);
+
+  if (tab === "orders") loadMyOrders();
 };
 
 /* PROFILE DATA FIX */
