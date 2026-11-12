@@ -2710,6 +2710,24 @@ db.auth.onAuthStateChange(async (event, session) => {
 
 /* START STORE */
 /* START STORE */
+let zrxLoadingProgress = 0;
+
+const zrxLoadingProgressTimer = setInterval(() => {
+  if (zrxLoadingProgress < 90) {
+    zrxLoadingProgress += 1;
+  }
+
+  const bar = document.getElementById("zrxProgressBar");
+  const text = document.getElementById("zrxProgressText");
+
+  if (bar) {
+    bar.style.width = zrxLoadingProgress + "%";
+  }
+
+  if (text) {
+    text.textContent = zrxLoadingProgress + "%";
+  }
+}, 180);
 async function initializeStore() {
   const savedPage = sessionStorage.getItem("zrxLastPage") || "home";
   const savedProfileTab = sessionStorage.getItem("zrxProfileTab") || "details";
