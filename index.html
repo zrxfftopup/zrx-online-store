@@ -4027,13 +4027,53 @@ window.addDetailProductToCart = function() {
 };
 
 
-window.buyProductNow = function() {
+window.directCheckoutSelection = null;
 
-  const added = addDetailProductToCart();
+window.buyProductNow = async function() {
+    if (!currentUser) {
+        return notice("সরাসরি অর্ডার করতে আগে লগইন করুন।");
+    }
 
-  if (added) {
-    showPage("cart");
-  }
+    const productId = window.currentDetailProductId;
+    const selections = getDetailSelections();
+
+    if (!productId) {
+        return notice("পণ্য নির্বাচন করা যায়নি।");
+    }
+
+    try {
+        const { data: product, error } = await db
+            .from("products")
+            .select("*")
+            .eq("id", productId)
+            .single();
+
+        if (error) throw error;
+
+        if (!product) {
+            return notice("পণ্যটি পাওয়া যায়নি।");
+        }
+
+        window.directCheckoutSelection = {
+            productId: product.id,
+            size: selections.size,
+            color: selections.color
+        };
+
+        document.getElementById("directCheckoutProduct").innerHTML =
+            `<b>${safe(product.name)}</b>
+             <p>সাইজ: ${safe(selections.size || "নির্বাচিত নয়")}</p>
+             <p>কালার: ${safe(selections.color || "নির্বাচিত নয়")}</p>
+             <p>পরিমাণ: ১</p>`;
+
+        document.getElementById("directCheckoutTotal").textContent =
+            getProductFinalPrice(product).toFixed(2);
+
+        showPage("directCheckoutPage");
+
+    } catch (error) {
+        notice("পণ্য লোড করা যায়নি: " + error.message);
+    }
 };
 
 
