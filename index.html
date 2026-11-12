@@ -3545,18 +3545,22 @@ window.openProductDetails = function(id) {
   window.detailImageIndex = 0;
 
   const sizeOptions = sizes.length
-    ? `<option value="">সাইজ নির্বাচন করুন</option>` +
-      sizes.map(size => `
-        <option value="${safe(size)}">${safe(size)}</option>
-      `).join("")
-    : `<option value="">সাইজের অপশন নেই</option>`;
+  ? sizes.map(size => `
+      <label class="zrx-choice">
+        <input type="radio" name="detailSizeChoice" value="${safe(size)}">
+        <span>${safe(size)}</span>
+      </label>
+    `).join("")
+  : "<p>সাইজের অপশন নেই</p>";
 
-  const colorOptions = colors.length
-    ? `<option value="">কালার নির্বাচন করুন</option>` +
-      colors.map(color => `
-        <option value="${safe(color)}">${safe(color)}</option>
-      `).join("")
-    : `<option value="">কালারের অপশন নেই</option>`;
+const colorOptions = colors.length
+  ? colors.map(color => `
+      <label class="zrx-choice">
+        <input type="radio" name="detailColorChoice" value="${safe(color)}">
+        <span>${safe(color)}</span>
+      </label>
+    `).join("")
+  : "<p>কালারের অপশন নেই</p>";
 
   detailsPage.innerHTML = `
     <div class="panel">
