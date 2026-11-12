@@ -4093,23 +4093,20 @@ const colorOptions = colors.length
 
       <hr>
 
-      <label>
-  আপনার সাইজ বেছে নিন
-</label>
+      ${sizes.length ? `
+  <label>সাইজ বেছে নিন</label>
+  <div class="zrx-choice-group">
+    ${sizeOptions}
+  </div>
+` : ""}
 
-<div class="zrx-choice-group">
-  ${sizeOptions}
-</div>
-
-<div style="height:12px;"></div>
-
-<label>
-  আপনার পছন্দের কালার বেছে নিন
-</label>
-
-<div class="zrx-choice-group">
-  ${colorOptions}
-</div>
+${colors.length ? `
+  <div style="height:12px;"></div>
+  <label>কালার বেছে নিন</label>
+  <div class="zrx-choice-group">
+    ${colorOptions}
+  </div>
+` : ""}
       <hr>
 
       <h3>⭐ কাস্টমার রিভিউ</h3>
