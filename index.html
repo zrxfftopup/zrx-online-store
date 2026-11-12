@@ -2374,6 +2374,107 @@ if (orderError) throw orderError;
   }
 }
 
+async function placeDirectOrder() {
+    if (!currentUser) {
+        return notice("আগে লগইন করুন।");
+    }
+
+    const selection = window.directCheckoutSelection;
+
+    if (!selection || !selection.productId) {
+        return notice("আগে একটি পণ্য নির্বাচন করুন।");
+    }
+
+    const division =
+        $("directCheckoutDivision").selectedOptions[0]?.textContent || "";
+    const district =
+        $("directCheckoutDistrict").selectedOptions[0]?.textContent || "";
+    const upazila = val("directCheckoutUpazila");
+    const area = val("directCheckoutArea");
+    const fullAddress = val("directCheckoutAddress");
+    const phone = val("directCheckoutPhone");
+
+    if (!division || !district || !upazila || !area || !fullAddress || !phone) {
+        return notice("ডেলিভারি ঠিকানার সব তথ্য পূরণ করুন।");
+    }
+
+    try {
+        const { data: product, error: productError } = await db
+            .from("products")
+            .select("*")
+            .eq("id", selection.productId)
+            .single();
+
+        if (productError) throw productError;
+        if (!product) throw new Error("পণ্যটি পাওয়া যাচ্ছে না।");
+
+        if (Number(product.stock) < 1) {
+            throw new Error("পণ্যটি বর্তমানে স্টকে নেই।");
+        }
+
+        const price = getProductFinalPrice(product);
+        const ownDelivery = isBayezidAddress(upazila);
+
+        const { data: order, error: orderError } = await db
+            .from("orders")
+            .insert({
+                user_id: currentUser.id,
+                customer_id: currentUser.id,
+                customer_name: currentProfile?.full_name ||
+                    currentUser.user_metadata?.full_name ||
+                    currentUser.email || "Customer",
+                total_amount: price,
+                status: "Pending",
+                delivery_type: ownDelivery ? "Own Delivery" : "Courier",
+                full_address: [
+                    division, district, upazila, area, fullAddress
+                ].filter(Boolean).join(", "),
+                phone: phone,
+                delivery_latitude:
+                    directDeliveryCoordinates?.latitude ?? null,
+                delivery_longitude:
+                    directDeliveryCoordinates?.longitude ?? null
+            })
+            .select()
+            .single();
+
+        if (orderError) throw orderError;
+
+        const { error: itemsError } = await db
+            .from("order_items")
+            .insert([{
+                order_id: order.id,
+                product_id: product.id,
+                product_name: product.name,
+                quantity: 1,
+                unit_price: price,
+                product_size: selection.size || null,
+                product_color: selection.color || null
+            }]);
+
+        if (itemsError) {
+            throw new Error(
+                "অর্ডার তৈরি হয়েছে, কিন্তু পণ্যের তথ্য সংরক্ষণে সমস্যা হয়েছে। Admin-এর সঙ্গে যোগাযোগ করুন।"
+            );
+        }
+
+        notice(
+            "অর্ডার গ্রহণ করা হয়েছে!\n" +
+            "অর্ডার নম্বর: " + order.id + "\n" +
+            (ownDelivery
+                ? "ডেলিভারি: আমাদের নিজস্ব ডেলিভারি"
+                : "ডেলিভারি: কুরিয়ার")
+        );
+
+        await loadMyOrders();
+        showPage("profilePage");
+        showProfileTab("ordersTab");
+
+    } catch (error) {
+        notice(error.message);
+    }
+}
+
 async function loadMyOrders() {
   if (!currentUser || !$("myOrders")) return;
 
