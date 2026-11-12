@@ -2651,11 +2651,20 @@ if (discountEnabled &&
       document.getElementById("productImages").files || []
     );
 
-    const sizes = val("productSizes")
-      .split(",").map(x => x.trim()).filter(Boolean);
+        const sizes = [
+      ...(document.getElementById("clothingSizeEnabled").checked
+        ? ["XS", "S", "M", "L", "XL", "XXL", "XXXL"] : []),
 
-    const colors = val("productColors")
-      .split(",").map(x => x.trim()).filter(Boolean);
+      ...(document.getElementById("pantsSizeEnabled").checked
+        ? ["28", "30", "32", "34", "36", "38", "40", "42", "44"] : []),
+
+      ...(document.getElementById("shoeSizeEnabled").checked
+        ? ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46"] : [])
+    ];
+
+    const colors = document.getElementById("productColorEnabled").checked
+      ? ["কালো", "সাদা", "লাল", "নীল", "সবুজ", "হলুদ", "গোলাপি", "ধূসর", "বাদামি", "বেগুনি", "কমলা"]
+      : [];
 
     if (!name || !Number.isFinite(price) || price <= 0) {
       throw new Error("পণ্যের নাম ও সঠিক দাম দিন।");
