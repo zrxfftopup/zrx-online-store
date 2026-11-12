@@ -2698,8 +2698,10 @@ async function initializeStore() {
 
     if (sectionToRestore !== "adminMenu") {
       openAdminSection(sectionToRestore);
-    }
+        }
   }
+
+  document.documentElement.classList.remove("zrx-loading");
 }
 
 initializeStore();
