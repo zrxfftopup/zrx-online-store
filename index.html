@@ -88,6 +88,54 @@ html.zrx-loading body > footer {
   color: #16d98b;
   font-weight: bold;
 }
+.zrx-choice-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.zrx-choice {
+  position: relative;
+  cursor: pointer;
+}
+
+.zrx-choice input {
+  position: absolute;
+  opacity: 0;
+}
+
+.zrx-choice span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 55px;
+  padding: 11px 16px;
+  border: 2px solid #ccc;
+  border-radius: 9px;
+  background: #fff;
+  color: #222;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.zrx-choice input:checked + span {
+  border-color: #16a36a;
+  background: #e5fff1;
+  color: #087b48;
+}
+
+.zrx-choice input:checked + span::after {
+  content: "✓";
+  margin-left: 8px;
+  color: #16a36a;
+  font-weight: bold;
+}
+
+.zrx-choice input:focus-visible + span {
+  outline: 2px solid #16a36a;
+  outline-offset: 3px;
+}
 </style>
 
 <script>
