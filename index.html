@@ -2805,7 +2805,30 @@ async function initializeStore() {
         }
   }
 
-  document.documentElement.classList.remove("zrx-loading");
+    clearInterval(zrxLoadingProgressTimer);
+
+  zrxLoadingProgress = 100;
+
+  const bar = document.getElementById("zrxProgressBar");
+  const text = document.getElementById("zrxProgressText");
+
+  if (bar) {
+    bar.style.width = "100%";
+  }
+
+  if (text) {
+    text.textContent = "100%";
+  }
+
+  setTimeout(() => {
+    document.documentElement.classList.remove("zrx-loading");
+
+    const loadingScreen = document.getElementById("zrxLoadingScreen");
+
+    if (loadingScreen) {
+      loadingScreen.remove();
+    }
+  }, 400);
 }
 
 initializeStore();
