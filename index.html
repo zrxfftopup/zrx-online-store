@@ -2843,7 +2843,18 @@ async function loadAdminOrders() {
       <div class="card">
         <b>অর্ডার: #${safe(String(o.id).slice(0, 8).toUpperCase())}</b>
         <p>কাস্টমার: ${safe(o.customer_name || "নাম পাওয়া যায়নি")}</p>
-        <p>মোবাইল নম্বর: ${safe(o.phone || "নম্বর পাওয়া যায়নি")}</p>
+                <div style="margin:12px 0;padding:12px;border:1px solid #ccc;border-radius:10px;">
+          <b>🛍️ অর্ডার করা পণ্য:</b>
+
+          ${(itemsByOrder.get(String(o.id)) || []).map(item =>
+            "<div style='margin-top:10px;padding:10px;background:#f5f5f5;border-radius:8px;'>" +
+            "<p>পণ্যের নাম: " + safe(item.product_name || "নাম পাওয়া যায়নি") + "</p>" +
+            "<p>পরিমাণ: " + Number(item.quantity || 1) + "</p>" +
+            "<p>সাইজ: " + safe(item.product_size || "নির্বাচন করা হয়নি") + "</p>" +
+            "<p>কালার: " + safe(item.product_color || "নির্বাচন করা হয়নি") + "</p>" +
+            "</div>"
+          ).join("") || "<p>পণ্যের তথ্য পাওয়া যায়নি।</p>"}
+        </div>
         <p>মোট: ৳${Number(o.total_amount || 0)}</p>
         <p>ঠিকানা: ${safe(o.delivery_address || o.full_address || "")}</p>
         
