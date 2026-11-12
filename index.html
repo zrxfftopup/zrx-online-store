@@ -2610,10 +2610,12 @@ db.auth.onAuthStateChange(async (event, session) => {
 });
 
 /* START STORE */
+/* START STORE */
 async function initializeStore() {
   const savedPage = sessionStorage.getItem("zrxLastPage") || "home";
   const savedProfileTab = sessionStorage.getItem("zrxProfileTab") || "details";
   const savedAdminSection = sessionStorage.getItem("zrxAdminSection") || "adminMenu";
+  const savedProductId = sessionStorage.getItem("zrxProductId");
 
   await refreshUser();
   await loadProducts();
@@ -2626,8 +2628,9 @@ async function initializeStore() {
     "account",
     "forgot",
     "reset",
-        "adminPage",
-    "emailVerification"
+    "adminPage",
+    "emailVerification",
+    "productDetails"
   ];
 
   let pageToRestore = allowedPages.includes(savedPage)
@@ -2638,7 +2641,19 @@ async function initializeStore() {
     pageToRestore = "home";
   }
 
-  showPage(pageToRestore);
+  if (pageToRestore === "productDetails") {
+    if (
+      savedProductId &&
+      typeof window.openProductDetails === "function"
+    ) {
+      window.openProductDetails(savedProductId);
+    } else {
+      pageToRestore = "home";
+      showPage("home");
+    }
+  } else {
+    showPage(pageToRestore);
+  }
 
   if (pageToRestore === "profile") {
     const allowedTabs = ["details", "orders", "settings"];
