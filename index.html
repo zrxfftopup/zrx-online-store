@@ -2725,7 +2725,15 @@ if (discountEnabled &&
       const element = document.getElementById(id);
       if (element) element.value = "";
     });
-
+    [
+      "clothingSizeEnabled",
+      "pantsSizeEnabled",
+      "shoeSizeEnabled",
+      "productColorEnabled"
+    ].forEach(id => {
+      const checkbox = document.getElementById(id);
+      if (checkbox) checkbox.checked = false;
+    });
     document.getElementById("productImagePreview").innerHTML = "";
 
     notice("পণ্য সফলভাবে যোগ হয়েছে!");
