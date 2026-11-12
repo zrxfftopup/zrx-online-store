@@ -4234,10 +4234,19 @@ window.buyProductNow = async function() {
         };
 
         document.getElementById("directCheckoutProduct").innerHTML =
-            `<b>${safe(product.name)}</b>
-             <p>সাইজ: ${safe(selections.size || "নির্বাচিত নয়")}</p>
-             <p>কালার: ${safe(selections.color || "নির্বাচিত নয়")}</p>
-             <p>পরিমাণ: ১</p>`;
+    `<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <img
+            src="${safe(product.image_url || (Array.isArray(product.images) ? product.images[0] : "") || "https://placehold.co/500x500?text=ZRX")}"
+            alt="${safe(product.name)}"
+            style="width:170px;height:170px;object-fit:contain;background:#ffffff;border-radius:12px;padding:5px;"
+        >
+        <div>
+            <b>${safe(product.name)}</b>
+            <p>সাইজ: ${safe(selections.size || "নির্বাচিত নয়")}</p>
+            <p>কালার: ${safe(selections.color || "নির্বাচিত নয়")}</p>
+            <p>পরিমাণ: ১</p>
+        </div>
+    </div>`;
 
         document.getElementById("directCheckoutTotal").textContent =
             getProductFinalPrice(product).toFixed(2);
