@@ -756,8 +756,54 @@ a{color:#087b4c;overflow-wrap:anywhere}
     <button onclick="placeOrder()">অর্ডার নিশ্চিত করুন</button>
 </div>
 </section>
+<!-- DIRECT CHECKOUT PAGE -->
+<section id="directCheckoutPage" class="page hidden">
 
+  <h2>🛍️ সরাসরি অর্ডার</h2>
 
+  <button class="secondary" onclick="showPage('productDetailsPage')">
+    ← পণ্যে ফিরে যান
+  </button>
+
+  <div class="card">
+    <h3>আপনার নির্বাচিত পণ্য</h3>
+    <div id="directCheckoutProduct"></div>
+    <h3>মোট: ৳<span id="directCheckoutTotal">0</span></h3>
+  </div>
+
+  <div class="card">
+    <h3>ডেলিভারি ঠিকানা</h3>
+
+    <label>বিভাগ</label>
+    <select id="directCheckoutDivision">
+      <option value="">বিভাগ নির্বাচন করুন</option>
+    </select>
+
+    <label>জেলা</label>
+    <select id="directCheckoutDistrict" disabled>
+      <option value="">আগে বিভাগ নির্বাচন করুন</option>
+    </select>
+
+    <label>থানা / উপজেলা</label>
+    <select id="directCheckoutUpazila" disabled>
+      <option value="">আগে জেলা নির্বাচন করুন</option>
+    </select>
+
+    <label>এলাকা</label>
+    <input id="directCheckoutArea" placeholder="এলাকার নাম">
+
+    <label>সম্পূর্ণ ঠিকানা</label>
+    <textarea id="directCheckoutAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+
+    <label>মোবাইল নম্বর</label>
+    <input id="directCheckoutPhone" placeholder="মোবাইল নম্বর">
+
+    <button onclick="placeDirectOrder()">
+      অর্ডার নিশ্চিত করুন
+    </button>
+  </div>
+
+</section>
 <!-- ADMIN SECTION -->
 <section id="adminPage" class="page hidden">
 
