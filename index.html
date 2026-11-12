@@ -2713,6 +2713,11 @@ async function loadAdminOrders() {
         <p>মোবাইল নম্বর: ${safe(o.phone || "নম্বর পাওয়া যায়নি")}</p>
         <p>মোট: ৳${Number(o.total_amount || 0)}</p>
         <p>ঠিকানা: ${safe(o.delivery_address || o.full_address || "")}</p>
+        
+        ${o.delivery_latitude != null && o.delivery_longitude != null
+          ? `<p>📍 <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(o.delivery_latitude + "," + o.delivery_longitude)}" target="_blank" rel="noopener noreferrer">লাইভ লোকেশন দেখুন / যাওয়ার রাস্তা</a></p>`
+          : `<p>📍 GPS লোকেশন দেওয়া হয়নি</p>`}
+
         <p>বর্তমান অবস্থা: ${safe(selectedStatus || "")}</p>
 
         <select id="status_${safe(o.id)}">
