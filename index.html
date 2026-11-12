@@ -2843,6 +2843,7 @@ async function loadAdminOrders() {
       <div class="card">
         <b>অর্ডার: #${safe(String(o.id).slice(0, 8).toUpperCase())}</b>
         <p>কাস্টমার: ${safe(o.customer_name || "নাম পাওয়া যায়নি")}</p>
+        <p>মোবাইল নম্বর: ${safe(o.phone || "নম্বর পাওয়া যায়নি")}</p>
                 <div style="margin:12px 0;padding:12px;border:1px solid #ccc;border-radius:10px;">
           <b>🛍️ অর্ডার করা পণ্য:</b>
 
