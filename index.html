@@ -206,11 +206,22 @@ body{
   margin:0;
   font-family:Arial,sans-serif;
   color:#172033;
-  background-image:url('zrx-store.png');
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
+  background-image: url('zrx-desktop.png');
+background-size: contain;
+background-position: center center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-color: #101c36;
+}
+@media (max-width: 600px) {
+    body {
+        background-image: url('zrx-mobile.png');
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: #101c36;
+    }
 }
 header{background:var(--navy);color:white;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 header h2{margin:0;color:#fff}
