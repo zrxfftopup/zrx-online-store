@@ -2269,7 +2269,7 @@ function addToCart(id, size = "", color = "") {
       cart_key: cartKey,
       name: product.name,
       price: getProductFinalPrice(product),
-      image_url: product.image_url || "",
+      image_url: product.image_url || (Array.isArray(product.images) ? product.images[0] : "") || "",
       size: size,
       color: color,
       quantity: 1
@@ -2403,10 +2403,15 @@ function renderCart() {
          </select>`
       : (item.color ? `<p>কালার: ${safe(item.color)}</p>` : "");
 
-    const image = item.image_url
-      ? `<img src="${safe(item.image_url)}" alt="${safe(item.name)}"
-          style="width:90px;height:90px;object-fit:cover;border-radius:8px;">`
-      : `<div style="width:90px;height:90px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;">ছবি নেই</div>`;
+    const imageUrl = item.image_url ||
+  (product && product.image_url) ||
+  (product && Array.isArray(product.images) ? product.images[0] : "") ||
+  "";
+
+const image = imageUrl
+  ? `<img src="${safe(imageUrl)}" alt="${safe(item.name)}"
+      style="width:90px;height:90px;object-fit:cover;border-radius:8px;">`
+  : `<div style="width:90px;height:90px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;">ছবি নেই</div>`;
 
     return `
       <div class="card" style="padding:12px;margin-bottom:12px;">
