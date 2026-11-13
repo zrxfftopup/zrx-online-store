@@ -2549,105 +2549,281 @@ if (orderError) throw orderError;
   }
 }
 
+
+window.cartCheckoutSelection = [];
+window.directCheckoutMode = "single";
+
+function proceedCartCheckout() {
+  if (!currentUser) {
+    return notice("আগে লগইন করুন।");
+  }
+
+  const selectedItems = cart.filter(
+    item => item.selected !== false
+  );
+
+  if (!selectedItems.length) {
+    return notice("অর্ডার করার জন্য অন্তত একটি পণ্য সিলেক্ট করুন।");
+  }
+
+  for (const item of selectedItems) {
+    const product = products.find(
+      p => String(p.id) === String(item.id)
+    );
+
+    if (!product) {
+      return notice(item.name + " পণ্যটি পাওয়া যায়নি।");
+    }
+
+    const sizes = getProductSizes(product);
+    const colors = Array.isArray(product.colors)
+      ? product.colors
+      : [];
+
+    if (sizes.length && !item.size) {
+      return notice(item.name + " পণ্যের সাইজ নির্বাচন করুন।");
+    }
+
+    if (colors.length && !item.color) {
+      return notice(item.name + " পণ্যের কালার নির্বাচন করুন।");
+    }
+  }
+
+  window.directCheckoutMode = "cart";
+
+  window.cartCheckoutSelection = selectedItems.map(item => ({
+    ...item,
+    cartKey: getCartItemKey(item)
+  }));
+
+  window.directCheckoutSelection = null;
+
+  let total = 0;
+
+  document.getElementById("directCheckoutProduct").innerHTML =
+    window.cartCheckoutSelection.map(item => {
+      const product = products.find(
+        p => String(p.id) === String(item.id)
+      );
+
+      const price = getProductFinalPrice(product);
+      const quantity = Number(item.quantity) || 1;
+
+      total += price * quantity;
+
+      return `
+        <div class="card" style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
+          <img src="${safe(product.image_url || item.image_url || "")}"
+            style="width:75px;height:75px;object-fit:cover;border-radius:8px;">
+
+          <div>
+            <b>${safe(product.name)}</b>
+            <p>সাইজ: ${safe(item.size || "নির্বাচন নেই")}</p>
+            <p>কালার: ${safe(item.color || "নির্বাচন নেই")}</p>
+            <p>পরিমাণ: ${quantity} টি</p>
+            <p>দাম: ৳${price.toFixed(2)} × ${quantity}</p>
+            <b>মোট: ৳${(price * quantity).toFixed(2)}</b>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+  document.getElementById("directCheckoutTotal").textContent =
+    total.toFixed(2);
+
+  showPage("directCheckoutPage");
+}
+
 async function placeDirectOrder() {
-    if (!currentUser) {
-        return notice("আগে লগইন করুন।");
-    }
+  if (!currentUser) {
+    return notice("আগে লগইন করুন।");
+  }
 
-    const selection = window.directCheckoutSelection;
+  const isCartOrder = window.directCheckoutMode === "cart";
 
-    if (!selection || !selection.productId) {
-        return notice("আগে একটি পণ্য নির্বাচন করুন।");
-    }
+  const selection = window.directCheckoutSelection;
 
-    const division =
-        $("directCheckoutDivision").selectedOptions[0]?.textContent || "";
-    const district =
-        $("directCheckoutDistrict").selectedOptions[0]?.textContent || "";
-    const upazila = val("directCheckoutUpazila");
-    const area = val("directCheckoutArea");
-    const fullAddress = val("directCheckoutAddress");
-    const phone = val("directCheckoutPhone");
+  if (!isCartOrder && (!selection || !selection.productId)) {
+    return notice("আগে একটি পণ্য নির্বাচন করুন।");
+  }
 
-    if (!division || !district || !upazila || !area || !fullAddress || !phone) {
-        return notice("ডেলিভারি ঠিকানার সব তথ্য পূরণ করুন।");
-    }
+  const division =
+    $("directCheckoutDivision").selectedOptions[0]?.textContent || "";
+  const district =
+    $("directCheckoutDistrict").selectedOptions[0]?.textContent || "";
+  const upazila = val("directCheckoutUpazila");
+  const area = val("directCheckoutArea");
+  const fullAddress = val("directCheckoutAddress");
+  const phone = val("directCheckoutPhone");
 
-    try {
-        const { data: product, error: productError } = await db
-            .from("products")
-            .select("*")
-            .eq("id", selection.productId)
-            .single();
+  if (!division || !district || !upazila || !area || !fullAddress || !phone) {
+    return notice("ডেলিভারি ঠিকানার সব তথ্য পূরণ করুন।");
+  }
 
-        if (productError) throw productError;
-        if (!product) throw new Error("পণ্যটি পাওয়া যাচ্ছে না।");
+  try {
+    let orderItems = [];
+    let total = 0;
 
-        if (Number(product.stock) < 1) {
-            throw new Error("পণ্যটি বর্তমানে স্টকে নেই।");
+    if (isCartOrder) {
+      const selectedItems = window.cartCheckoutSelection || [];
+
+      if (!selectedItems.length) {
+        throw new Error("নির্বাচিত কার্ট পণ্য পাওয়া যায়নি।");
+      }
+
+      const ids = [...new Set(selectedItems.map(item => item.id))];
+
+      const { data: latestProducts, error } = await db
+        .from("products")
+        .select("*")
+        .in("id", ids);
+
+      if (error) throw error;
+
+      const latestMap = new Map(
+        (latestProducts || []).map(p => [String(p.id), p])
+      );
+
+      for (const item of selectedItems) {
+        const product = latestMap.get(String(item.id));
+
+        if (!product) {
+          throw new Error(item.name + " পণ্যটি আর পাওয়া যাচ্ছে না।");
+        }
+
+        const quantity = Number(item.quantity) || 1;
+
+        if (Number(product.stock) < quantity) {
+          throw new Error(product.name + " পর্যাপ্ত স্টকে নেই।");
+        }
+
+        const sizes = getProductSizes(product);
+        const colors = Array.isArray(product.colors)
+          ? product.colors
+          : [];
+
+        if (sizes.length && !item.size) {
+          throw new Error(product.name + " পণ্যের সাইজ নির্বাচন করুন।");
+        }
+
+        if (colors.length && !item.color) {
+          throw new Error(product.name + " পণ্যের কালার নির্বাচন করুন।");
         }
 
         const price = getProductFinalPrice(product);
-        const ownDelivery = isBayezidAddress(upazila);
 
-        const { data: order, error: orderError } = await db
-            .from("orders")
-            .insert({
-                user_id: currentUser.id,
-                customer_id: currentUser.id,
-                customer_name: currentProfile?.full_name ||
-                    currentUser.user_metadata?.full_name ||
-                    currentUser.email || "Customer",
-                total_amount: price,
-                status: "Pending",
-                delivery_type: ownDelivery ? "Own Delivery" : "Courier",
-                full_address: [
-                    division, district, upazila, area, fullAddress
-                ].filter(Boolean).join(", "),
-                phone: phone,
-                delivery_latitude:
-                    directDeliveryCoordinates?.latitude ?? null,
-                delivery_longitude:
-                    directDeliveryCoordinates?.longitude ?? null
-            })
-            .select()
-            .single();
+        total += price * quantity;
 
-        if (orderError) throw orderError;
+        orderItems.push({
+          product_id: product.id,
+          product_name: product.name,
+          quantity: quantity,
+          unit_price: price,
+          product_size: item.size || null,
+          product_color: item.color || null
+        });
+      }
 
-        const { error: itemsError } = await db
-            .from("order_items")
-            .insert([{
-                order_id: order.id,
-                product_id: product.id,
-                product_name: product.name,
-                quantity: 1,
-                unit_price: price,
-                product_size: selection.size || null,
-                product_color: selection.color || null
-            }]);
+    } else {
+      const { data: product, error } = await db
+        .from("products")
+        .select("*")
+        .eq("id", selection.productId)
+        .single();
 
-        if (itemsError) {
-            throw new Error(
-                "অর্ডার তৈরি হয়েছে, কিন্তু পণ্যের তথ্য সংরক্ষণে সমস্যা হয়েছে। Admin-এর সঙ্গে যোগাযোগ করুন।"
-            );
-        }
+      if (error) throw error;
+      if (!product) throw new Error("পণ্যটি পাওয়া যাচ্ছে না।");
 
-        notice(
-            "অর্ডার গ্রহণ করা হয়েছে!\n" +
-            "অর্ডার নম্বর: " + order.id + "\n" +
-            (ownDelivery
-                ? "ডেলিভারি: আমাদের নিজস্ব ডেলিভারি"
-                : "ডেলিভারি: কুরিয়ার")
-        );
+      if (Number(product.stock) < 1) {
+        throw new Error("পণ্যটি বর্তমানে স্টকে নেই।");
+      }
 
-        await loadMyOrders();
-        showPage("profilePage");
-        showProfileTab("ordersTab");
+      const price = getProductFinalPrice(product);
+      total = price;
 
-    } catch (error) {
-        notice(error.message);
+      orderItems.push({
+        product_id: product.id,
+        product_name: product.name,
+        quantity: 1,
+        unit_price: price,
+        product_size: selection.size || null,
+        product_color: selection.color || null
+      });
     }
+
+    const ownDelivery = isBayezidAddress(upazila);
+
+    const { data: order, error: orderError } = await db
+      .from("orders")
+      .insert({
+        user_id: currentUser.id,
+        customer_id: currentUser.id,
+        customer_name: currentProfile?.full_name ||
+          currentUser.user_metadata?.full_name ||
+          currentUser.email || "Customer",
+        total_amount: total,
+        status: "Pending",
+        delivery_type: ownDelivery ? "Own Delivery" : "Courier",
+        full_address: [
+          division, district, upazila, area, fullAddress
+        ].filter(Boolean).join(", "),
+        phone: phone,
+        delivery_latitude:
+          directDeliveryCoordinates?.latitude ?? null,
+        delivery_longitude:
+          directDeliveryCoordinates?.longitude ?? null
+      })
+      .select()
+      .single();
+
+    if (orderError) throw orderError;
+
+    const itemsWithOrder = orderItems.map(item => ({
+      ...item,
+      order_id: order.id
+    }));
+
+    const { error: itemsError } = await db
+      .from("order_items")
+      .insert(itemsWithOrder);
+
+    if (itemsError) {
+      throw new Error(
+        "অর্ডার তৈরি হয়েছে, কিন্তু পণ্যের তালিকা সংরক্ষণে সমস্যা হয়েছে। Admin-এর সঙ্গে যোগাযোগ করুন।"
+      );
+    }
+
+    if (isCartOrder) {
+      const orderedKeys = new Set(
+        window.cartCheckoutSelection.map(item => item.cartKey)
+      );
+
+      cart = cart.filter(
+        item => !orderedKeys.has(getCartItemKey(item))
+      );
+
+      saveCart();
+      window.cartCheckoutSelection = [];
+    }
+
+    window.directCheckoutMode = "single";
+
+    notice(
+      "অর্ডার গ্রহণ করা হয়েছে!\n" +
+      "অর্ডার নম্বর: " + order.id + "\n" +
+      "মোট: ৳" + total.toFixed(2) + "\n" +
+      (ownDelivery
+        ? "ডেলিভারি: আমাদের নিজস্ব ডেলিভারি"
+        : "ডেলিভারি: কুরিয়ার")
+    );
+
+    await loadMyOrders();
+    showPage("profilePage");
+    showProfileTab("ordersTab");
+
+  } catch (error) {
+    notice(error.message);
+  }
 }
 
 async function loadMyOrders() {
