@@ -789,44 +789,40 @@ a{color:#087b4c;overflow-wrap:anywhere}
 <button onclick="changePassword()">পাসওয়ার্ড পরিবর্তন</button>
 <hr><button class="danger" onclick="logoutUser()">লগআউট</button>
 </div></div>
-  </section>
-  <!-- CART SECTION -->
+  
+<!-- CART SECTION -->
 <section id="cartPage" class="page hidden">
   <h2>🛒 আমার কার্ট</h2>
+
   <div id="cartItems"></div>
-  <h3>মোট: ৳<span id="cartTotal">0</span></h3>
 
   <div class="card">
-  <div class="card">
-    <h3>ডেলিভারি ঠিকানা</h3>
+    <h3>নির্বাচিত পণ্যের মোট: ৳<span id="cartTotal">0</span></h3>
+    <button onclick="proceedCartCheckout()">
+      এগিয়ে যান
+    </button>
+  </div>
 
-    <label>বিভাগ</label>
+  <!-- পুরোনো ঠিকানার ফিল্ড: অন্যান্য কোডের সামঞ্জস্যের জন্য রাখা হয়েছে -->
+  <div style="display:none;">
     <select id="checkoutDivision">
-        <option value="">বিভাগ নির্বাচন করুন</option>
+      <option value="">বিভাগ নির্বাচন করুন</option>
     </select>
 
-    <label>জেলা</label>
     <select id="checkoutDistrict" disabled>
-        <option value="">আগে বিভাগ নির্বাচন করুন</option>
+      <option value="">আগে বিভাগ নির্বাচন করুন</option>
     </select>
 
-    <label>থানা / উপজেলা</label>
     <select id="checkoutUpazila" disabled>
-        <option value="">আগে জেলা নির্বাচন করুন</option>
+      <option value="">আগে জেলা নির্বাচন করুন</option>
     </select>
 
-    <label>এলাকা</label>
-    <input id="checkoutArea" placeholder="এলাকার নাম">
-
-    <label>সম্পূর্ণ ঠিকানা</label>
-    <textarea id="checkoutAddress" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
-
-    <label>মোবাইল নম্বর</label>
-    <input id="checkoutPhone" placeholder="মোবাইল নম্বর">
-
-    <button onclick="placeOrder()">অর্ডার নিশ্চিত করুন</button>
-</div>
+    <input id="checkoutArea">
+    <textarea id="checkoutAddress"></textarea>
+    <input id="checkoutPhone">
+  </div>
 </section>
+
 <!-- DIRECT CHECKOUT PAGE -->
 <section id="directCheckoutPage" class="page hidden">
 
