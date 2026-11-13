@@ -2390,7 +2390,7 @@ function renderCart() {
 
     const sizeHTML = sizes.length
       ? `<label>সাইজ নির্বাচন করুন</label>
-         <select onchange="updateCartVariant(decodeURIComponent('${encodeURIComponent(key)}'),'size',this.value)">
+         <select class="cart-size-select" onchange="updateCartVariant(decodeURIComponent('${encodeURIComponent(key)}'),'size',this.value)">
            <option value="">সাইজ বেছে নিন</option>
            ${sizes.map(size =>
              `<option value="${safe(size)}" ${item.size === size ? "selected" : ""}>${safe(size)}</option>`
