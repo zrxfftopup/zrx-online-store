@@ -2400,7 +2400,7 @@ function renderCart() {
 
     const colorHTML = colors.length
       ? `<label>কালার নির্বাচন করুন</label>
-         <select onchange="updateCartVariant(decodeURIComponent('${encodeURIComponent(key)}'),'color',this.value)">
+         <select class="cart-color-select" onchange="updateCartVariant(decodeURIComponent('${encodeURIComponent(key)}'),'color',this.value)">
            <option value="">কালার বেছে নিন</option>
            ${colors.map(color =>
              `<option value="${safe(color)}" ${item.color === color ? "selected" : ""}>${safe(color)}</option>`
