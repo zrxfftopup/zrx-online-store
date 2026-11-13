@@ -2333,6 +2333,11 @@ function updateCartVariant(cartKey, type, value) {
   if (type === "size") item.size = value;
   if (type === "color") item.color = value;
 
+  item.cart_key =
+    String(item.id) + "::" +
+    (item.size || "") + "::" +
+    (item.color || "");
+
   saveCart();
 }
 
