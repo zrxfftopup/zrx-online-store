@@ -3657,7 +3657,27 @@ async function sendGuestSupportMessage() {
       list.innerHTML = "<p>এখনো কোনো Guest মেসেজ করেনি।</p>";
       return;
     }
+    const unreadGuestChats = new Set();
 
+    await Promise.all(chats.map(async chat => {
+      const response = await worker({
+        action: "admin_guest_load",
+        chat_id: chat.id
+      });
+
+      const messages = response.messages || response.data || [];
+      const lastRead = Number(
+        localStorage.getItem("zrxGuestAdminRead_" + chat.id) || 0
+      );
+
+      if (messages.some(m =>
+        m.sender !== "admin" &&
+        m.created_at &&
+        new Date(m.created_at).getTime() > lastRead
+      )) {
+        unreadGuestChats.add(chat.id);
+      }
+    }));
         list.innerHTML = `
       <h4>👤 Guest Support</h4>
       ${chats.map(chat => `
