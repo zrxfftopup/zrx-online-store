@@ -5020,15 +5020,25 @@ if(supportBox) {
 
 /* DRAG BOTH SUPPORT BUTTON AND CHAT WINDOW */
 function zrxMakeDraggable(element,handle) {
-  if(!element||!handle) return;
+  if(!element || !handle) return;
 
   let sx=0,sy=0,left=0,top=0,moved=false;
+  let activePointerId=null;
 
   handle.addEventListener("pointerdown",e=>{
-    if(e.target !== handle && e.target.closest("button,input,textarea")) return;
+    if(activePointerId!==null) return;
+    if(e.target!==handle && e.target.closest("button,input,textarea")) return;
+
+    e.preventDefault();
+
     const r=element.getBoundingClientRect();
-    sx=e.clientX; sy=e.clientY;
-    left=r.left; top=r.top; moved=false;
+
+    sx=e.clientX;
+    sy=e.clientY;
+    left=r.left;
+    top=r.top;
+    moved=false;
+    activePointerId=e.pointerId;
 
     element.style.left=left+"px";
     element.style.top=top+"px";
@@ -5036,11 +5046,17 @@ function zrxMakeDraggable(element,handle) {
     element.style.bottom="auto";
 
     element.dataset.dragging="yes";
-    handle.setPointerCapture(e.pointerId);
+
+    try {
+      handle.setPointerCapture(e.pointerId);
+    } catch(err) {}
   });
 
-  handle.addEventListener("pointermove",e=>{
+  window.addEventListener("pointermove",e=>{
+    if(activePointerId!==e.pointerId) return;
     if(element.dataset.dragging!=="yes") return;
+
+    e.preventDefault();
 
     const dx=e.clientX-sx;
     const dy=e.clientY-sy;
@@ -5054,18 +5070,24 @@ function zrxMakeDraggable(element,handle) {
     element.style.top=Math.max(0,Math.min(
       window.innerHeight-element.offsetHeight,top+dy
     ))+"px";
-  });
+  },{passive:false});
 
-  function stop() {
+  function stop(e) {
+    if(activePointerId!==e.pointerId) return;
+
     element.dataset.dragging="no";
+    activePointerId=null;
+
     if(moved) {
       element.dataset.justDragged="yes";
-      setTimeout(()=>element.dataset.justDragged="no",300);
+      setTimeout(()=>{
+        element.dataset.justDragged="no";
+      },300);
     }
   }
 
-  handle.addEventListener("pointerup",stop);
-  handle.addEventListener("pointercancel",stop);
+  window.addEventListener("pointerup",stop);
+  window.addEventListener("pointercancel",stop);
 }
 
 if(supportFloat) {
