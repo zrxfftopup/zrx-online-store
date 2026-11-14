@@ -3911,14 +3911,13 @@ function backToAdminInbox() {
   if (!isAdmin) return;
 
   $("adminMessengerConversation").classList.add("hidden");
-  $("adminMessengerList").classList.remove("hidden");
-  $("adminGuestMessengerList").classList.remove("hidden");
+  $("adminMessengerList").classList.add("hidden");
+  $("adminGuestMessengerList").classList.add("hidden");
 
   selectedChatUser = null;
   window.selectedGuestChatId = null;
 
-  loadAdminChats();
-  loadAdminGuestChats();
+  $("adminMessengerOptions").classList.remove("hidden");
 }
 
 window.updateAdminMessengerVisibility = function() {
