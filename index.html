@@ -3843,11 +3843,14 @@ function toggleAdminMessenger() {
 
       loadAdminChats();
       loadAdminGuestChats();
-      if (
-        selectedChatUser &&
+            if (
         !$("adminMessengerConversation").classList.contains("hidden")
       ) {
-        openAdminChat(selectedChatUser);
+        if (window.selectedGuestChatId) {
+          openAdminGuestChat(window.selectedGuestChatId);
+        } else if (selectedChatUser) {
+          openAdminChat(selectedChatUser);
+        }
       }
     }, 10000);
 
