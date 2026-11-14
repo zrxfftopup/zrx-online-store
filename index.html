@@ -3946,6 +3946,10 @@ ${(data || []).some(m =>
       </button>
     `;
   }).join("");
+  $("adminMessengerList").insertAdjacentHTML(
+  "afterbegin",
+  '<button type="button" onclick="backToAdminInbox()" style="width:100%;padding:12px;margin-bottom:10px">← ফিরে যান</button>'
+);
 }
 
 async function openAdminChat(userId) {
