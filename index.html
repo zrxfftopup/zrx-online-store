@@ -3712,7 +3712,22 @@ $("adminChatCustomerName").textContent =
 $("adminChatCustomerId").textContent =
   guest?.guest_phone || "";
     const messages = result.messages || result.data || [];
+    const incomingGuestMessages = messages.filter(
+      m => m.sender !== "admin" && m.created_at
+    );
 
+    if (incomingGuestMessages.length) {
+      const latestGuestRead = Math.max(
+        ...incomingGuestMessages.map(m =>
+          new Date(m.created_at).getTime()
+        )
+      );
+
+      localStorage.setItem(
+        "zrxGuestAdminRead_" + chatId,
+        String(latestGuestRead)
+      );
+  }
     $("adminChatMessages").innerHTML = messages.map(m => `
       <div class="${m.sender === "admin" ? "zrx-right-row" : "zrx-left-row"}">
         <div class="zrx-chat-bubble">
