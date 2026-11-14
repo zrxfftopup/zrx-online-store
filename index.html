@@ -3664,7 +3664,11 @@ async function sendGuestSupportMessage() {
           onclick="openAdminGuestChat('${safe(chat.id)}')"
           style="width:100%;text-align:left;padding:12px;
           margin:6px 0;border:1px solid #ddd;border-radius:10px">
-          <b>${safe(chat.guest_name || "Guest")}</b><br>
+          <b>${safe(chat.guest_name || "Guest")}</b>
+${(chat.unread_count || 0) > 0
+  ? '<span class="zrx-unread-dot"></span>'
+  : ''}
+<br>
           <small>মোবাইল: ${safe(chat.guest_phone || "")}</small>
         </button>
       `).join("")}
