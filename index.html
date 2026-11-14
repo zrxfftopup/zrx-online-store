@@ -3484,7 +3484,19 @@ function getGuestSupportSession() {
     return null;
   }
 }
+function startGuestSupportPolling() {
+  clearInterval(window.zrxGuestSupportTimer);
 
+  window.zrxGuestSupportTimer = setInterval(() => {
+    if (
+      !currentUser &&
+      !$("supportBox").classList.contains("hidden") &&
+      getGuestSupportSession()
+    ) {
+      loadGuestSupportMessages();
+    }
+  }, 5000);
+  }
 async function startGuestSupport() {
   const name = val("guestName");
   const phone = val("guestPhone").replace(/\s+/g, "");
