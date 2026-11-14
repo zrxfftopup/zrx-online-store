@@ -3729,7 +3729,7 @@ async function openAdminChat(userId) {
   if (!isAdmin) return;
 
   selectedChatUser = userId;
-
+window.selectedGuestChatId = null;
   $("adminMessengerList").classList.add("hidden");
   $("adminMessengerConversation").classList.remove("hidden");
 
