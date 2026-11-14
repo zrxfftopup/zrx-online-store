@@ -3575,7 +3575,37 @@ async function sendGuestSupportMessage() {
     notice(error.message || "মেসেজ পাঠানো যায়নি।");
   }
   }
-  
+  async function loadAdminGuestChats() {
+  if (!isAdmin || !$("adminGuestMessengerList")) return;
+
+  const list = $("adminGuestMessengerList");
+  list.innerHTML = "<p>Guest মেসেজ লোড হচ্ছে...</p>";
+
+  try {
+    const result = await worker({
+      action: "admin_guest_list"
+    });
+
+    const chats = result.chats || result.data || [];
+
+    if (!chats.length) {
+      list.innerHTML = "<p>এখনো কোনো Guest মেসেজ করেনি।</p>";
+      return;
+    }
+
+    list.innerHTML = `
+      <h4>👤 Guest Support</h4>
+      ${chats.map(chat => `
+        <div style="padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px">
+          <b>${safe(chat.guest_name || "Guest")}</b><br>
+          <small>মোবাইল: ${safe(chat.guest_phone || "")}</small>
+        </div>
+      `).join("")}
+    `;
+  } catch (error) {
+    list.textContent = error.message || "Guest তালিকা লোড করা যায়নি।";
+  }
+  }
 async function loadAdminChats() {
   if (!isAdmin || !$("adminMessengerList")) return;
 
