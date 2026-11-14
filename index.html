@@ -534,20 +534,29 @@ a{color:#087b4c;overflow-wrap:anywhere}
 ================================ */
 
 
+
 .zrx-notice-board {
   position: relative;
   overflow: hidden;
   margin: 18px 0 24px;
-  padding: 10px;
+  padding: 14px;
+  border: 3px solid #ffd54a;
   border-radius: 22px;
-  background: linear-gradient(
-    120deg,
-    #a00020,
-    #003399,
-    #006b35,
-    #a66b00,
-    #a00020
+  background: repeating-conic-gradient(
+    from 45deg,
+    #ffd54a 0deg 15deg,
+    #780019 15deg 30deg,
+    #082c78 30deg 45deg,
+    #075c35 45deg 60deg
   );
+  background-size: 26px 26px;
+  animation: zrxNoticeBorder 5s linear infinite;
+  box-shadow:
+    0 0 0 3px #172033,
+    0 0 16px #003399cc,
+    0 0 22px #a00020cc;
+}
+
   background-size: 300% 300%;
   animation: zrxNoticeBorder 5s linear infinite;
   box-shadow:
