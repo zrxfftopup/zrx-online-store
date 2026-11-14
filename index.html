@@ -3826,7 +3826,14 @@ async function loadAdminChats() {
     alt="Customer Photo"
   >
   <div>
-    <b>${safe(name)}</b><br>
+    <b>${safe(name)}</b>
+${(data || []).some(m =>
+  m.user_id === id &&
+  m.sender !== "admin" &&
+  new Date(m.created_at).getTime() >
+  Number(localStorage.getItem("zrxAdminRead_" + id) || 0)
+) ? '<span class="zrx-unread-dot"></span>' : ''}
+<br>
     <small>Customer ID: ${safe(id)}</small><br>
     <small>${safe(msg.message || "")}</small>
   </div>
