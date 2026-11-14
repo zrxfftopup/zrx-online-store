@@ -2086,54 +2086,71 @@ window.deleteNoticeBoardImage = async function(encodedName) {
 };
 
 window.loadNoticeBoard = async function() {
-  const board = document.getElementById("noticeBoard");
-  const track = document.getElementById("noticeBoardTrack");
-  const dots = document.getElementById("noticeBoardDots");
+const board = document.getElementById("noticeBoard");
+const track = document.getElementById("noticeBoardTrack");
+const dots = document.getElementById("noticeBoardDots");
 
-  if (!board || !track || !dots) return;
+if (!board || !track || !dots) return;
 
-  const { data, error } = await db.storage
+board.classList.add("hidden");
+track.innerHTML = "";
+dots.innerHTML = "";
+
+try {
+const { data, error } = await db.storage
+.from("product-images")
+.list("notice-board", {
+limit: 100,
+sortBy: { column: "name", order: "asc" }
+});
+
+if (error) throw error;
+
+const files = (data || [])
+  .filter(file => file.name && (file.id || file.metadata))
+  .slice(0, 15);
+
+if (!files.length) {
+  console.log("Notice Board: কোনো ছবি পাওয়া যায়নি।");
+  return;
+}
+
+zrxNoticeFiles = files.map(file => {
+  const path = "notice-board/" + file.name;
+
+  const { data: imageData } = db.storage
     .from("product-images")
-    .list("notice-board", { limit: 100 });
+    .getPublicUrl(path);
 
-  if (error) {
-    console.error(error);
-    return;
-  }
+  return imageData.publicUrl;
+});
 
-  const files = (data || [])
-    .filter(f => f.name)
-    .slice(0, 15);
+zrxNoticeIndex = 0;
 
-  if (!files.length) {
-    board.classList.add("hidden");
-    return;
-  }
+track.innerHTML = zrxNoticeFiles.map(url =>
+  `<img src="${url}" class="zrx-notice-slide">`
+).join("");
 
-  zrxNoticeFiles = files.map(f =>
-    db.storage.from("product-images")
-      .getPublicUrl("notice-board/" + f.name).data.publicUrl
-  );
+dots.innerHTML = zrxNoticeFiles.map((_, i) =>
+  `<button type="button" onclick="zrxNoticeGo(${i})">${i + 1}</button>`
+).join("");
 
-  zrxNoticeIndex = 0;
+board.classList.remove("hidden");
+zrxNoticeUpdate();
 
-  track.innerHTML = zrxNoticeFiles.map(url =>
-    `<img src="${url}" class="zrx-notice-slide">`
-  ).join("");
+clearInterval(zrxNoticeTimer);
 
-  dots.innerHTML = zrxNoticeFiles.map((_, i) =>
-    `<button type="button" onclick="zrxNoticeGo(${i})">${i + 1}</button>`
-  ).join("");
+if (zrxNoticeFiles.length > 1) {
+  zrxNoticeTimer = setInterval(() => {
+    zrxNoticeMove(1);
+  }, 4000);
+}
 
-  board.classList.remove("hidden");
-  zrxNoticeUpdate();
-
-  clearInterval(zrxNoticeTimer);
-  if (zrxNoticeFiles.length > 1) {
-    zrxNoticeTimer = setInterval(() => zrxNoticeMove(1), 4000);
-  }
+} catch (error) {
+console.error("Notice Board Loading Error:", error);
+notice("Notice Board-এর ছবি লোড হয়নি: " + error.message);
+}
 };
-
 window.zrxNoticeUpdate = function() {
   const track = document.getElementById("noticeBoardTrack");
   const dots = document.getElementById("noticeBoardDots");
