@@ -3686,7 +3686,7 @@ async function sendGuestSupportMessage() {
           style="width:100%;text-align:left;padding:12px;
           margin:6px 0;border:1px solid #ddd;border-radius:10px">
           <b>${safe(chat.guest_name || "Guest")}</b>
-${(chat.unread_count || 0) > 0
+${unreadGuestChats.has(chat.id)
   ? '<span class="zrx-unread-dot"></span>'
   : ''}
 <br>
