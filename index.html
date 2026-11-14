@@ -3728,6 +3728,36 @@ $("adminChatCustomerId").textContent =
       error.message || "Guest মেসেজ লোড করা যায়নি।";
   }
       }
+ // ZRX ADMIN UNREAD MESSAGE CHECK
+window.checkAdminUnreadMessages = async function() {
+  if (!isAdmin) return;
+
+  const badge = $("adminMessengerBadge");
+  if (!badge) return;
+
+  try {
+    const { data, error } = await db
+      .from("chat_messages")
+      .select("user_id, sender, created_at")
+      .neq("sender", "admin")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    const unread = (data || []).some(message => {
+      const lastRead = Number(
+        localStorage.getItem("zrxAdminRead_" + message.user_id) || 0
+      );
+
+      return new Date(message.created_at).getTime() > lastRead;
+    });
+
+    badge.classList.toggle("hidden", !unread);
+
+  } catch (error) {
+    console.error("Unread check error:", error);
+  }
+};
 async function loadAdminChats() {
   if (!isAdmin || !$("adminMessengerList")) return;
 
