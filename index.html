@@ -1200,15 +1200,31 @@ a{color:#087b4c;overflow-wrap:anywhere}
   <button id="supportFloat" onclick="toggleSupport()">💬</button>
   <span id="supportFloatLabel">Support</span>
 </div>
+
 <div id="supportBox" class="support-box hidden">
   <div class="support-head">
     <b>ZRX Support</b>
     <button onclick="toggleSupport()">✕</button>
   </div>
+
+  <div id="guestIdentityForm" class="hidden">
+    <p>সাপোর্টে যোগাযোগ করতে আপনার তথ্য দিন।</p>
+    <input id="guestName" type="text" placeholder="আপনার নাম">
+    <input id="guestPhone" type="tel" placeholder="মোবাইল নম্বর">
+    <button type="button" onclick="startGuestSupport()">চ্যাট শুরু করুন</button>
+  </div>
+
+  <div id="guestSupportArea" class="hidden">
+    <div id="guestSupportMessages"></div>
+    <input id="guestSupportInput" placeholder="মেসেজ লিখুন">
+    <button type="button" onclick="sendGuestSupportMessage()">পাঠান</button>
+  </div>
+
   <div id="supportMessages"></div>
   <input id="supportInput" placeholder="মেসেজ লিখুন">
   <button onclick="sendSupportMessage()">পাঠান</button>
 </div>
+
 <!-- ADMIN ONLY MESSENGER -->
 <button id="adminMessengerFloat" class="hidden" type="button"
 onclick="toggleAdminMessenger()">💬
