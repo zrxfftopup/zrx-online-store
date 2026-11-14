@@ -3782,7 +3782,7 @@ function toggleAdminMessenger() {
       if (!isAdmin || panel.classList.contains("hidden")) return;
 
       loadAdminChats();
-
+      loadAdminGuestChats();
       if (
         selectedChatUser &&
         !$("adminMessengerConversation").classList.contains("hidden")
