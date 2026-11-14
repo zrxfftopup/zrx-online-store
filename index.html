@@ -3609,6 +3609,50 @@ async function sendGuestSupportMessage() {
     list.textContent = error.message || "Guest তালিকা লোড করা যায়নি।";
   }
   }
+  async function openAdminGuestChat(chatId) {
+  if (!isAdmin || !chatId) return;
+
+  window.selectedGuestChatId = chatId;
+  selectedChatUser = null;
+
+  $("adminMessengerList").classList.add("hidden");
+  $("adminGuestMessengerList").classList.add("hidden");
+  $("adminMessengerConversation").classList.remove("hidden");
+
+  $("adminChatCustomerName").textContent = "Guest Support";
+  $("adminChatCustomerAvatar").src =
+    "https://raw.githubusercontent.com/zrxfftopup/zrx-online-store/main/zrx-logo.jpg";
+  $("adminChatCustomerId").textContent = "Guest Chat";
+
+  $("adminChatMessages").innerHTML = "<p>মেসেজ লোড হচ্ছে...</p>";
+
+  try {
+    const result = await worker({
+      action: "admin_guest_load",
+      chat_id: chatId
+    });
+
+    const messages = result.messages || result.data || [];
+
+    $("adminChatMessages").innerHTML = messages.map(m => `
+      <div class="${m.sender === "admin" ? "zrx-right-row" : "zrx-left-row"}">
+        <div class="zrx-chat-bubble">
+          <b>${m.sender === "admin" ? "Admin" : "Guest"}:</b>
+          ${safe(m.message || "")}
+          <br>
+          <small>${m.created_at ? new Date(m.created_at).toLocaleString("bn-BD") : ""}</small>
+        </div>
+      </div>
+    `).join("") || "<p>কোনো মেসেজ নেই।</p>";
+
+    $("adminChatMessages").scrollTop =
+      $("adminChatMessages").scrollHeight;
+
+  } catch (error) {
+    $("adminChatMessages").textContent =
+      error.message || "Guest মেসেজ লোড করা যায়নি।";
+  }
+      }
 async function loadAdminChats() {
   if (!isAdmin || !$("adminMessengerList")) return;
 
