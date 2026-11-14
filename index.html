@@ -3700,6 +3700,10 @@ async function sendGuestSupportMessage() {
       }
     }));
         list.innerHTML = `
+        <button type="button" onclick="backToAdminInbox()"
+style="width:100%;padding:12px;margin-bottom:10px">
+← ফিরে যান
+</button>
       <h4>👤 Guest Support</h4>
       ${chats.map(chat => `
         <button type="button"
