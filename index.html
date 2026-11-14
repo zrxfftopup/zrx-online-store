@@ -3593,13 +3593,16 @@ async function sendGuestSupportMessage() {
       return;
     }
 
-    list.innerHTML = `
+        list.innerHTML = `
       <h4>👤 Guest Support</h4>
       ${chats.map(chat => `
-        <div style="padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px">
+        <button type="button"
+          onclick="openAdminGuestChat('${safe(chat.id)}')"
+          style="width:100%;text-align:left;padding:12px;
+          margin:6px 0;border:1px solid #ddd;border-radius:10px">
           <b>${safe(chat.guest_name || "Guest")}</b><br>
           <small>মোবাইল: ${safe(chat.guest_phone || "")}</small>
-        </div>
+        </button>
       `).join("")}
     `;
   } catch (error) {
