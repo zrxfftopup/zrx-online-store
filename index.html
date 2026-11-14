@@ -3753,6 +3753,7 @@ $("adminChatCustomerId").textContent =
         String(latestGuestRead)
       );
   }
+        await checkAdminUnreadMessages();
     $("adminChatMessages").innerHTML = messages.map(m => `
       <div class="${m.sender === "admin" ? "zrx-right-row" : "zrx-left-row"}">
         <div class="zrx-chat-bubble">
