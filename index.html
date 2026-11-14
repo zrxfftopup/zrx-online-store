@@ -5108,15 +5108,18 @@ function zrxMakeDraggable(element,handle) {
   window.addEventListener("pointercancel",stop);
 }
 
-if(supportFloat) {
-  zrxMakeDraggable(supportFloat,supportFloat);
+const supportFloatWrap=document.getElementById("supportFloatWrap");
+
+if(supportFloatWrap && supportFloat) {
+  zrxMakeDraggable(supportFloatWrap,supportFloatWrap);
+
   supportFloat.addEventListener("click",e=>{
-    if(supportFloat.dataset.justDragged==="yes") {
+    if(supportFloatWrap.dataset.justDragged==="yes") {
       e.stopImmediatePropagation();
       e.preventDefault();
     }
   },true);
-}
+  }
 
 if(supportBox) {
   zrxMakeDraggable(
