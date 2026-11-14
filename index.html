@@ -3477,6 +3477,105 @@ async function loadSupportMessages() {
   $("supportMessages").scrollTop = $("supportMessages").scrollHeight;
 }
 
+function getGuestSupportSession() {
+  try {
+    return JSON.parse(localStorage.getItem("zrxGuestSupportSession") || "null");
+  } catch {
+    return null;
+  }
+}
+
+async function startGuestSupport() {
+  const name = val("guestName");
+  const phone = val("guestPhone").replace(/\s+/g, "");
+
+  if (!name) return notice("আপনার নাম লিখুন।");
+  if (!/^(\+?8801|01)[0-9]{9}$/.test(phone)) {
+    return notice("সঠিক বাংলাদেশি মোবাইল নম্বর লিখুন।");
+  }
+
+  try {
+    const result = await worker({
+      action: "guest_create",
+      guest_name: name,
+      guest_phone: phone
+    });
+
+    const chat = result.chat || result.data || result;
+    const chatId = chat.id || result.chat_id;
+    const accessToken = chat.access_token || result.access_token;
+
+    if (!chatId || !accessToken) {
+      throw new Error("চ্যাট তৈরি হয়েছে, কিন্তু তথ্য পাওয়া যায়নি।");
+    }
+
+    localStorage.setItem("zrxGuestSupportSession", JSON.stringify({
+      id: chatId,
+      access_token: accessToken
+    }));
+
+    $("guestIdentityForm").classList.add("hidden");
+    $("guestSupportArea").classList.remove("hidden");
+
+    await loadGuestSupportMessages();
+    notice("আপনার সাপোর্ট চ্যাট তৈরি হয়েছে।");
+  } catch (error) {
+    notice(error.message || "চ্যাট শুরু করা যায়নি।");
+  }
+}
+
+async function loadGuestSupportMessages() {
+  const session = getGuestSupportSession();
+  if (!session?.id || !session?.access_token) return;
+
+  try {
+    const result = await worker({
+      action: "guest_load",
+      chat_id: session.id,
+      access_token: session.access_token
+    });
+
+    const messages = result.messages || result.data || [];
+
+    $("guestSupportMessages").innerHTML = messages.map(m => `
+      <div class="chat-message ${m.sender === "guest" ? "mine" : "admin-chat-message"}">
+        <b>${m.sender === "admin" ? "Admin:" : "আপনি:"}</b>
+        ${safe(m.message || "")}
+      </div>
+    `).join("") || "<p>আপনার মেসেজ লিখে পাঠান।</p>";
+
+    $("guestSupportMessages").scrollTop =
+      $("guestSupportMessages").scrollHeight;
+  } catch (error) {
+    notice(error.message || "মেসেজ লোড করা যায়নি।");
+  }
+}
+
+async function sendGuestSupportMessage() {
+  const session = getGuestSupportSession();
+  const message = val("guestSupportInput");
+
+  if (!session?.id || !session?.access_token) {
+    return notice("আগে সাপোর্ট চ্যাট শুরু করুন।");
+  }
+
+  if (!message) return;
+
+  try {
+    await worker({
+      action: "guest_send",
+      chat_id: session.id,
+      access_token: session.access_token,
+      message
+    });
+
+    $("guestSupportInput").value = "";
+    await loadGuestSupportMessages();
+  } catch (error) {
+    notice(error.message || "মেসেজ পাঠানো যায়নি।");
+  }
+  }
+  
 async function loadAdminChats() {
   if (!isAdmin || !$("adminMessengerList")) return;
 
