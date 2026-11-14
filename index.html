@@ -3877,26 +3877,29 @@ function toggleAdminMessenger() {
   panel.classList.toggle("hidden");
 
   if (opening) {
-    $("adminMessengerList").classList.remove("hidden");
+    $("adminMessengerOptions").classList.remove("hidden");
+    $("adminMessengerList").classList.add("hidden");
+    $("adminGuestMessengerList").classList.add("hidden");
     $("adminMessengerConversation").classList.add("hidden");
 
-    loadAdminChats();
-    loadAdminGuestChats();
+    selectedChatUser = null;
+    window.selectedGuestChatId = null;
+
     clearInterval(window.zrxAdminMessengerTimer);
 
     window.zrxAdminMessengerTimer = setInterval(() => {
       if (!isAdmin || panel.classList.contains("hidden")) return;
 
-      loadAdminChats();
-      loadAdminGuestChats();
-            if (
-        !$("adminMessengerConversation").classList.contains("hidden")
-      ) {
+      if (!$("adminMessengerConversation").classList.contains("hidden")) {
         if (window.selectedGuestChatId) {
           openAdminGuestChat(window.selectedGuestChatId);
         } else if (selectedChatUser) {
           openAdminChat(selectedChatUser);
         }
+      } else if (!$("adminMessengerList").classList.contains("hidden")) {
+        loadAdminChats();
+      } else if (!$("adminGuestMessengerList").classList.contains("hidden")) {
+        loadAdminGuestChats();
       }
     }, 10000);
 
@@ -3904,7 +3907,6 @@ function toggleAdminMessenger() {
     clearInterval(window.zrxAdminMessengerTimer);
   }
 }
-
 function backToAdminInbox() {
   if (!isAdmin) return;
 
