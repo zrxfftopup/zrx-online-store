@@ -5505,7 +5505,10 @@ window.toggleSupport = function() {
   const opening = supportBox.classList.contains("hidden");
   supportBox.classList.toggle("hidden");
 
-  if (!opening) return;
+  if (!opening) {
+  clearInterval(window.zrxGuestSupportTimer);
+  return;
+}
 
   const guestForm = $("guestIdentityForm");
   const guestArea = $("guestSupportArea");
