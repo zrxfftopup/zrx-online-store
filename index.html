@@ -3775,7 +3775,7 @@ function toggleAdminMessenger() {
     $("adminMessengerConversation").classList.add("hidden");
 
     loadAdminChats();
-
+    loadAdminGuestChats();
     clearInterval(window.zrxAdminMessengerTimer);
 
     window.zrxAdminMessengerTimer = setInterval(() => {
