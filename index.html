@@ -3530,6 +3530,7 @@ async function startGuestSupport() {
     $("guestSupportArea").classList.remove("hidden");
 
     await loadGuestSupportMessages();
+    startGuestSupportPolling();
     notice("আপনার সাপোর্ট চ্যাট তৈরি হয়েছে।");
   } catch (error) {
     notice(error.message || "চ্যাট শুরু করা যায়নি।");
