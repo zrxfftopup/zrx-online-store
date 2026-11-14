@@ -1237,8 +1237,20 @@ onclick="toggleAdminMessenger()">💬
     <button type="button" onclick="toggleAdminMessenger()">✕</button>
   </div>
 
-  <div id="adminMessengerList"></div>
-  <div id="adminGuestMessengerList"></div>
+  <div style="display:flex;gap:8px;padding:10px">
+  <button type="button"
+    onclick="document.getElementById('adminMessengerList').classList.remove('hidden');document.getElementById('adminGuestMessengerList').classList.add('hidden')">
+    Customer Support
+  </button>
+
+  <button type="button"
+    onclick="document.getElementById('adminGuestMessengerList').classList.remove('hidden');document.getElementById('adminMessengerList').classList.add('hidden')">
+    Guest Support
+  </button>
+</div>
+
+<div id="adminMessengerList"></div>
+<div id="adminGuestMessengerList" class="hidden"></div>
   <div id="adminMessengerConversation" class="hidden">
     <div class="admin-chat-title">
       <button type="button" onclick="backToAdminInbox()">←</button>
