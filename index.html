@@ -5533,6 +5533,7 @@ window.toggleSupport = function() {
       guestForm?.classList.add("hidden");
       guestArea?.classList.remove("hidden");
       loadGuestSupportMessages();
+      startGuestSupportPolling();
     } else {
       guestArea?.classList.add("hidden");
       guestForm?.classList.remove("hidden");
