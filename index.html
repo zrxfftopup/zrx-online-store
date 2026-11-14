@@ -2126,12 +2126,9 @@ const files = (data || [])
   .filter(file => file.name && (file.id || file.metadata))
   .slice(0, 15);
 
-if (!files.length) {
-  console.log("Notice Board: কোনো ছবি পাওয়া যায়নি।");
-  return;
-}
 
-zrxNoticeFiles = files.map(file => {
+// Welcome স্লাইড প্রথমে, এরপর Notice Board-এর ছবিগুলো
+zrxNoticeFiles = [null, ...files.map(file => {
   const path = "notice-board/" + file.name;
 
   const { data: imageData } = db.storage
@@ -2139,12 +2136,51 @@ zrxNoticeFiles = files.map(file => {
     .getPublicUrl(path);
 
   return imageData.publicUrl;
-});
+})];
 
 zrxNoticeIndex = 0;
 
 track.innerHTML = zrxNoticeFiles.map(url =>
-  `<img src="${url}" class="zrx-notice-slide">`
+  url
+    ? `<img src="${url}" class="zrx-notice-slide">`
+    : `<div class="zrx-notice-slide" style="
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+        padding:15px;
+        box-sizing:border-box;
+        background:#ffffff;
+      ">
+        <h2 style="
+          font-size:23px;
+          font-weight:900;
+          margin:0 0 12px;
+          background:linear-gradient(90deg,#ff1744,#ff9100,#00bfa5,#2979ff,#aa00ff);
+          background-size:300% 300%;
+          -webkit-background-clip:text;
+          background-clip:text;
+          color:transparent;
+          animation:zrxNoticeColor 5s linear infinite;
+        ">Welcome to ZRX Online Store 🛍️</h2>
+        <p style="
+          font-size:16px;
+          font-weight:800;
+          line-height:1.6;
+          margin:0;
+          background:linear-gradient(90deg,#2979ff,#aa00ff,#ff1744,#00a86b,#ff9100);
+          background-size:300% 300%;
+          -webkit-background-clip:text;
+          background-clip:text;
+          color:transparent;
+          animation:zrxNoticeColor 5s linear infinite;
+        ">আপনার নিত্য প্রয়োজনীয় পণ্য অর্ডার করতে আপনাদের পাশে আছে জেড আর এক্স ওয়ান লাইন স্টোর।</p>
+      </div>`
+).join("");
+
+dots.innerHTML = zrxNoticeFiles.map((_, i) =>
+  `<button type="button" onclick="zrxNoticeGo(${i})">${i + 1}</button>`
 ).join("");
 
 dots.innerHTML = zrxNoticeFiles.map((_, i) =>
