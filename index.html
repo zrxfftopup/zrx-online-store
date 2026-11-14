@@ -1268,6 +1268,7 @@ onclick="toggleAdminMessenger()">💬
   </div>
 
   <div id="adminMessengerOptions" style="display:flex;gap:12px;padding:15px">
+
   <button type="button" style="flex:1;padding:18px 8px"
     onclick="
       document.getElementById('adminMessengerOptions').classList.add('hidden');
@@ -1276,6 +1277,7 @@ onclick="toggleAdminMessenger()">💬
       loadAdminChats();
     ">
     👤 লগইন অ্যাকাউন্ট
+    <span id="adminLoginCategoryDot" class="hidden zrx-unread-dot"></span>
   </button>
 
   <button type="button" style="flex:1;padding:18px 8px"
@@ -1286,8 +1288,10 @@ onclick="toggleAdminMessenger()">💬
       loadAdminGuestChats();
     ">
     👥 গেস্ট অ্যাকাউন্ট
+    <span id="adminGuestCategoryDot" class="hidden zrx-unread-dot"></span>
   </button>
-</div>
+
+  </div>
 
 <div id="adminMessengerList" class="hidden"></div>
 <div id="adminGuestMessengerList" class="hidden"></div>
