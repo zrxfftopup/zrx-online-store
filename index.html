@@ -5389,24 +5389,52 @@ function zrxPositionSupportBox() {
 }
 
 // আগের Support বাটনের ক্লিক ফাংশন
+
 window.toggleSupport = function() {
-  if (!currentUser) {
-    notice("সাপোর্টে মেসেজ করতে আগে লগইন করুন।");
-    showPage("accountPage");
-    return;
-  }
+  if (isAdmin) return;
 
   const opening = supportBox.classList.contains("hidden");
   supportBox.classList.toggle("hidden");
 
-  if (opening) {
-    requestAnimationFrame(() => {
-      zrxPositionSupportBox();
-    });
+  if (!opening) return;
+
+  const guestForm = $("guestIdentityForm");
+  const guestArea = $("guestSupportArea");
+  const customerMessages = $("supportMessages");
+  const customerInput = $("supportInput");
+  const customerSendButton = customerInput?.nextElementSibling;
+
+  if (currentUser) {
+    guestForm?.classList.add("hidden");
+    guestArea?.classList.add("hidden");
+
+    customerMessages?.classList.remove("hidden");
+    customerInput?.classList.remove("hidden");
+    customerSendButton?.classList.remove("hidden");
+
+    loadSupportMessages();
+  } else {
+    customerMessages?.classList.add("hidden");
+    customerInput?.classList.add("hidden");
+    customerSendButton?.classList.add("hidden");
+
+    const session = getGuestSupportSession();
+
+    if (session?.id && session?.access_token) {
+      guestForm?.classList.add("hidden");
+      guestArea?.classList.remove("hidden");
+      loadGuestSupportMessages();
+    } else {
+      guestArea?.classList.add("hidden");
+      guestForm?.classList.remove("hidden");
+    }
   }
 
-  loadSupportMessages();
+  requestAnimationFrame(() => {
+    zrxPositionSupportBox();
+  });
 };
+
 /* ADMIN BRANDING */
 const admin=document.getElementById("adminPage");
 if(admin && !admin.querySelector(".admin-brand")) {
