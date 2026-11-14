@@ -557,6 +557,20 @@ a{color:#087b4c;overflow-wrap:anywhere}
     0 0 24px #a00020aa;
 }
 
+/* NOTICE BOARD INNER DECORATIVE FRAME */
+.zrx-notice-board::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  z-index: 3;
+  border: 3px dashed #ffd54a;
+  border-radius: 16px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 8px #f5c542,
+    0 0 7px #ffd54a;
+}
+
 @keyframes zrxNoticeBorder {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
