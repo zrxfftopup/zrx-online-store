@@ -3758,6 +3758,12 @@ window.checkAdminUnreadMessages = async function() {
     console.error("Unread check error:", error);
   }
 };
+// AUTO CHECK NEW CUSTOMER MESSAGES
+setInterval(() => {
+  if (isAdmin) {
+    checkAdminUnreadMessages();
+  }
+}, 10000);
 async function loadAdminChats() {
   if (!isAdmin || !$("adminMessengerList")) return;
 
