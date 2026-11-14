@@ -1237,19 +1237,29 @@ onclick="toggleAdminMessenger()">💬
     <button type="button" onclick="toggleAdminMessenger()">✕</button>
   </div>
 
-  <div style="display:flex;gap:8px;padding:10px">
-  <button type="button"
-    onclick="document.getElementById('adminMessengerList').classList.remove('hidden');document.getElementById('adminGuestMessengerList').classList.add('hidden')">
-    Customer Support
+  <div id="adminMessengerOptions" style="display:flex;gap:12px;padding:15px">
+  <button type="button" style="flex:1;padding:18px 8px"
+    onclick="
+      document.getElementById('adminMessengerOptions').classList.add('hidden');
+      document.getElementById('adminMessengerList').classList.remove('hidden');
+      document.getElementById('adminGuestMessengerList').classList.add('hidden');
+      loadAdminChats();
+    ">
+    👤 লগইন অ্যাকাউন্ট
   </button>
 
-  <button type="button"
-    onclick="document.getElementById('adminGuestMessengerList').classList.remove('hidden');document.getElementById('adminMessengerList').classList.add('hidden')">
-    Guest Support
+  <button type="button" style="flex:1;padding:18px 8px"
+    onclick="
+      document.getElementById('adminMessengerOptions').classList.add('hidden');
+      document.getElementById('adminGuestMessengerList').classList.remove('hidden');
+      document.getElementById('adminMessengerList').classList.add('hidden');
+      loadAdminGuestChats();
+    ">
+    👥 গেস্ট অ্যাকাউন্ট
   </button>
 </div>
 
-<div id="adminMessengerList"></div>
+<div id="adminMessengerList" class="hidden"></div>
 <div id="adminGuestMessengerList" class="hidden"></div>
   <div id="adminMessengerConversation" class="hidden">
     <div class="admin-chat-title">
