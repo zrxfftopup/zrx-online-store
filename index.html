@@ -3861,11 +3861,14 @@ function backToAdminInbox() {
 
   $("adminMessengerConversation").classList.add("hidden");
   $("adminMessengerList").classList.remove("hidden");
+  $("adminGuestMessengerList").classList.remove("hidden");
+
   selectedChatUser = null;
+  window.selectedGuestChatId = null;
 
   loadAdminChats();
+  loadAdminGuestChats();
 }
-
 
 window.updateAdminMessengerVisibility = function() {
   const messenger = $("adminMessengerFloat");
