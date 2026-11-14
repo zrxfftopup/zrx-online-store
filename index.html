@@ -3876,7 +3876,19 @@ $("adminChatCustomerAvatar").src =
     $("adminChatMessages").textContent = error.message;
     return;
   }
+  const incomingMessages = (data || []).filter(
+    m => m.sender !== "admin" && m.created_at
+  );
 
+  if (incomingMessages.length) {
+    const latestRead = Math.max(
+      ...incomingMessages.map(m => new Date(m.created_at).getTime())
+    );
+
+    localStorage.setItem("zrxAdminRead_" + userId, String(latestRead));
+  }
+
+  await checkAdminUnreadMessages();
   $("adminChatMessages").innerHTML = (data || []).map(m => {
     const isMine = isAdmin
       ? m.sender === "admin"
