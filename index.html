@@ -3648,20 +3648,27 @@ function backToAdminInbox() {
   loadAdminChats();
 }
 
+
 window.updateAdminMessengerVisibility = function() {
   const messenger = $("adminMessengerFloat");
   const support = $("supportFloat");
+  const supportWrap = $("supportFloatWrap");
   const supportBox = $("supportBox");
 
   if (!messenger) return;
 
   messenger.classList.toggle("hidden", !(currentUser && isAdmin));
 
-  if (isAdmin) {
+  if (currentUser && isAdmin) {
+    supportWrap?.classList.add("hidden");
     support?.classList.add("hidden");
     supportBox?.classList.add("hidden");
+  } else {
+    supportWrap?.classList.remove("hidden");
+    support?.classList.remove("hidden");
   }
 };
+
 /* FORM EVENTS */
 $("registerForm")?.addEventListener("submit", registerUser);
 $("loginForm")?.addEventListener("submit", loginUser);
