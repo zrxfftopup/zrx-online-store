@@ -3781,33 +3781,46 @@ $("adminChatCustomerAvatar").src =
 }
 
 async function adminSendMessage() {
-  if (!isAdmin || !currentUser || !selectedChatUser) {
-    return notice("আগে একজন কাস্টমারের চ্যাট খুলুন।");
-  }
+  if (!isAdmin || !currentUser) return;
 
   const message = val("adminReply").trim();
+  if (!message) return notice("আগে উত্তর লিখুন।");
 
-  if (!message) {
-    return notice("আগে উত্তর লিখুন।");
+  try {
+    if (window.selectedGuestChatId) {
+      await worker({
+        action: "admin_guest_send",
+        chat_id: window.selectedGuestChatId,
+        message
+      });
+
+      $("adminReply").value = "";
+      await openAdminGuestChat(window.selectedGuestChatId);
+      notice("Guest-কে উত্তর পাঠানো হয়েছে।");
+      return;
+    }
+
+    if (!selectedChatUser) {
+      return notice("আগে একটি চ্যাট খুলুন।");
+    }
+
+    const { error } = await db.from("chat_messages").insert({
+      user_id: selectedChatUser,
+      sender_id: currentUser.id,
+      message,
+      sender: "admin"
+    });
+
+    if (error) throw error;
+
+    $("adminReply").value = "";
+    await openAdminChat(selectedChatUser);
+    await loadAdminChats();
+
+    notice("উত্তর পাঠানো হয়েছে।");
+  } catch (error) {
+    notice(error.message || "উত্তর পাঠানো যায়নি।");
   }
-
-  const { error } = await db.from("chat_messages").insert({
-    user_id: selectedChatUser,
-    sender_id: currentUser.id,
-    message: message,
-    sender: "admin"
-  });
-
-  if (error) {
-    return notice(error.message);
-  }
-
-  $("adminReply").value = "";
-
-  await openAdminChat(selectedChatUser);
-  await loadAdminChats();
-
-  notice("উত্তর পাঠানো হয়েছে।");
 }
 function toggleAdminMessenger() {
   if (!currentUser || !isAdmin) return;
