@@ -3769,6 +3769,7 @@ $("adminChatCustomerId").textContent =
   }
       }
  // ZRX ADMIN UNREAD MESSAGE CHECK
+// ZRX ADMIN UNREAD MESSAGE CHECK
 window.checkAdminUnreadMessages = async function() {
   if (!isAdmin) return;
 
@@ -3776,21 +3777,49 @@ window.checkAdminUnreadMessages = async function() {
   if (!badge) return;
 
   try {
+    // Check logged-in customer messages
     const { data, error } = await db
       .from("chat_messages")
       .select("user_id, sender, created_at")
-      .neq("sender", "admin")
-      .order("created_at", { ascending: false });
+      .neq("sender", "admin");
 
     if (error) throw error;
 
-    const unread = (data || []).some(message => {
+    let unread = (data || []).some(message => {
       const lastRead = Number(
         localStorage.getItem("zrxAdminRead_" + message.user_id) || 0
       );
 
       return new Date(message.created_at).getTime() > lastRead;
     });
+
+    // Check Guest messages
+    const result = await worker({
+      action: "admin_guest_list"
+    });
+
+    const chats = result.chats || result.data || [];
+
+    for (const chat of chats) {
+      const response = await worker({
+        action: "admin_guest_load",
+        chat_id: chat.id
+      });
+
+      const messages = response.messages || response.data || [];
+      const lastRead = Number(
+        localStorage.getItem("zrxGuestAdminRead_" + chat.id) || 0
+      );
+
+      if (messages.some(m =>
+        m.sender !== "admin" &&
+        m.created_at &&
+        new Date(m.created_at).getTime() > lastRead
+      )) {
+        unread = true;
+        break;
+      }
+    }
 
     badge.classList.toggle("hidden", !unread);
 
