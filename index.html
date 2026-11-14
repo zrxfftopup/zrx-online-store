@@ -3656,7 +3656,18 @@ async function sendGuestSupportMessage() {
       action: "admin_guest_load",
       chat_id: chatId
     });
+const guestListResult = await worker({
+  action: "admin_guest_list"
+});
 
+const guestChats = guestListResult.chats || guestListResult.data || [];
+const guest = guestChats.find(chat => chat.id === chatId);
+
+$("adminChatCustomerName").textContent =
+  guest?.guest_name || "Guest";
+
+$("adminChatCustomerId").textContent =
+  guest?.guest_phone || "";
     const messages = result.messages || result.data || [];
 
     $("adminChatMessages").innerHTML = messages.map(m => `
