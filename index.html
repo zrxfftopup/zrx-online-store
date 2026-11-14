@@ -2068,21 +2068,36 @@ window.uploadNoticeBoardImages = async function() {
   }
 };
 
+
 window.deleteNoticeBoardImage = async function(encodedName) {
-  if (!isAdmin) return notice("Admin অনুমতি প্রয়োজন।");
+  if (!isAdmin) {
+    return notice("Admin অনুমতি প্রয়োজন।");
+  }
+
   if (!confirm("এই ছবিটি মুছে ফেলবেন?")) return;
 
-  const path = "notice-board/" + decodeURIComponent(encodedName);
+  try {
+    const path = "notice-board/" + decodeURIComponent(encodedName);
 
-  const { error } = await db.storage
-    .from("product-images")
-    .remove([path]);
+    const { data, error } = await db.storage
+      .from("product-images")
+      .remove([path]);
 
-  if (error) return notice(error.message);
+    if (error) throw error;
 
-  notice("ছবিটি মুছে ফেলা হয়েছে।");
-  await loadAdminNoticeBoard();
-  await loadNoticeBoard();
+    if (!data || data.length === 0) {
+      throw new Error("ছবিটি মুছে ফেলা যায়নি। Admin অনুমতি পরীক্ষা করুন।");
+    }
+
+    await loadAdminNoticeBoard();
+    await loadNoticeBoard();
+
+    notice("ছবিটি সফলভাবে মুছে ফেলা হয়েছে।");
+
+  } catch (error) {
+    console.error("Notice image delete error:", error);
+    notice("ছবি মুছতে সমস্যা হয়েছে: " + error.message);
+  }
 };
 
 window.loadNoticeBoard = async function() {
