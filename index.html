@@ -5111,7 +5111,7 @@ function zrxMakeDraggable(element,handle) {
 const supportFloatWrap=document.getElementById("supportFloatWrap");
 
 if(supportFloatWrap && supportFloat) {
-  zrxMakeDraggable(supportFloatWrap,supportFloatWrap);
+  zrxMakeDraggable(supportFloatWrap,supportFloat);
 
   supportFloat.addEventListener("click",e=>{
     if(supportFloatWrap.dataset.justDragged==="yes") {
