@@ -729,6 +729,95 @@ a{color:#087b4c;overflow-wrap:anywhere}
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
+/* ======================================
+   ZRX NOTICE BOARD - RGB LIGHTING EDITION
+====================================== */
+
+.zrx-notice-board {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  margin: 8px 0 24px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 9px solid transparent;
+  border-radius: 25px;
+
+  background:
+    linear-gradient(#101c36, #101c36) padding-box,
+    conic-gradient(
+      #ff1744,
+      #ff9100,
+      #ffee00,
+      #00e676,
+      #00cfff,
+      #304ffe,
+      #d500f9,
+      #ff1744
+    ) border-box;
+
+  animation: zrxRGBGlow 3s ease-in-out infinite;
+
+  box-shadow:
+    0 0 0 2px #ffffff88,
+    0 0 15px #00cfff,
+    0 0 25px #d500f9;
+}
+
+/* RGB LIGHT ANIMATION */
+
+@keyframes zrxRGBGlow {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+    box-shadow:
+      0 0 10px #ff1744,
+      0 0 22px #00cfff;
+  }
+
+  50% {
+    filter: hue-rotate(120deg);
+    box-shadow:
+      0 0 14px #00e676,
+      0 0 28px #ffee00;
+  }
+}
+
+/* IMAGE SLIDER */
+
+.zrx-notice-track {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 11px;
+  transition: transform 0.5s ease;
+}
+
+.zrx-notice-track > .zrx-notice-slide {
+  display: block;
+  flex: 0 0 100%;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 430px;
+  box-sizing: border-box;
+  object-fit: contain;
+  object-position: center;
+  background: #101c36;
+  border: 0;
+  border-radius: 11px;
+}
+
+/* WELCOME SLIDE */
+
+.zrx-notice-track > div.zrx-notice-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   text-align: center;
   padding: 15px;
   background: #ffffff;
