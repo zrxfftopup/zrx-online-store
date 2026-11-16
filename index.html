@@ -642,6 +642,114 @@ a{color:#087b4c;overflow-wrap:anywhere}
   color: white;
   font-size: 26px;
   cursor: pointer;
+
+/* ======================================
+   ZRX NOTICE BOARD - RGB LIGHTING EDITION
+====================================== */
+
+.zrx-notice-board {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  margin: 8px 0 24px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 9px solid transparent;
+  border-radius: 25px;
+
+  background:
+    linear-gradient(#101c36, #101c36) padding-box,
+    conic-gradient(
+      #ff1744,
+      #ff9100,
+      #ffee00,
+      #00e676,
+      #00cfff,
+      #304ffe,
+      #d500f9,
+      #ff1744
+    ) border-box;
+
+  animation: zrxRGBGlow 3s ease-in-out infinite;
+
+  box-shadow:
+    0 0 0 2px #ffffff88,
+    0 0 15px #00cfff,
+    0 0 25px #d500f9;
+}
+
+@keyframes zrxRGBGlow {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+    box-shadow:
+      0 0 10px #ff1744,
+      0 0 22px #00cfff;
+  }
+
+  50% {
+    filter: hue-rotate(120deg);
+    box-shadow:
+      0 0 14px #00e676,
+      0 0 28px #ffee00;
+  }
+}
+
+/* IMAGE SLIDER */
+
+.zrx-notice-track {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 11px;
+  transition: transform 0.5s ease;
+}
+
+.zrx-notice-track > .zrx-notice-slide {
+  display: block;
+  flex: 0 0 100%;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 430px;
+  box-sizing: border-box;
+  object-fit: contain;
+  object-position: center;
+  background: #101c36;
+  border: 0;
+  border-radius: 11px;
+}
+
+/* WELCOME SLIDE */
+
+.zrx-notice-track > div.zrx-notice-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 15px;
+  background: #ffffff;
+}
+
+/* LEFT RIGHT ARROWS */
+
+.zrx-notice-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border: 1px solid white;
+  border-radius: 50%;
+  background: #101c36dd;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+  box-shadow: 0 0 12px #00cfff;
 }
 
 .zrx-notice-arrow.prev {
@@ -652,38 +760,61 @@ a{color:#087b4c;overflow-wrap:anywhere}
   right: 12px;
 }
 
+/* SLIDER DOTS */
+
 .zrx-notice-dots {
   position: absolute;
-  bottom: 12px;
+  bottom: 13px;
   left: 0;
   right: 0;
+  z-index: 4;
   display: flex;
   justify-content: center;
-  gap: 6px;
+  gap: 7px;
 }
 
 .zrx-notice-dots button {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   padding: 0;
-  border: 0;
+  border: 1px solid white;
   border-radius: 50%;
-  background: #ffffff99;
+  background: #ffffff88;
   font-size: 0;
 }
 
 .zrx-notice-dots button.active {
   background: #ffffff;
-  transform: scale(1.4);
+  transform: scale(1.5);
+  box-shadow: 0 0 10px white;
 }
 
+/* MOBILE RESPONSIVE */
+
 @media (max-width: 600px) {
-  .zrx-notice-slide {
-    height: 250px !important;
+
+  .zrx-notice-board {
+    margin-top: 8px;
+    padding: 7px;
+    border-width: 8px;
+    border-radius: 22px;
+  }
+
+  .zrx-notice-track > .zrx-notice-slide {
+    height: 250px;
+  }
+
+  .zrx-notice-arrow.prev {
+    left: 9px;
+  }
+
+  .zrx-notice-arrow.next {
+    right: 9px;
   }
 }
 
-/* END ZRX NOTICE BOARD DESIGN */
+/* END ZRX NOTICE BOARD */
+
 </style>
 <style>
 /* ZRX ADMIN PANEL HEADING - GOLD EDITION */
