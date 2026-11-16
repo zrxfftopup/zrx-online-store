@@ -2315,7 +2315,9 @@ window.zrxNoticeUpdate = function() {
   const dots = document.getElementById("noticeBoardDots");
   if (!track) return;
 
-track.style.transform = `translateX(-${zrxNoticeIndex * track.children[0].getBoundingClientRect().width}px)`;
+const currentSlide = track.children[zrxNoticeIndex];
+const slideOffset = currentSlide.getBoundingClientRect().left - track.getBoundingClientRect().left;
+track.style.transform = `translateX(-${slideOffset}px)`;
   
   if (dots) {
     Array.from(dots.children).forEach((dot, i) => {
