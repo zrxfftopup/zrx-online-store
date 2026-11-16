@@ -2282,7 +2282,12 @@ zrxNoticeIndex = 0;
 
 track.innerHTML = zrxNoticeFiles.map(url =>
   url
-    ? `<img src="${url}" class="zrx-notice-slide">`
+    
+? `<div class="zrx-notice-slide zrx-notice-image-slide">
+    <img src="${url}" class="zrx-notice-image-blur" aria-hidden="true">
+    <img src="${url}" class="zrx-notice-image-main">
+  </div>`
+
     : `<div class="zrx-notice-slide" style="
         display:flex;
         flex-direction:column;
