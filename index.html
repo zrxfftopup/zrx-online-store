@@ -576,73 +576,7 @@ a{color:#087b4c;overflow-wrap:anywhere}
     border-radius: 8px;
     box-shadow: 0 0 10px #dc262655;
 }
-/* ===============================
-   ZRX NOTICE BOARD DESIGN
-================================ */
-
-
-
-.zrx-notice-board {
-  position: relative;
-  overflow: hidden;
-  margin: 18px 0 24px;
-  padding: 22px;
-  border: 3px solid #ffd54a;
-  border-radius: 22px;
-  background: repeating-conic-gradient(
-    from 45deg,
-    #ffd54a 0deg 15deg,
-    #780019 15deg 30deg,
-    #082c78 30deg 45deg,
-    #075c35 45deg 60deg
-  );
-  background-size: 26px 26px;
-  animation: zrxNoticeBorder 5s linear infinite;
-  box-shadow:
-    0 0 0 3px #172033,
-    0 0 16px #003399cc,
-    0 0 22px #a00020cc;
-}
-
-@keyframes zrxNoticeBorder {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
   
-.zrx-notice-track {
-  display: flex;
-  width: 100%;
-  min-width: 0;
-  transition: transform 0.5s ease;
-}
-
-.zrx-notice-slide {
-  flex: 0 0 100%;
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  height: 430px;
-  object-fit: contain;
-  background: #fff;
-  border-radius: 13px;
-}
-  
-.zrx-notice-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  border: 0;
-  border-radius: 50%;
-  width: 34px;
-  height: 34px;
-  background: #111a;
-  color: white;
-  font-size: 26px;
-  cursor: pointer;
-
 /* ======================================
    ZRX NOTICE BOARD - RGB LIGHTING EDITION
 ====================================== */
