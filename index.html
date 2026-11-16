@@ -2349,7 +2349,7 @@ window.zrxNoticeUpdate = function() {
   if (!track) return;
 
 
-const slideWidth = track.clientWidth;
+const slideWidth = track.getBoundingClientRect().width;
 track.style.transform = `translate3d(-${zrxNoticeIndex * slideWidth}px, 0, 0)`;
 
   if (dots) {
