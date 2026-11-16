@@ -2314,8 +2314,8 @@ window.zrxNoticeUpdate = function() {
   const dots = document.getElementById("noticeBoardDots");
   if (!track) return;
 
-  track.style.transform = `translateX(-${zrxNoticeIndex * 100}%)`;
-
+track.style.transform = `translateX(-${zrxNoticeIndex * track.clientWidth}px)`;
+  
   if (dots) {
     Array.from(dots.children).forEach((dot, i) => {
       dot.classList.toggle("active", i === zrxNoticeIndex);
