@@ -2349,10 +2349,10 @@ window.zrxNoticeUpdate = function() {
   const dots = document.getElementById("noticeBoardDots");
   if (!track) return;
 
-const currentSlide = track.children[zrxNoticeIndex];
-const slideOffset = currentSlide.getBoundingClientRect().left - track.getBoundingClientRect().left;
-track.style.transform = `translateX(-${slideOffset}px)`;
-  
+
+const slideWidth = track.clientWidth;
+track.style.transform = `translate3d(-${zrxNoticeIndex * slideWidth}px, 0, 0)`;
+
   if (dots) {
     Array.from(dots.children).forEach((dot, i) => {
       dot.classList.toggle("active", i === zrxNoticeIndex);
