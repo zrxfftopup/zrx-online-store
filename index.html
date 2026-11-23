@@ -3298,7 +3298,12 @@ const sizeExtraPrices = Object.fromEntries(
     const colors = document.getElementById("productColorEnabled").checked
       ? ["কালো", "সাদা", "লাল", "নীল", "সবুজ", "হলুদ", "গোলাপি", "ধূসর", "বাদামি", "বেগুনি", "কমলা"]
       : [];
-
+const colorExtraPrices = Object.fromEntries(
+  colors.map(color => [
+    color,
+    Number(document.getElementById(`colorExtraPrice_${color}`)?.value || 0)
+  ])
+);
     if (!name || !Number.isFinite(price) || price <= 0) {
       throw new Error("পণ্যের নাম ও সঠিক দাম দিন।");
     }
