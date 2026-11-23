@@ -5248,6 +5248,8 @@ function renderColorExtraPriceFields() {
     </label>
   `).join("") : "";
   }
+  document.getElementById("productColorEnabled")
+  ?.addEventListener("change", renderColorExtraPriceFields);
 ["clothingSizeEnabled", "pantsSizeEnabled", "shoeSizeEnabled"].forEach(id => {
   document.getElementById(id)?.addEventListener("change", renderSizeExtraPriceFields);
 });
