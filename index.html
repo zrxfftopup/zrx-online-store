@@ -2129,7 +2129,19 @@ function getProductFinalPrice(product) {
 
   return Math.max(0, original * (100 - percent) / 100);
 }
+function getProductVariantPrice(product, size = "", color = "") {
+  const basePrice = getProductFinalPrice(product);
 
+  const sizeExtra = Number(
+    product?.size_extra_prices?.[size] || 0
+  );
+
+  const colorExtra = Number(
+    product?.color_extra_prices?.[color] || 0
+  );
+
+  return basePrice + sizeExtra + colorExtra;
+  }
 // পণ্যের দাম ও ডিসকাউন্ট দেখানোর HTML তৈরি করবে
 function getProductPriceHTML(product) {
   const original = Number(product?.price || 0);
