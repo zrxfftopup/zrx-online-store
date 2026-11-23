@@ -3288,6 +3288,13 @@ if (discountEnabled &&
         ? ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46"] : [])
     ];
 
+const sizeExtraPrices = Object.fromEntries(
+  sizes.map(size => [
+    size,
+    Number(document.getElementById(`sizeExtraPrice_${size}`)?.value || 0)
+  ])
+);
+
     const colors = document.getElementById("productColorEnabled").checked
       ? ["কালো", "সাদা", "লাল", "নীল", "সবুজ", "হলুদ", "গোলাপি", "ধূসর", "বাদামি", "বেগুনি", "কমলা"]
       : [];
