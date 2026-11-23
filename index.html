@@ -5568,8 +5568,31 @@ window.getDetailSelections = function() {
     color: document.querySelector('input[name="detailColorChoice"]:checked')?.value || ""
   };
 };
+window.updateDetailVariantPrice = function() {
+  const product = products.find(
+    p => String(p.id) === String(window.currentDetailProductId)
+  );
 
+  if (!product) return;
 
+  const { size, color } = getDetailSelections();
+  const price = getProductVariantPrice(product, size, color);
+
+  const priceBox = document.getElementById("detailVariantPrice");
+
+  if (priceBox) {
+    priceBox.innerHTML = `<b>৳${price.toFixed(2)}</b>`;
+  }
+};
+
+document.addEventListener("change", function(event) {
+  if (
+    event.target.matches('input[name="detailSizeChoice"]') ||
+    event.target.matches('input[name="detailColorChoice"]')
+  ) {
+    updateDetailVariantPrice();
+  }
+});
 window.addDetailProductToCart = function() {
 
   const selections = getDetailSelections();
