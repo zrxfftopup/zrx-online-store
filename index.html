@@ -5221,7 +5221,33 @@ function renderSizeExtraPriceFields() {
     </label>
   `).join("");
 }
+function renderColorExtraPriceFields() {
+  const colors = [
+    "কালো", "সাদা", "লাল", "নীল", "সবুজ", "হলুদ",
+    "গোলাপি", "ধূসর", "বাদামি", "বেগুনি", "কমলা"
+  ];
 
+  const container = document.getElementById("colorExtraPriceFields");
+  if (!container) return;
+
+  const oldValues = {};
+  container.querySelectorAll("input").forEach(input => {
+    oldValues[input.dataset.color] = input.value;
+  });
+
+  const enabled = document.getElementById("productColorEnabled")?.checked;
+
+  container.innerHTML = enabled ? colors.map(color => `
+    <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0;">
+      <span>${color} কালারের অতিরিক্ত দাম (৳)</span>
+      <input type="number" min="0" step="1"
+        data-color="${color}"
+        id="colorExtraPrice_${color}"
+        value="${oldValues[color] ?? 0}"
+        style="width:100px;padding:8px;">
+    </label>
+  `).join("") : "";
+  }
 ["clothingSizeEnabled", "pantsSizeEnabled", "shoeSizeEnabled"].forEach(id => {
   document.getElementById(id)?.addEventListener("change", renderSizeExtraPriceFields);
 });
