@@ -2373,6 +2373,26 @@ window.zrxNoticeGo = function(index) {
   zrxNoticeIndex = index;
   zrxNoticeUpdate();
 };
+let zrxTouchStartX = 0;
+
+const zrxBoard = document.getElementById("noticeBoard");
+
+zrxBoard?.addEventListener("touchstart", function(e) {
+  zrxTouchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+zrxBoard?.addEventListener("touchend", function(e) {
+  const endX = e.changedTouches[0].screenX;
+  const distance = endX - zrxTouchStartX;
+
+  if (Math.abs(distance) < 50) return;
+
+  if (distance < 0) {
+    zrxNoticeMove(1);
+  } else {
+    zrxNoticeMove(-1);
+  }
+}, { passive: true });
 document.getElementById("noticeBoardUpload")?.addEventListener("change", function() {
   const preview = document.getElementById("noticeBoardPreview");
   const files = Array.from(this.files || []);
