@@ -2735,12 +2735,10 @@ function renderCart() {
     );
 
     const price = product
-      ? getProductFinalPrice(product)
-      : (Number(item.price) || 0);
+  ? getProductVariantPrice(product, item.size, item.color)
+  : (Number(item.price) || 0);
 
-    const discountHTML = product
-      ? getProductPriceHTML(product)
-      : `<b>৳${price.toFixed(2)}</b>`;
+const discountHTML = `<b>৳${price.toFixed(2)}</b>`;
 
     const quantity = Number(item.quantity) || 1;
     const key = getCartItemKey(item);
