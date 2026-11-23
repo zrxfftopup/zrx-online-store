@@ -5172,6 +5172,45 @@ function getProductSizes(product) {
     .filter(Boolean);
 }
 
+function renderSizeExtraPriceFields() {
+  const groups = [
+    {
+      id: "clothingSizeEnabled",
+      sizes: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"]
+    },
+    {
+      id: "pantsSizeEnabled",
+      sizes: ["28", "30", "32", "34", "36", "38", "40", "42", "44"]
+    },
+    {
+      id: "shoeSizeEnabled",
+      sizes: ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46"]
+    }
+  ];
+
+  const selectedSizes = groups
+    .filter(group => document.getElementById(group.id)?.checked)
+    .flatMap(group => group.sizes);
+
+  const container = document.getElementById("sizeExtraPriceFields");
+  if (!container) return;
+
+  const oldValues = {};
+  container.querySelectorAll("input").forEach(input => {
+    oldValues[input.dataset.size] = input.value;
+  });
+
+  container.innerHTML = selectedSizes.map(size => `
+    <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0;">
+      <span>${size} সাইজের অতিরিক্ত দাম (৳)</span>
+      <input type="number" min="0" step="1"
+        data-size="${size}"
+        id="sizeExtraPrice_${size}"
+        value="${oldValues[size] ?? 0}"
+        style="width:100px;padding:8px;">
+    </label>
+  `).join("");
+}
 
 /* PRODUCT LIST */
 
