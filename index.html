@@ -2988,7 +2988,7 @@ function proceedCartCheckout() {
         p => String(p.id) === String(item.id)
       );
 
-      const price = getProductFinalPrice(product);
+      const price = getProductVariantPrice(product, item.size, item.color);
       const quantity = Number(item.quantity) || 1;
 
       total += price * quantity;
